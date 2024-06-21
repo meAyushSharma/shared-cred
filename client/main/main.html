@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credential Manager</title>
+    <!-- <link
+      rel="icon"
+      href="img/logo-design-c&c-32x32.ico.ico"
+      type="image/icon
+    type"
+    /> -->
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <!--nav bar here-->
+    <div id="nav-bar-container">
+      <div class="logo-container" id="logo-id">
+        <img
+          src="hero-bg-c&c-main-page.png"
+          alt="logo"
+          height="45px"
+          aspect-ratio="1/1"
+        />
+        logo
+      </div>
+      <div class="about-and-template-container">
+        <div class="about-container">about</div>
+        <div class="credential-container">credentials</div>
+      </div>
+    </div>
+    <!--hero section here-->
+    <div id="top-here"></div>
+    <div id="hero-container">
+      <div class="central-image-container">
+        <img
+          src="hero-bg-c&c-main-page.png"
+          alt="hero-bg"
+          aspect-ratio="11/9"
+        />
+      </div>
+      <!-- <div class="central-text-container"> -->
+      <div class="scribble-container">secure</div>
+      <div class="sculpt-container">safe</div>
+      <div class="curate-container">related</div>
+    </div>
+
+    <!--  long div section here   -->
+
+    <div id="till-the-contact">
+      <!-- TEMPLATE SECTION starts here-->
+      <div id="credential">
+        <div class="credential-heading">Credentials</div>
+        <div class="credential-value-container">
+          <div class="credential-template">
+            <input
+              type="text"
+              placeholder="key"
+              class="key"
+              style="text-decoration: none"
+              id="key"
+            />
+            <input
+              type="text"
+              placeholder="value"
+              class="value"
+              style="text-decoration: none"
+              id="value"
+            />
+            <span class="material-symbols-outlined add-btn" id="add-btn-id">
+              add
+            </span>
+          </div>
+          <div id="cred-store-container"></div>
+        </div>
+        <!--template containers starts here-->
+      </div>
+      <!--template ENDS here-->
+      <!--about section start here-->
+      <div id="about">
+        <div class="about-heading">about</div>
+        <div class="about-text">
+          Blending modern design with inclusivity to transform the digital space
+          into a connective, creative playground for all. Driving forward with
+          accessible tech, we're crafting experiences where creativity meets
+          community in every click.
+        </div>
+      </div>
+      <!--here starts signup!!!!!!!!-->
+      <form action="/credential-manager/signup" method="post">
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="enter email"
+        /><br />
+        <input
+          type="text"
+          name="password"
+          id="password"
+          placeholder="enter password"
+        /><br />
+        <input
+          type="text"
+          name="name"
+          id="name"
+          placeholder="enter name"
+        /><br />
+        <button type="submit">Submit</button>
+      </form>
+      <div class="contact-at-heading">Contact</div>
+      <div class="contact-container">
+        <div class="contact-details">
+          <p class="contact-heading">Contact Details</p>
+          <a
+            href="mailto:ayushsharma.codes@gmail.com"
+            class="mail"
+            target="_blank"
+            >ayushsharma.codes@gmail.com</a
+          >
+        </div>
+        <div class="socials">
+          <div class="socials-heading">Socials</div>
+          <div class="social-links">
+            <a
+              href="https://github.com/meAyushSharma"
+              class="github"
+              target="_blank"
+              >Github</a
+            >
+            <a
+              href="https://www.linkedin.com/in/ayush-sharma-b07617290/"
+              class="linkedin"
+              target="_blank"
+              >LinkedIn</a
+            >
+            <a
+              href="https://meayush.hashnode.dev/"
+              class="hashnode"
+              target="_blank"
+              >Hashnode</a
+            >
+          </div>
+        </div>
+      </div>
+      <!--contact details ends here-->
+      <div class="footer">
+        <div class="copyright">©️ 2024 Ayush Sharma</div>
+        <a href="https://huyngportfoliov1.netlify.app/" target="_blank"
+          >Inspiration for UI/UX ↗️</a
+        >
+        <span class="material-symbols-outlined navigate-up">navigation</span>
+      </div>
+    </div>
+    <!--long div ENDS HERE-->
+    <script src="main.js"></script>
+    <script src="dataHandle.js"></script>
+  </body>
+</html>

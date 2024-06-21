@@ -1,0 +1,349 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --bg-color: #fafaf9;
+  --hero-text-color: #262626;
+  --nav-color: #000000;
+  --about-body-color: #aeae9d;
+  --about-body-color: #929283;
+  --about-credential-heading-color: #8c8c73;
+  --heading-font: "General Sans", sans-serif;
+  --body-font: "Cabinet Grotesk", sans-serif;
+  --link-color: #262626cc;
+  --link-color-hover: #262626;
+}
+
+/* :root {
+  --bg-color: #1b1b1d; 
+  --hero-text-color: #f2f2f2; 
+  --hero-text-color: #e0e0e0;
+  --hero-text-color: #d4d4d4;
+  --nav-color: #ffffff; 
+  --about-body-color: #d3d3d1;
+  --about-credential-heading-color: #c0c0b3; 
+  --heading-font: "General Sans", sans-serif;
+  --body-font: "Cabinet Grotesk", sans-serif;
+  --link-color: #f2f2f2cc; 
+  --link-color-hover: #f2f2f2; 
+}  */
+
+/* font-family: 'Cabinet Grotesk', sans-serif;
+  font-family: 'General Sans', sans-serif; */
+
+body {
+  background-color: var(--bg-color);
+}
+
+[href] {
+  text-decoration: none;
+}
+
+#nav-bar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px 20px;
+  font-family: var(--body-font);
+  background-color: var(--bg-color);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.logo-container {
+  cursor: pointer;
+}
+
+.about-and-template-container {
+  display: flex;
+  flex-direction: row;
+  width: 20rem;
+  justify-content: space-around;
+  font-size: 1.1rem;
+  color: var(--nav-color);
+  align-items: center;
+}
+
+.about-container,
+.credential-container {
+  display: grid;
+  place-content: center;
+  height: 20px;
+  width: auto;
+  cursor: pointer;
+}
+
+.about-container::after,
+.credential-container::after {
+  content: "";
+  height: 2px;
+  width: 0;
+  background-color: var(--about-credential-heading-color);
+  transition: all 0.3s ease;
+}
+
+.about-container:hover::after,
+.credential-container:hover::after {
+  width: 100%;
+}
+
+#hero-container {
+  width: calc(100-100vw);
+  height: auto;
+  overflow-x: hidden;
+  display: grid;
+  place-content: center;
+  position: relative;
+  font-family: var(--heading-font);
+}
+
+.central-image-container {
+  margin: auto;
+  z-index: -1;
+}
+
+.scribble-container,
+.sculpt-container,
+.curate-container {
+  font-family: var(--heading-font);
+  font-size: 8rem;
+  text-transform: uppercase;
+  font-weight: bolder;
+  color: var(--hero-text-color);
+  width: 100vw;
+  z-index: 1;
+}
+
+.scribble-container {
+  padding-left: 15%;
+  position: absolute;
+  top: 8px;
+  opacity: 0.94;
+}
+.sculpt-container {
+  opacity: 0.9;
+  text-align: center;
+  position: absolute;
+  top: 181px;
+}
+.curate-container {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 5%;
+  position: absolute;
+  top: 354px;
+  /* padding-left: 20%; */
+}
+
+#till-the-contact {
+  width: 90vw;
+  margin: auto;
+  margin-top: 8rem;
+}
+
+.about-heading,
+.credential-heading,
+.contact-at-heading {
+  text-transform: uppercase;
+  font-family: var(--heading-font);
+  color: var(--about-credential-heading-color);
+  font-weight: 550;
+  font-size: 6rem;
+  text-align: center;
+}
+
+.about-text {
+  font-family: var(--heading-font);
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--about-body-color);
+  margin-top: 50px;
+}
+
+.about-and-template-container > div::selection,
+#hero-container > div::selection,
+#about > div::selection,
+#credential > div::selection,
+.description-all::selection,
+.contact-details > p::selection,
+.contact-details > a::selection,
+.social-links > a::selection,
+.copyright::selection,
+.contact-at-heading::selection {
+  background-color: #959590a3;
+}
+
+#credential {
+  min-height: 100vh;
+  margin-top: 8rem;
+  width: 100%;
+}
+
+.credential-template {
+  width: 80%;
+  height: 60px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+
+
+.credential-value-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+}
+
+.credential-template {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.key {
+  height: 80%;
+  width: 30%;
+  border: 1px solid salmon;
+}
+.value {
+  height: 80%;
+  width: 60%;
+  border: 1px solid salmon;
+}
+
+
+
+.new-class {
+  width: 100%;
+  height: 60px;
+  border: 1px solid black;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#cred-store-container {
+  width: 80%;
+  height: auto;
+  border: 1px solid black;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+}
+
+.new-class .key{
+  width: 20%;
+}
+.new-class .value {
+  width: 40%;
+  overflow-x: hidden;
+}
+.new-class .add-user-container {
+  width: 20%;
+  height: 80%;
+  border: 1px solid salmon;
+}
+
+.add-btn {
+  border: 1px solid blue;
+  align-items: center;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.contact-at-heading {
+  margin-top: 2rem;
+}
+.contact-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 3rem;
+  margin-bottom: 8rem;
+  /* border: 1px solid orange; */
+}
+.contact-heading,
+.socials-heading {
+  font-family: var(--heading-font);
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: var(--hero-text-color);
+  margin: 1.3rem 0;
+}
+
+.mail,
+.social-links {
+  text-decoration: none;
+  font-family: var(--body-font);
+  font-size: 1.2rem;
+  color: var(--link-color);
+  font-weight: 500;
+  padding: 3px;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.social-links > a {
+  text-decoration: none;
+  display: block;
+  color: var(--link-color);
+}
+
+.mail:hover,
+.social-links > a:hover {
+  color: var(--link-color-hover);
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: auto;
+  padding: 0.5rem;
+}
+
+.copyright {
+  display: flex;
+  font-family: var(--heading-font);
+  font-size: 1.1rem;
+  align-items: center;
+}
+
+.footer > a {
+  text-decoration: none;
+  text-decoration: underline;
+  color: inherit;
+  font-family: var(--heading-font);
+  font-size: 1.1rem;
+  align-self: center;
+}
+.navigate-up {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+#attribution {
+  color: var(--hero-text-color);
+  margin: auto;
+  font-size: 0.9rem;
+  padding: 2px;
+}
+
+#attribution > a {
+  text-decoration: none;
+  text-decoration: underline;
+  color: var(--link-color);
+}
