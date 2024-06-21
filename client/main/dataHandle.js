@@ -10,16 +10,16 @@ addBtn.addEventListener("click", () => {
 });
 
 async function sendDataGetResponse(key, value) {
-  const tokenResponse = getCookie("token");
+  // const tokenResponse = getCookie("token");
 
-  if (!tokenResponse) {
-    return null;
-  }
+  // if (!tokenResponse) {
+  //   return null;
+  // }
   if (!key || !value) {
     return null;
   }
 
-  fetch("/credential-manager/fetch-data", {
+  fetch("/credential-manager/create-resource", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +27,7 @@ async function sendDataGetResponse(key, value) {
     body: JSON.stringify({
       key: key,
       value: value,
-      token: tokenResponse,
+      // token: tokenResponse,
     }),
   })
     .then((response) => {
@@ -48,19 +48,19 @@ async function sendDataGetResponse(key, value) {
     });
 }
 
-function getCookie(name) {
-  let cookieArr = document.cookie.split(";");
+// function getCookie(name) {
+//   let cookieArr = document.cookie.split(";");
 
-  for (let i = 0; i < cookieArr.length; i++) {
-    let cookiePair = cookieArr[i].split("=");
+//   for (let i = 0; i < cookieArr.length; i++) {
+//     let cookiePair = cookieArr[i].split("=");
 
-    if (name == cookiePair[0].trim()) {
-      return decodeURIComponent(cookiePair[1]);
-    }
-  }
+//     if (name == cookiePair[0].trim()) {
+//       return decodeURIComponent(cookiePair[1]);
+//     }
+//   }
 
-  return null;
-}
+//   return null;
+// }
 
 function createCredential(key, value, resourceId) {
   const credContainer = document.createElement("div");
@@ -72,10 +72,12 @@ function createCredential(key, value, resourceId) {
   valueContainer.setAttribute("class", "value");
   const addUserContainer = document.createElement("div");
   addUserContainer.setAttribute("class", "add-user-container");
-  addUserContainer.setAttribute("id", "addUserContainer");
   const addUserNode = document.createTextNode("Add User");
   const deleteCredContainer = document.createElement("span");
-  deleteCredContainer.setAttribute("class", "material-symbols-outlined delete-btn");
+  deleteCredContainer.setAttribute(
+    "class",
+    "material-symbols-outlined delete-btn"
+  );
   const deleteTextNode = document.createTextNode("delete");
   deleteCredContainer.appendChild(deleteTextNode);
   const keyNode = document.createTextNode(key);
@@ -83,7 +85,42 @@ function createCredential(key, value, resourceId) {
   keyContainer.appendChild(keyNode);
   valueContainer.appendChild(valueNode);
   addUserContainer.appendChild(addUserNode);
-  credContainer.append(keyContainer, valueContainer, addUserContainer, deleteCredContainer);
+  credContainer.append(
+    keyContainer,
+    valueContainer,
+    addUserContainer,
+    deleteCredContainer
+  );
   const credStoreContainer = document.getElementById("cred-store-container");
   credStoreContainer.appendChild(credContainer);
 }
+
+document
+  .getElementById("cred-store-container")
+  .addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("delete-btn")) {
+      // Find the parent .new-class element and remove it
+      const credContainer = event.target.closest(".new-class");
+      if (credContainer) {
+        // console.log(credContainer.id);
+        // const tokenResponse = getCookie("token");
+
+        // if (!tokenResponse) {
+        //   return null;
+        // }
+
+        // send fetch request
+        fetch("/credential-manager/delete-resource", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resourceId: credContainer.id,
+            // token:tokenResponse,
+          }),
+        });
+        credContainer.remove();
+      }
+    }
+  });

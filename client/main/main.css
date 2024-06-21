@@ -230,12 +230,13 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin-top: 8px;
 }
 
 #cred-store-container {
   width: 80%;
   height: auto;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   text-align: center;
   display: flex;
   flex-direction: column;

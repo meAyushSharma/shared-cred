@@ -3,54 +3,43 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { User } = require("../models/schema");
+const { isTokenAndValid } = require("../utils/catchToken");
 
 async function userAuth(req, res, next) {
-  const token = req.cookies.token;
-  if (token) {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    if (decoded) {
-      const { username, password, name } = decoded;
-      const ifUserExist = await User.findOne({
-        username: username,
-        password: password,
-      });
-      if (ifUserExist) {
-        req.userDetail = {
-          username: username,
-          password: password,
-        };
-        console.log("user is logging through token");
-        next();
-      } else {
-        res.status(411).json({
-          msg: "Invalid inputs",
-        });
-      }
-    } else {
-      res.send("there was some problem in token");
-    }
-  } else {
+  const response = await isTokenAndValid(req, res);
+  if (response == null) {
     const username = req.body.username;
     const password = req.body.password;
-    const ifUserExist = await User.findOne({
-      username: username,
-    });
-    if (!ifUserExist) {
-      res.status(411).json({
-        msg: "Invalid inputs",
-      });
+
+    if (!username || !password) {
+      console.log("no username or password");
+      res.redirect("/credential-manager/signup");
+    } else {
+      User.findOne({
+        username: username,
+      })
+        .then(async (ifUserExist) => {
+          if (!ifUserExist) {
+            res.status(411).json({
+              msg: "NOT USER FOUND",
+            });
+          }
+          const isMatch = bcrypt.compareSync(password, ifUserExist.password);
+          if (!isMatch) {
+            res.status(411).json({
+              msg: "WRONG CREDENTIALS",
+            });
+          }
+          console.log("user is logging through body inputs!");
+          next();
+        })
+        .catch((err) => {
+          throw new Error(
+            `the error during userAuth req.body is :::::::: ${err}`
+          );
+        });
     }
-    const isMatch = await bcrypt.compareSync(password, ifUserExist.password);
-    if (!isMatch) {
-      res.status(411).json({
-        msg: "Invalid inputs",
-      });
-    }
-    req.userDetail = {
-      username: username,
-      passowrd: password,
-    };
-    console.log("user is logging through body inputs!");
+  } else {
     next();
   }
 }
