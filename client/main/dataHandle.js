@@ -10,7 +10,6 @@ addBtn.addEventListener("click", () => {
 });
 
 async function sendDataGetResponse(key, value) {
-  //'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lYXl1c2giLCJwYXNzd29yZCI6IiQyYiQxMCRqdlg3TzV3TTBkV0FURzc4dFMuZU51YmtMVC5BazZ5SFNYUmF3SVQ1TjRnNVp6T1V0SkF5MiIsIm5hbWUiOiJBeXVzaCBTaGFybWEiLCJpYXQiOjE3MTgzOTY3NTR9.UJmhDeLTJA2-BRCueJlBgpVNscTXz42QNicITNvfhVI'
   const tokenResponse = getCookie("token");
 
   if (!tokenResponse) {
@@ -37,10 +36,9 @@ async function sendDataGetResponse(key, value) {
       }
       return response.json();
     })
-    .then((user) => {
-      // console.log(user);
-      user.credential.forEach((ele) => {
-        createCredential(ele.key, ele.value);
+    .then((resources) => {
+      resources.forEach((ele) => {
+        createCredential(ele.resourceName, ele.resourceValue, ele._id);
       });
     })
     .catch((err) => {
@@ -64,9 +62,10 @@ function getCookie(name) {
   return null;
 }
 
-function createCredential(key, value) {
+function createCredential(key, value, resourceId) {
   const credContainer = document.createElement("div");
   credContainer.setAttribute("class", "new-class");
+  credContainer.setAttribute("id", resourceId);
   const keyContainer = document.createElement("p");
   keyContainer.setAttribute("class", "key");
   const valueContainer = document.createElement("p");
@@ -75,12 +74,16 @@ function createCredential(key, value) {
   addUserContainer.setAttribute("class", "add-user-container");
   addUserContainer.setAttribute("id", "addUserContainer");
   const addUserNode = document.createTextNode("Add User");
+  const deleteCredContainer = document.createElement("span");
+  deleteCredContainer.setAttribute("class", "material-symbols-outlined delete-btn");
+  const deleteTextNode = document.createTextNode("delete");
+  deleteCredContainer.appendChild(deleteTextNode);
   const keyNode = document.createTextNode(key);
   const valueNode = document.createTextNode(value);
   keyContainer.appendChild(keyNode);
   valueContainer.appendChild(valueNode);
   addUserContainer.appendChild(addUserNode);
-  credContainer.append(keyContainer, valueContainer, addUserContainer);
+  credContainer.append(keyContainer, valueContainer, addUserContainer, deleteCredContainer);
   const credStoreContainer = document.getElementById("cred-store-container");
   credStoreContainer.appendChild(credContainer);
 }

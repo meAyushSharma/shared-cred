@@ -244,10 +244,16 @@ body {
 }
 
 .new-class .key{
+  min-width: 10%;
+  max-width: 25%;
   width: 20%;
+  overflow-x: scroll;
+  scrollbar-color: #8c8c73 #fafaf9;
+  scrollbar-width: thin;
 }
+
 .new-class .value {
-  width: 40%;
+  width: 30%;
   overflow-x: hidden;
 }
 .new-class .add-user-container {
@@ -255,8 +261,21 @@ body {
   height: 80%;
   border: 1px solid salmon;
 }
+.new-class .delete-icon-container {
+  width: 5%;
+  height: 80%;
+  border: 1px solid salmon;
+}
+
 
 .add-btn {
+  border: 1px solid blue;
+  align-items: center;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.delete-btn {
   border: 1px solid blue;
   align-items: center;
   font-size: 3rem;

@@ -8,6 +8,7 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const { User } = require("../models/schema");
+const { Resource } = require("../models/schema");
 const { userAuth } = require("../middleware/userAuth");
 const router = Router();
 
@@ -36,7 +37,7 @@ router.post("/signup", async (req, res) => {
   if (!username || !password || !name) {
     res.json({ msg: "missing fields" });
   } else {
-    const hashedPassword = await bcrypt.hash(password, process.env.BCRYPT_SECRET_KEY);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = {
       username: username,
       password: hashedPassword,
@@ -95,21 +96,40 @@ router.post("/fetch-data", async (req, res) => {
   // console.log(`token is: ${token}`);
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   // console.log(`decoded is this::::: ${decoded}`);
-  const user = await User.findOneAndUpdate(
+  const user = await User.findOne(
     {
       username: decoded.username,
-    },
-    {
-      $push: {
-        credential: { key: key, value: value },
-      },
     }
+    // {
+    //   $push: {
+    //     credential: { key: key, value: value },
+    //   },
+    // }
   );
-  const updatedUser = await User.findOne({
-    username: decoded.username,
+
+  Resource.create({
+    resourceName: key,
+    resourceValue: value,
+    resourceOwner: user._id,
+  })
+    .then((resource) => {
+      console.log(resource);
+    })
+    .catch((err) => {
+      throw new Error(`the error while creating new resource is::  ${err}`);
+    });
+
+  const userOwnedResources = await Resource.find({
+    resourceOwner: user._id,
   });
-  // console.log(`user after adding creds is:  ${user}`);
-  res.status(200).send(updatedUser);
+  console.log(`the userOwnedResources is:::: 
+    ${userOwnedResources}`);
+  res.status(200).send(userOwnedResources);
 });
+
+// const updatedUser = await User.findOne({
+//   username: decoded.username,
+// });
+// console.log(`user after adding creds is:  ${user}`);
 
 module.exports = { router };
