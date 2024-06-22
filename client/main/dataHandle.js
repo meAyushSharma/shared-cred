@@ -10,11 +10,6 @@ addBtn.addEventListener("click", () => {
 });
 
 async function sendDataGetResponse(key, value) {
-  // const tokenResponse = getCookie("token");
-
-  // if (!tokenResponse) {
-  //   return null;
-  // }
   if (!key || !value) {
     return null;
   }
@@ -27,7 +22,6 @@ async function sendDataGetResponse(key, value) {
     body: JSON.stringify({
       key: key,
       value: value,
-      // token: tokenResponse,
     }),
   })
     .then((response) => {
@@ -70,9 +64,21 @@ function createCredential(key, value, resourceId) {
   keyContainer.setAttribute("class", "key");
   const valueContainer = document.createElement("p");
   valueContainer.setAttribute("class", "value");
+
   const addUserContainer = document.createElement("div");
   addUserContainer.setAttribute("class", "add-user-container");
-  const addUserNode = document.createTextNode("Add User");
+  const addUserNode = document.createElement("span");
+  addUserNode.setAttribute("class", "material-symbols-outlined add-user");
+  const addUserTextNode = document.createTextNode("person_add");
+  const addUserRoleNode = document.createElement("span");
+  addUserRoleNode.setAttribute("class", "material-symbols-outlined add-role");
+  const addUserRoleTextNode = document.createTextNode("admin_panel_settings");
+
+  addUserNode.append(addUserTextNode);
+  addUserRoleNode.append(addUserRoleTextNode);
+
+  addUserContainer.append(addUserNode, addUserRoleNode);
+
   const deleteCredContainer = document.createElement("span");
   deleteCredContainer.setAttribute(
     "class",
@@ -84,7 +90,7 @@ function createCredential(key, value, resourceId) {
   const valueNode = document.createTextNode(value);
   keyContainer.appendChild(keyNode);
   valueContainer.appendChild(valueNode);
-  addUserContainer.appendChild(addUserNode);
+  addUserContainer.append(addUserNode, addUserRoleNode);
   credContainer.append(
     keyContainer,
     valueContainer,

@@ -6,6 +6,7 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
 }
 
 :root {
@@ -247,20 +248,22 @@ body {
 .new-class .key{
   min-width: 10%;
   max-width: 25%;
-  width: 20%;
+  width: 25%;
   overflow-x: scroll;
   scrollbar-color: #8c8c73 #fafaf9;
   scrollbar-width: thin;
 }
 
 .new-class .value {
-  width: 30%;
+  width: 40%;
   overflow-x: hidden;
 }
 .new-class .add-user-container {
-  width: 20%;
+  width: 10%;
   height: 80%;
   border: 1px solid salmon;
+  display: flex;
+  justify-content: space-around;
 }
 .new-class .delete-icon-container {
   width: 5%;
@@ -279,7 +282,19 @@ body {
 .delete-btn {
   border: 1px solid blue;
   align-items: center;
-  font-size: 3rem;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.add-user {
+  border: 1px solid blue;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+}
+.add-role {
+  border: 1px solid blue;
+  align-items: center;
+  font-size: 2rem;
   cursor: pointer;
 }
 

@@ -89,7 +89,8 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", userAuth, (req, res) => {
   console.log("user logged in successfully!");
-  res.redirect("/credential-manager/");
+  res.redirect("/credential-manager");
+  // res.sendFile(path.join(__dirname, "../client", "signup/signup.html"));
 });
 
 

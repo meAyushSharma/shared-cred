@@ -20,18 +20,39 @@ async function userAuth(req, res, next) {
       })
         .then(async (ifUserExist) => {
           if (!ifUserExist) {
-            res.status(411).json({
-              msg: "NOT USER FOUND",
-            });
+            // res.status(411).json({
+            //   msg: "NO USER FOUND",
+            // });
+            console.log("NO USER FOUND");
+            res.redirect("/credential-manager/signup");
+          } else {
+            const isMatch = bcrypt.compareSync(password, ifUserExist.password);
+            console.log(`isMatch is ::::::: ${isMatch}`);
+            if (!isMatch) {
+              // res.status(411).json({
+              //   msg: "WRONG CREDENTIALS",
+              // });
+              console.log("WRONG CREDENTIALS");
+              res.redirect("/credential-manager/signup");
+            } else {
+              console.log("user is logging through body inputs!");
+              const token = jwt.sign(
+                {
+                  username: ifUserExist.username,
+                  password: ifUserExist.password,
+                  name: ifUserExist.name,
+                },
+                process.env.JWT_SECRET_KEY
+              );
+              console.log("user logged and token created/stored successfully");
+              res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "Strict",
+              });
+              next();
+            }
           }
-          const isMatch = bcrypt.compareSync(password, ifUserExist.password);
-          if (!isMatch) {
-            res.status(411).json({
-              msg: "WRONG CREDENTIALS",
-            });
-          }
-          console.log("user is logging through body inputs!");
-          next();
         })
         .catch((err) => {
           throw new Error(
