@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
-  // credential: [],
 });
 
 const ResourceSchema = new mongoose.Schema({
@@ -24,6 +23,18 @@ const ResourceSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:'User'
   },
+  // viewers: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }],
+  // editors: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }],
+  // deleters: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User'
+  // }],
 });
 
 const User = mongoose.model("User", UserSchema);

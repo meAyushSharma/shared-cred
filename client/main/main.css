@@ -22,23 +22,6 @@ html {
   --link-color-hover: #262626;
 }
 
-/* :root {
-  --bg-color: #1b1b1d; 
-  --hero-text-color: #f2f2f2; 
-  --hero-text-color: #e0e0e0;
-  --hero-text-color: #d4d4d4;
-  --nav-color: #ffffff; 
-  --about-body-color: #d3d3d1;
-  --about-credential-heading-color: #c0c0b3; 
-  --heading-font: "General Sans", sans-serif;
-  --body-font: "Cabinet Grotesk", sans-serif;
-  --link-color: #f2f2f2cc; 
-  --link-color-hover: #f2f2f2; 
-}  */
-
-/* font-family: 'Cabinet Grotesk', sans-serif;
-  font-family: 'General Sans', sans-serif; */
-
 body {
   background-color: var(--bg-color);
 }

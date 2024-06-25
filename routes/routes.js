@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
+const {permit} = require('permitio')
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
