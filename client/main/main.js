@@ -21,3 +21,25 @@ function navigateToSection(sectionId) {
   section.scrollIntoView({ behavior: "smooth" });
   history.pushState(null, null, "#" + sectionId);
 }
+
+
+// this here is for addUser popup
+document.addEventListener('click', e=>{
+  const isAddUser = e.target.matches("#button, #button > div, #arrow-down-svg, .add-user");
+  if(!isAddUser && e.target.closest('[data-dropdown]')!= null) return;
+  let currentDropdown;
+  if(isAddUser){
+    currentDropdown = e.target.closest('[data-dropdown]');
+    currentDropdown.classList.toggle('active')
+  }
+
+  document.querySelectorAll('[data-dropdown]').forEach(dropdown =>{
+    if(dropdown === currentDropdown){
+      return;
+    }
+    dropdown.classList.remove('active');
+  })
+});
+
+
+

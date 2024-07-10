@@ -10,5 +10,5 @@ app.use("/credential-manager", router);
 
 
 app.listen(process.env.PORT, () => {
-  console.log(`server running on: ${process.env.PORT}`);
+  console.log(`server running on: http://localhost:${process.env.PORT}/credential-manager/`);
 });
