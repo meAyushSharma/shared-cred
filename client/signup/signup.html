@@ -3,58 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Signup/Login</title>
   </head>
   <body>
+    <div class="forms-container">
     <h1>Signup form</h1>
-    <form action="/credential-manager/signup" method="post">
-      <input
-        type="text"
-        name="username"
-        id="username"
-        placeholder="enter email"
-        required
-      /><br />
-      <input
-        type="text"
-        name="password"
-        id="password"
-        placeholder="enter password"
-        required
-      /><br />
-      <input
-        type="text"
-        name="name"
-        id="name"
-        placeholder="enter name"
-        required
-      /><br />
+    <form id="signup-form">
+      <input type="text" name="username" id="signup-username" placeholder="enter email" required />
+      <input type="text" name="password" id="signup-password" placeholder="enter password" required />
+      <input type="text" name="name" id="signup-name" placeholder="enter name" required />
       <button type="submit">Submit</button>
     </form>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
 
     <h1>Login form</h1>
-    <form action="/credential-manager/login" method="post">
-      <input
-        type="text"
-        name="username"
-        id="username"
-        placeholder="enter email"
-        required
-      /><br />
-      <input
-        type="text"
-        name="password"
-        id="password"
-        placeholder="enter password"
-        required
-      />
-      <br />
+    <form id="login-form">
+      <input type="text" name="username" id="login-username" placeholder="enter email" required />
+      <input type="text" name="password" id="login-password" placeholder="enter password" required />
       <button type="submit">Submit</button>
     </form>
+
+    <br>
+    <a href="/credential-manager/auth/google">signup with google</a>
+    </div>
+    <script src="signup.js" defer></script>
   </body>
 </html>

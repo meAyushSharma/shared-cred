@@ -1,3 +1,5 @@
+let timeoutId;
+
 const addBtn = document.getElementById("add-btn-id");
 addBtn.addEventListener("click", () => {
   const key = document.getElementById("key").value;
@@ -9,10 +11,12 @@ addBtn.addEventListener("click", () => {
   sendDataGetResponse(key, value);
 });
 
+addBtn.click();
+
 async function sendDataGetResponse(key, value) {
-  // if (!key || !value) {
-  //   return null;
-  // }
+  if (!key || !value) {
+    await showAlertBox("Refreshed credentials (*￣3￣)╭");
+  }
 
   fetch("/credential-manager/create-resource", {
     method: "POST",
@@ -28,10 +32,16 @@ async function sendDataGetResponse(key, value) {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      document.getElementById("key").value = '';
+      document.getElementById("value").value = '';
+
       return response.json();
     })
-    .then((resources) => {
+    .then(async (resources) => {
       let i = 1;
+      if(key || value){
+      await showAlertBox('Created resource successfully (〃￣︶￣)人(￣︶￣〃) !'); 
+      }
       resources.forEach((ele) => {
         createCredential(ele.resourceName, ele.resourceValue, ele._id, i, ele.resourceSharedWith);
         i++;
@@ -58,25 +68,37 @@ async function sendDataGetResponse(key, value) {
 //   return null;
 // }
 
-function addUserOnclickHandler(increment) {
+async function showAlertBox(prompt){
+  if(timeoutId != undefined){
+    const alrt = document.getElementsByClassName('alert-container')[0];
+    alrt.classList.remove('alert-box-activate');
+    clearTimeout(timeoutId);
+  }
+  const alrt = document.getElementsByClassName('alert-container')[0];
+  alrt.innerText=prompt;
+  alrt.classList.toggle('alert-box-activate');
+  timeoutId = setTimeout(function(){
+    alrt.classList.remove('alert-box-activate');
+  }, 5000);
+}
+
+async function addUserOnclickHandler(increment) {
   const member = document.getElementById(`member-email${increment}`).value;
   let roleIs;
-  const role = document
-    .getElementsByName(`role${increment}`)
-    .forEach((role) => {
+  const role = document.getElementsByName(`role${increment}`).forEach((role) => {
       if (role.checked) {
         roleIs = role.value;
       }
-    });
+  });
   const credId = document
     .getElementById(`dropdown-content${increment}`)
     .closest(`.new-class`).id;
   if (member == "" || roleIs == undefined) {
-    alert("missing fields!");
+    await showAlertBox("Fill out the missing fields ━┳━ ━┳━")
     return;
   }
   if (!credId) {
-    alert("Missing resource id!");
+    await showAlertBox("Missing ResourceId")
     return;
   }
   console.log(`member: ${member} && roleIs: ${roleIs} && credId is: ${credId}`);
@@ -96,23 +118,21 @@ function addUserOnclickHandler(increment) {
         return response.json();
       }
     })
-    .then((resource) => {
+    .then(async (resource) => {
       console.log(resource.response);
       let res = resource.response;
       if(res.toString() == '1'){
         document.getElementById(credId).classList.add('shared-color');
-        // alert("add user: Done!");
-        showMessage("add user: Done!");
+        await showAlertBox(`Added USER: ${member} || ROLE: ${roleIs} || RESOURCE: ${document.getElementById(`key${increment}`).innerText} successfully (～￣▽￣)～`);
       }else if(res.toString() == '2'){
-        alert("add user: You are the owner");
+        await showAlertBox(`You are the OWNER of the resource already  (～￣▽￣)～`);
       }else if(res.toString() == '3'){
-        alert(resource.msg);
+        await showAlertBox(resource.msg);
       }else if(res.toString() == '4'){
-        alert(resource.msg);
+        await showAlertBox(resource.msg);
       }else{
-        alert("add user: missing fields on backend")
+        await showAlertBox("In adding user: missing fields on backend  ━┳━ ━┳━");
       }
-      // alert("added");
     })
     .catch((err) => {
       console.log(
@@ -195,7 +215,7 @@ function createCredential(key, value, resourceId, increment, resourceSharedWith)
 
 document
   .getElementById("cred-store-container")
-  .addEventListener("click", function (event) {
+  .addEventListener("click", async function (event) {
     if (event.target && event.target.classList.contains("delete-btn")) {
       // Find the parent .new-class element and remove it
       const credContainer = event.target.closest(".new-class");
@@ -211,18 +231,21 @@ document
             // token:tokenResponse,
           }),
         });
+        await showAlertBox(`Resource Deleted Successfully!  （￣︶￣）↗`)
         credContainer.remove();
       }
     }
   });
+  
 
-  function editOnClickHandler(increment){
+async function editOnClickHandler(increment){
     const newKey = document.getElementById(`key${increment}`).innerText;
     const newValue = document.getElementById(`value${increment}`).innerText;
     const resId = document.getElementsByClassName(`new-class${increment}`)[0].id;
 
     if(!newKey || !newValue){
-      alert("missing fields! in edit");
+      // alert("missing fields! in edit");
+      await showAlertBox("Missing fields in edit values  ━┳━ ━┳━");
       return;
     }
     if(!resId){
@@ -241,24 +264,20 @@ document
         resId: resId
       })
     }).then(response => {
+      document.getElementById("key").value = '';
+      document.getElementById("value").value = '';
       return response.json();
-    }).then(res => {
+    }).then(async res => {
       if(res.response){
         addBtn.click();
-        alert("----------------------edited------------------------");
+        await showAlertBox("Edited the document successfully!  (⌐■_■)");
       }else{
         // alert("some problem occured during the edit");
-        showMessage("some problem occured during the edit")
+        await showAlertBox("Some problem occured during the edit  (┬┬﹏┬┬)");
       }
     })
   }
 
-  async function showMessage(message) {
-    const dialog = document.createElement("dialog");
-    document.body.appendChild(dialog);
-    dialog.innerText = message;
-    dialog.show();
-    setTimeout(function () {
-      dialog.close();
-    }, 1000);
-  }
+
+
+
