@@ -423,8 +423,6 @@ body {
   padding: 3px;
   width: 95%;
   border: 2px solid #8c8c73d3;
-  /* border-style: none; */
-  /* outline: 2px dashed var(--about-credential-heading-color) ; */
   font-family: var(--body-font);
   margin-bottom: 10px;
 }

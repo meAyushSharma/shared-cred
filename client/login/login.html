@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link
+    href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap"
+    rel="stylesheet"
+    />
+    <link rel="stylesheet" href="login.css">
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js" defer></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="login-heading">Login</div>
+        <form id="login-form">
+          <input type="text" name="username" id="login-username" placeholder="johndoe@email.com" required />
+          <input type="text" name="password" id="login-password" placeholder="Enter your password" required />
+          <button type="submit" id="login-submit">Submit</button>
+        </form>
+        <div class="line"></div>
+        <div class="passkey-login-heading">Passkey Login</div>
+        <form id="passkey-login-form">
+            <input id="passkey-login-username" type="text" name="username" placeholder="johndoe@gmail.com" required />
+            <button type="submit" id="passkey-submit">Submit</button>
+        </form>
+    </div>
+        <script src="login.js" defer></script>
+</body>
+</html>

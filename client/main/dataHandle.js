@@ -14,7 +14,7 @@ addBtn.addEventListener("click", () => {
 addBtn.click();
 
 async function sendDataGetResponse(key, value) {
-  if (!key || !value) {
+  if (key == "" || value == "") {
     await showAlertBox("Refreshed credentials (*￣3￣)╭");
   }
 
@@ -135,9 +135,7 @@ async function addUserOnclickHandler(increment) {
       }
     })
     .catch((err) => {
-      console.log(
-        `the error in addMember getting res response from backend is: ${err}`
-      );
+      console.log(`the error in addMember getting res response from backend is: ${err}`);
     });
 }
 
@@ -252,7 +250,7 @@ async function editOnClickHandler(increment){
       return;
     }
 
-    // sending edited data to backend
+  // sending edited data to backend
     fetch('/credential-manager/edit-resource', {
       "method": "POST",
       "headers": {
@@ -277,6 +275,34 @@ async function editOnClickHandler(increment){
       }
     })
   }
+
+
+const registrationPasskeyBtn = document.getElementById("passkey-registration-btn");
+registrationPasskeyBtn.addEventListener('click', async e => {
+  const response = await fetch('/credential-manager/register-passkey', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  const result = await response.json();
+  const passkeyAuthResult = await SimpleWebAuthnBrowser.startRegistration(result.options);
+  const verificationResult = await fetch('/credential-manager/verify-passkey', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({cred:passkeyAuthResult})
+  });
+  const verificationResultJson = await verificationResult.json();
+
+  if(verificationResultJson.verified && verificationResultJson){
+    console.log("successfully verified!")
+    await showAlertBox("Passkey registered and verified successfully o(￣▽￣)K")
+  }else{
+    await showAlertBox("Something went wrong with passkey registration");
+  }
+})
 
 
 

@@ -13,6 +13,16 @@ const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
+  passkeyChallenge: {
+    type: String,
+    default: ""
+  },
+  passkey: {
+    type: Object
+  },
+  loginPasskeyChallenge: {
+    type: String,
+  }
 });
 
 const ResourceSchema = new mongoose.Schema({

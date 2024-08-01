@@ -3,28 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Signup/Login</title>
+    <title>Signup</title>
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="signup.css" />
   </head>
   <body>
-    <div class="forms-container">
-    <h1>Signup form</h1>
-    <form id="signup-form">
-      <input type="text" name="username" id="signup-username" placeholder="enter email" required />
-      <input type="text" name="password" id="signup-password" placeholder="enter password" required />
-      <input type="text" name="name" id="signup-name" placeholder="enter name" required />
-      <button type="submit">Submit</button>
-    </form>
-
-    <h1>Login form</h1>
-    <form id="login-form">
-      <input type="text" name="username" id="login-username" placeholder="enter email" required />
-      <input type="text" name="password" id="login-password" placeholder="enter password" required />
-      <button type="submit">Submit</button>
-    </form>
-
-    <br>
-    <a href="/credential-manager/auth/google">signup with google</a>
+    
+    <div class="main-container">
+        <div class="signup-heading">Signup</div>
+        <form id="signup-form">
+          <input type="text" name="username" id="signup-username" placeholder="Email : johndoe@email.com" required />
+          <input type="text" name="password" id="signup-password" placeholder="Enter a strong password" required />
+          <input type="text" name="name" id="signup-name" placeholder="Name : John Doe" required />
+          <button type="submit" id="signup-submit">Submit</button>
+        </form>
+        <div class="links">
+        <a href="/credential-manager/login">Login</a>
+        <a href="/credential-manager/auth/google" id="google-text">Signup/Login with Google</a>
+      </div>
     </div>
+   
     <script src="signup.js" defer></script>
   </body>
 </html>

@@ -1,0 +1,83 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+      --bg-color: #fdfdfd;
+      --hero-text-color: #262626;
+      --nav-color: #000000;
+      --about-body-color: #aeae9d;
+      --about-body-color: rgb(146, 146, 131);
+      --about-credential-heading-color: #8c8c73;
+      --heading-font: "General Sans", sans-serif;
+      --body-font: "Cabinet Grotesk", sans-serif;
+      --link-color: #262626cc;
+      --link-color-hover: #262626;
+      --classic-blue: #5959fc;
+  }
+  
+  body {
+    background-color: var(--bg-color);
+  }
+  
+  .main-container {
+    width: 35%;
+    height: auto;
+    border: 2px solid var(--about-body-color);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--body-font);
+    position: absolute;
+    top: 15%;
+    left: calc(50% - 17.5%); /* 50% of body - 35%/2
+    /* transform: translate(-50%, -50%);  it was causing problem*/ 
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px #9292833b;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.164), 0 3px 6px rgba(146, 146, 131, 0.231);
+    background-color: var(--bg-color);
+  
+  }
+  #login-form , #passkey-login-form{
+    display: flex;
+    flex-direction: column;
+  }
+  #login-form > *, #passkey-login-form > * {
+    margin: 8px;
+    padding: 8px;
+    font-size: .9rem;
+    font-family: var(--heading-font);
+  }
+  #login-form > input, #passkey-login-form > input{
+    border: none;
+    border: 2px solid var(--about-credential-heading-color);
+    border-radius: 3px;
+  }
+  .login-heading, .passkey-login-heading {
+    text-align: center;
+    margin: 5px;
+    padding: 3px;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--link-color);
+  }
+  
+  #login-submit, #passkey-submit {
+    font-size: 1.1rem;
+    border-style: none;
+    background-color: var(--about-credential-heading-color);
+    background-color: rgb(89, 89, 252);
+    color: #fff;
+    font-weight: 500;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+.line {
+    height: 2px;
+    width: 96%;
+    background-color: var(--about-credential-heading-color);
+    align-self: center;
+    margin: 5px;
+}

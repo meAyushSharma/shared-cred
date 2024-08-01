@@ -16,11 +16,9 @@ module.exports.googleAuthSuccess = async (req, res) => {
     }
   
     const username = req.user.email;
-    const name =
-      req.user.given_name +
-      (req.user.family_name ? " " + req.user.family_name : "");
+    const name = req.user.given_name + (req.user.family_name ? " " + req.user.family_name : "");
     const user = await User.findOne({ username: req.user.email });
-    console.log("the user stored in db is in /success: ", user);
+    console.log("the user stored in db is in /success ");
     if (!user) {
       User.create({ username, name }).then((user) => {
         const userToken = jwt.sign(
@@ -37,7 +35,7 @@ module.exports.googleAuthSuccess = async (req, res) => {
           sameSite: "Strict",
           path: '/',
         });
-        return res.redirect(200, "/credential-manager"); //not really needed here
+        return res.redirect(200, "/credential-manager"); // return, not really needed here
       });
     } else {
   
@@ -49,7 +47,7 @@ module.exports.googleAuthSuccess = async (req, res) => {
         },
         process.env.JWT_SECRET_KEY
       );
-      console.log("this is google token: ", userToken);
+      // console.log("this is google token: ", userToken);
       res.cookie("googleToken", userToken, {
         maxAge: 3 * 60 * 60 * 1000,
         httpOnly: true,
