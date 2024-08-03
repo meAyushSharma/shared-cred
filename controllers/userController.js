@@ -97,6 +97,8 @@ module.exports.loginUser = async (req, res) => {
   }
   const username = req.body.username;
   const password = req.body.password;
+  console.log("this is username: ", username)
+  console.log("this is password: ", password)
 
   if (!username || !password) {
     console.log(
@@ -110,6 +112,11 @@ module.exports.loginUser = async (req, res) => {
         console.log("NO USER FOUND in db /login ");
         return res.redirect("/credential-manager/signup");
       }
+      if(!ifUserExist.password){
+        console.log("No hashed password in db, must have signed up with google")
+        return res.redirect("/credential-manager/signup");
+      }
+      console.log("this is hashed password: ", ifUserExist.password);
       const isMatch = bcrypt.compareSync(password, ifUserExist.password);
       console.log(`password matching in logging:::: ${isMatch}`);
       if (!isMatch) {

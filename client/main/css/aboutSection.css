@@ -1,0 +1,43 @@
+:root {
+    --bg-color: #fafaf9;
+    --hero-text-color: #262626;
+    --nav-color: #000000;
+    --about-body-color: #aeae9d;
+    --about-body-color: rgb(146, 146, 131);
+    --about-credential-heading-color: #8c8c73;
+    --heading-font: "General Sans", sans-serif;
+    --body-font: "Cabinet Grotesk", sans-serif;
+    --link-color: #262626cc;
+    --link-color-hover: #262626;
+  }
+
+#about {
+  min-height: 100vh;
+  /* margin-top: 4rem; */
+  margin-top: 30vh;
+  /* padding-top: 4rem; */
+  padding: 4rem 0;
+  width: 100%;
+}
+.about-heading,
+.credential-heading,
+.contact-at-heading {
+  text-transform: uppercase;
+  font-family: var(--heading-font);
+  color: var(--about-credential-heading-color);
+  font-weight: 550;
+  font-size: 6rem;
+  text-align: center;
+}
+
+.credential-heading {
+  margin-bottom: 50px;
+}
+
+.about-text {
+  font-family: var(--heading-font);
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--about-body-color);
+  margin-top: 50px;
+}

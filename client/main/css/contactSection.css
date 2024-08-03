@@ -1,0 +1,54 @@
+/* :root {
+    --bg-color: #fafaf9;
+    --hero-text-color: #262626;
+    --nav-color: #000000;
+    --about-body-color: #aeae9d;
+    --about-body-color: rgb(146, 146, 131);
+    --about-credential-heading-color: #8c8c73;
+    --heading-font: "General Sans", sans-serif;
+    --body-font: "Cabinet Grotesk", sans-serif;
+    --link-color: #262626cc;
+    --link-color-hover: #262626;
+  } */
+
+/* .contact-at-heading {
+  margin-top: 2rem;
+}
+.contact-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 3rem;
+  margin-bottom: 8rem;
+}
+.contact-heading,
+.socials-heading {
+  font-family: var(--heading-font);
+  font-weight: 500;
+  font-size: 1.8rem;
+  color: var(--hero-text-color);
+  margin: 1.3rem 0;
+}
+
+.mail,
+.social-links {
+  text-decoration: none;
+  font-family: var(--body-font);
+  font-size: 1.2rem;
+  color: var(--link-color);
+  font-weight: 500;
+  padding: 3px;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+
+.social-links > a {
+  text-decoration: none;
+  display: block;
+  color: var(--link-color);
+}
+
+.mail:hover,
+.social-links > a:hover {
+  color: var(--link-color-hover);
+} */

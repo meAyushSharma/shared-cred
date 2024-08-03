@@ -1,3 +1,4 @@
+
 var logo = document.getElementById("logo-id");
 logo.addEventListener("click", function () {
   navigateToSection("top-here");
@@ -40,5 +41,20 @@ document.addEventListener('click', e=>{
     dropdown.classList.remove('active');
   })
 });
+
+
+document.addEventListener('click', e => {
+  const ifClickedOn = e.target.matches('path.find-btn-info, .info-btn>svg, .info-btn>svg>path');
+  if(!ifClickedOn && e.target.closest(".info-btn") != null ) return;
+  let currentDropdown;
+  if(ifClickedOn) {
+    currentDropdown = e.target.closest('.info-btn');
+    currentDropdown.classList.toggle('activated')
+  }
+  document.querySelectorAll('.info-btn').forEach(dropdown => {
+    if(dropdown === currentDropdown) return;
+    dropdown.classList.remove('activated')
+  })
+})
 
 

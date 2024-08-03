@@ -77,6 +77,10 @@ body {
 
 .links {
   text-align: center;
+  /* margin-bottom: 1vh; */
+  display: flex;
+  justify-content: space-between;
+
 }
 .links> a {
   text-decoration: none;

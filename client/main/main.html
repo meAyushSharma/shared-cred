@@ -4,49 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Credential Manager</title>
-    <!-- <link
-      rel="icon"
-      href="img/logo-design-c&c-32x32.ico.ico"
-      type="image/icon
-    type"
-    /> -->
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap"
-      rel="stylesheet"
+    <!-- <link rel="icon" href="img/logo-design-c&c-32x32.ico.ico" type="image/icon type" /> -->
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-    />
-    <link rel="stylesheet" href="main.css" />
+    <!-- <link rel="stylesheet" href="main-depreciated.css" /> -->
+    <link rel="stylesheet" href="css/aboutSection.css" />
+    <link rel="stylesheet" href="css/addUserDropdownAndDeleteSection.css" />
+    <link rel="stylesheet" href="css/alertbox.css" />
+    <link rel="stylesheet" href="css/contactSection.css" />
+    <link rel="stylesheet" href="css/credentialSection.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/heroSection.css" />
+    <link rel="stylesheet" href="css/infoSection.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/rootShared.css" />
+    <link rel="stylesheet" href="css/selection.css" />
+    <link rel="stylesheet" href="css/sharedCredSection.css" />
+    <link rel="stylesheet" href="css/showSharedCredSection.css" />
 
     <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
   </head>
   <body>
+
+
     <!--nav bar here-->
     <div id="nav-bar-container">
       <div class="logo-container" id="logo-id">
-        <img
-          src="hero-bg-c&c-main-page.png"
-          alt="logo"
-          height="45px"
-          aspect-ratio="1/1"
-        />
+        <img src="hero-bg-c&c-main-page.png" alt="logo" height="45px" aspect-ratio="1/1"/>
       </div>
       <div class="about-and-template-container">
         <div class="about-container">about</div>
         <div class="credential-container">credentials</div>
+        <div class="dashboard-btn">dash</div>
       </div>
     </div>
     <div class="alert-container"></div>
+
+
     <!--hero section here-->
     <div id="top-here"></div>
     <div id="hero-container">
@@ -71,29 +68,34 @@
         <div class="credential-heading">Credentials</div>
         <div class="credential-value-container">
           <div class="credential-template">
-            <input
-              type="text"
-              placeholder="key"
-              class="key"
-              style="text-decoration: none"
-              id="key"
-            />
-            <input
-              type="text"
-              placeholder="value"
-              class="value"
-              style="text-decoration: none"
-              id="value"
-            />
-            <span class="material-symbols-outlined add-btn" id="add-btn-id">
-              add
-            </span>
+            <input type="text" placeholder="key" class="key" style="text-decoration: none" id="key" />
+            <input type="text" placeholder="value" class="value" style="text-decoration: none" id="value" />
+            <span class="material-symbols-outlined add-btn" id="add-btn-id">add</span>
           </div>
+          <!-- div below contains the dynamic credentials -->
           <div id="cred-store-container"></div>
         </div>
-        <!--template containers starts here-->
+         <!-- shared credential starts here -->
+        <div id="shared-cred-container">
+          <div class="shared-cred-heading">Show shared credentials</div>
+          <div id="shared-cred-store-container">
+            <fieldset id="viewer">
+              <legend>Viewer Access to credentials</legend>
+              <div id="viewer-container"></div>
+            </fieldset>
+            <fieldset id="editor">
+              <legend>Editor Access to credentials</legend>
+              <div id="editor-container"></div>
+            </fieldset>
+            <fieldset id="author">
+              <legend>Author Access to credentials</legend>
+              <div id="author-container"></div>
+            </fieldset>
+          </div>
+        </div>
+        <!-- shared credential ends here -->
       </div>
-      <!--template ENDS here-->
+
       <!--about section start here-->
       <div id="about">
         <div class="about-heading">about</div>
@@ -104,55 +106,45 @@
           community in every click.
         </div>
       </div>
-      <!--here starts signup!!!!!!!!-->
 
-      <div class="contact-at-heading">Contact</div>
+      <!-- <div class="contact-at-heading">Contact</div>
       <div class="contact-container">
         <div class="contact-details">
           <p class="contact-heading">Contact Details</p>
-          <a
-            href="mailto:ayushsharma.codes@gmail.com"
-            class="mail"
-            target="_blank"
-            >ayushsharma.codes@gmail.com</a
-          >
+          <a href="mailto:ayushsharma.codes@gmail.com" class="mail" target="_blank" >ayushsharma.codes@gmail.com</a>
         </div>
         <div class="socials">
           <div class="socials-heading">Socials</div>
           <div class="social-links">
-            <a
-              href="https://github.com/meAyushSharma"
-              class="github"
-              target="_blank"
-              >Github</a
-            >
-            <a
-              href="https://www.linkedin.com/in/ayush-sharma-b07617290/"
-              class="linkedin"
-              target="_blank"
-              >LinkedIn</a
-            >
-            <a
-              href="https://meayush.hashnode.dev/"
-              class="hashnode"
-              target="_blank"
-              >Hashnode</a
-            >
+            <a href="https://github.com/meAyushSharma" class="github" target="_blank" >Github</a>
+            <a href="https://www.linkedin.com/in/ayush-sharma-b07617290/" class="linkedin" target="_blank" >LinkedIn</a>
+            <a href="https://meayush.hashnode.dev/" class="hashnode" target="_blank" >Hashnode</a>
           </div>
         </div>
-      </div>
+      </div> -->
       <!--contact details ends here-->
       <div class="footer">
-        <div class="copyright">©️ 2024 Ayush Sharma</div>
-        <a href="https://huyngportfoliov1.netlify.app/" target="_blank"
-          >Inspiration for UI/UX ↗️</a
-        >
+        <div class="copyright">by Ayush Sharma</div>
         <span class="material-symbols-outlined navigate-up">navigation</span>
       </div>
     </div>
-    <button id="passkey-registration-btn">Register passkey</button>
+
     <!--long div ENDS HERE-->
-    <script src="main.js" defer></script>
-    <script src="dataHandle.js" defer></script>
+    <button id="passkey-registration-btn">Register passkey</button>
+    <!-- Script tags here -->
+    <!-- WARNING : the sequence is important, DO NOT change this sequence -->
+    <script src="js/showAlert.js" defer></script>
+    <script src="js/passkeyRegistration.js" defer></script>
+    <script src="js/editCredALL.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/addUserHandler.js" defer></script>
+    <script src="js/deleteUserCred.js" defer></script>
+    <script src="js/createCred.js" defer></script>
+    <script src="js/removePermission.js" defer></script>
+    <script src="js/createAndShowResourceInfo.js" defer></script>
+    <script src="js/deleteSharedCred.js" defer></script>
+    <script src="js/createSharedCred.js" defer></script>
+    <script src="js/showSharedCred.js" defer></script>
+    <!-- <script src="dataHandle-depreciated.js" defer></script> -->
   </body>
 </html>

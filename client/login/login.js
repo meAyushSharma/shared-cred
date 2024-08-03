@@ -13,6 +13,7 @@ document.getElementById('login-form').addEventListener('submit', async e=>{
         })
     });
     if(response.redirected){
+        console.log("told to be redirected to: ", response.url);
         window.location.href = response.url;
     }else{
         window.location.reload();
@@ -47,8 +48,7 @@ document.getElementById('passkey-login-form').addEventListener('submit', async e
     })
     const verificationResponse = await verificationResult.json();
     if(verificationResponse.verified){
-        console.log("verified")
-        
+        console.log("verified");
         window.location.href = "/credential-manager"
     }
 })

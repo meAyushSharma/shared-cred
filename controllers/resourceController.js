@@ -46,9 +46,24 @@ module.exports.createResource = async (req, res) => {
 
 module.exports.deleteResource = async (req, res) => {
   const { resourceId } = req.body;
-  Resource.deleteOne({ _id: resourceId })
-    .then(() => {
-      return res.status(200).json({ msg: "Resource deleted successfully" });
+  Resource.deleteOne({ _id: resourceId , 
+    $or:[
+      {resourceOwner: req.userDetails._id },
+      // {editors: {$in: [req.userDetails._id]}}, 
+      {authors: {$in: [req.userDetails._id]}}
+    ]
+  })
+    .then((response) => {
+      if(!response.acknowledged){
+        return res.status(401).json({
+          deleted: false,
+          msg: "User not permitted"
+        });
+      }
+      return res.status(200).json({
+        msg: "Resource deleted successfully",
+        deleted: true
+       });
     })
     .catch((err) => {
       throw new ExpressError(`Error found while deleting resource:::  ${err}`, 500);
@@ -60,7 +75,7 @@ module.exports.addMemberToResource = async (req, res) => {
   if (!addedUser || !role || !resourceId)
     return res.status(200).json({ response: 0 });
 
-  const resource = await Resource.findOne({ _id: resourceId });
+  const resource = await Resource.findOne({ _id: resourceId, resourceOwner: req.userDetails._id });
   if (!resource) {
     return res.json({
       response: 4,
@@ -195,15 +210,165 @@ module.exports.editResource = async (req, res) => {
   }
   try{
   Resource.findOneAndUpdate(
-    { _id: resId },
+    { _id: resId , 
+      $or:[
+        {resourceOwner: req.userDetails._id },
+        {viewers: {$nin: [req.userDetails._id]}}
+      ]},
     { resourceName: newKey, resourceValue: newValue },
     { new: true }
   ).then((response) => {
-    if (response) {
-      return res.status(200).json({ response: 1 });
+    if (!response) {
+      return res.status(200).json({ response: 2 }); // not permitted
     }
+    return res.status(200).json({ response: 1 });
   });
 }catch(error){
   throw new ExpressError(`Error while editing resource is: ${error}`, 500);
 }
 };
+
+
+// --------------------- shared resources operations -----------------------//
+
+module.exports.showSharedResources = async (req, res) => {
+  const resourcesSharedWithUser = await Resource.find( { $or : [
+    {editors:{$in: [req.userDetails._id]}}, 
+    {authors:{$in: [req.userDetails._id]}}, 
+    {viewers:{$in: [req.userDetails._id]}}
+  ]}).populate("resourceOwner");
+  if(!resourcesSharedWithUser) return res.status(500).json({
+    msg: "Error occured, could not fetch documents"
+  })
+  // console.log(resourcesSharedWithUser)
+  const resourcesToSend = { viewer: [], editor:[], author: [] };
+  resourcesSharedWithUser.forEach(resource => {
+    if(resource.viewers.includes(req.userDetails._id)){
+      resourcesToSend.viewer.push({
+        resourceName: resource.resourceName,
+        resourceValue: resource.resourceValue,
+        resourceOwner: resource.resourceOwner.username,
+        resourceOwnerName: resource.resourceOwner.name,
+        _id: resource._id
+      });
+    }else if(resource.editors.includes(req.userDetails._id)){
+      resourcesToSend.editor.push({
+        resourceName: resource.resourceName,
+        resourceValue: resource.resourceValue,
+        resourceOwner: resource.resourceOwner.username,
+        resourceOwnerName: resource.resourceOwner.name,
+        _id: resource._id
+      });
+    }else{
+      resourcesToSend.author.push({
+        resourceName: resource.resourceName,
+        resourceValue: resource.resourceValue,
+        resourceOwner: resource.resourceOwner.username,
+        resourceOwnerName: resource.resourceOwner.name,
+        _id: resource._id
+      });
+    }
+  });
+  return res.status(200).json({resourcesToSend});
+}
+
+module.exports.showResourceInfo = async (req, res) => {
+  const {resId} = req.body;
+  Resource.findOne({_id:resId}).populate('viewers').populate('editors').populate('authors').then(resource =>{
+    if(!resource) return res.json({
+      msg:"Resource not found (┬┬﹏┬┬)"
+    })
+    // console.log(resource)
+    const resourceToSend = { viewers:[], editors:[], authors:[] }
+    resource.viewers.forEach(res => {
+      resourceToSend.viewers.push({username: res.username})
+    })
+    resource.editors.forEach(res => {
+      resourceToSend.editors.push({username: res.username})
+    })
+    resource.authors.forEach(res => {
+      resourceToSend.authors.push({username: res.username})
+    })
+    console.log(resourceToSend)
+    return res.status(200).json(resourceToSend);
+  })
+}
+
+module.exports.removeResourcePermission = async (req, res) => {
+  const {resId, username, role} = req.body;
+  User.findOne({username: username}).then(user => {
+    if(!user) return res.json({
+      msg: "User not found ━┳━ ━┳━",
+      remove: false
+    })
+    // const actualRole = role.toLowerCase()+'s';
+    if(role === "Viewer"){
+    Resource.findOneAndUpdate({_id: resId},{ $pull : { viewers: { $in: [user._id]}}}, {new: true})
+    .then(async resource => {
+
+      if(!resource) return res.json({ msg: "Credential to remove permission from not found" });
+
+      console.log("this is resource:: ", resource);
+
+      if(!resource.viewers.length && !resource.editors.length && !resource.authors.length) {
+        resource.resourceSharedWith = false;
+        await resource.save();
+      }
+      return res.status(200).json({
+        msg: "Removed permission successfully （￣︶￣）↗　",
+        remove: true
+      });
+    }).catch(err =>{
+      console.log("eror is:: ", err);
+      res.json({
+        msg: "Problem occured in removing permission ＞︿＜",
+        remove: false
+      })
+    })
+  }else if( role === "Author") {
+    Resource.findOneAndUpdate({_id: resId},{ $pull : { authors: { $in: [user._id]}}}, {new: true})
+    .then(async resource => {
+      if(!resource) return res.json({ msg: "Credential to remove permission from not found" });
+
+      console.log("this is resource:: ", resource);
+      if(!resource.viewers.length && !resource.editors.length && !resource.authors.length) {
+        resource.resourceSharedWith = false;
+        await resource.save();
+      }
+      return res.status(200).json({
+        msg: "Removed permission successfully （￣︶￣）↗　",
+        remove: true
+      });
+    }).catch(err =>{
+      console.log("eror is:: ", err);
+      res.json({
+        msg: "Problem occured in removing permission ＞︿＜",
+        remove: false
+      })
+    })
+  } else {
+    Resource.findOneAndUpdate({_id: resId},{ $pull : { editors: { $in: [user._id]}}}, {new: true})
+    .then(async resource => {
+      if(!resource) return res.json({ msg: "Credential to remove permission from not found" });
+
+      console.log("this is resource:: ", resource);
+      if(!resource.viewers.length && !resource.editors.length && !resource.authors.length) {
+        resource.resourceSharedWith = false;
+        await resource.save();
+      }
+      return res.status(200).json({
+        msg: "Removed permission successfully （￣︶￣）↗　",
+        remove: true
+      });
+    }).catch(err =>{
+      console.log("eror is:: ", err);
+      res.json({
+        msg: "Problem occured in removing permission ＞︿＜",
+        remove: false
+      })
+    })
+  }
+  })
+}
+
+

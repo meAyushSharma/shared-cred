@@ -43,6 +43,9 @@
     display: flex;
     flex-direction: column;
   }
+  #passkey-login-form {
+    margin-bottom: 1vh;
+  }
   #login-form > *, #passkey-login-form > * {
     margin: 8px;
     padding: 8px;

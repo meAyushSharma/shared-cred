@@ -59,4 +59,8 @@ router.post("/delete-resource", userAuth, catchAsync(resourceController.deleteRe
 router.post("/add-user", userAuth, catchAsync(resourceController.addMemberToResource));
 router.post("/edit-resource", userAuth, catchAsync(resourceController.editResource));
 
+router.get('/show-shared-resources', userAuth, catchAsync(resourceController.showSharedResources));
+router.post('/show-resource-info', userAuth, catchAsync(resourceController.showResourceInfo));
+router.post('/remove-resource-permission', userAuth, catchAsync(resourceController.removeResourcePermission));
+
 module.exports = { router };

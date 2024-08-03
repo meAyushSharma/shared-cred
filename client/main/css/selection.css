@@ -1,0 +1,22 @@
+.about-and-template-container > div::selection,
+#hero-container > div::selection,
+#about > div::selection,
+#credential > div::selection,
+.description-all::selection,
+.contact-details > p::selection,
+.contact-details > a::selection,
+.social-links > a::selection,
+.copyright::selection,
+.contact-at-heading::selection,
+.credential-template > input::selection,
+.new-class > p::selection,
+#button > div::selection,
+.edit-container::selection,
+.add-btn::selection,
+.delete-btn::selection {
+  background-color: #959590a3;
+}
+
+.alert-container::selection {
+  background-color: #bbbbb7a3;
+}

@@ -1,0 +1,50 @@
+:root {
+    --bg-color: #fafaf9;
+    --hero-text-color: #262626;
+    --nav-color: #000000;
+    --about-body-color: #aeae9d;
+    --about-body-color: rgb(146, 146, 131);
+    --about-credential-heading-color: #8c8c73;
+    --heading-font: "General Sans", sans-serif;
+    --body-font: "Cabinet Grotesk", sans-serif;
+    --link-color: #262626cc;
+    --link-color-hover: #262626;
+  }
+
+.info-btn.activated > .cred-info{
+    opacity: 1;
+    transform: translateY(10px) translateX(-80%);
+    pointer-events: auto;
+    z-index: 1;
+    cursor: default;
+  }
+  
+  .info-ele {
+    border: 1px solid black;
+    margin: 5px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 28% 58% 8%;
+    gap: 10px;
+    place-content: center;
+    text-align: center;
+    border: 2px solid #8c8c73d3;
+    border-radius: 6px;
+  }
+  
+  .role-ele, .username-ele {
+    background-color: #dadabfd5;
+    color: var(--link-color);
+    border-radius: 3px;
+    padding: 5px;
+  }
+  
+  .remove-ele {
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+  
+  .info-btn {
+    cursor: pointer;
+  }
