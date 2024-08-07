@@ -12,9 +12,19 @@
   }
 
 #shared-cred-container{
-    margin-bottom: 20vh;
-    margin-top: 20vh;
-  }
+    margin: 6px;
+    margin-bottom: 5rem;
+}
+
+#shared-cred-store-container {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+}
   
   .shared-cred-heading {
     width: fit-content;
@@ -45,39 +55,50 @@
     width: 100%;
   }
   
-  #viewer, #editor, #author {
+#viewer, #editor, #author {
+    max-width: 100%;
+    width: 100%;
     font-family: var(--body-font);
     margin: 20px;
     padding: 10px;
     margin-bottom: 30px;
     border-radius: 5px;
-  }
-  
-  
+}
+
   
   #viewer > legend,  #editor > legend,  #author > legend {
     padding: 5px;
   }
   
-  #viewer-container fieldset , #editor-container fieldset, #author-container fieldset {
+#viewer-container fieldset , #editor-container fieldset, #author-container fieldset {
     padding:0;
     border:none;
+    width: 100%;
+    overflow: hidden;
   }
   #viewer-container legend, #editor-container legend, #author-container legend {
     padding:0;
     font-size: .87rem;
   }
   
-  .shared-cred-template {
+.shared-cred-template {
     margin-bottom: 5px;
     margin-top: 0;
-  }
-  #viewer-container  .shared-cred-template > *{
+}
+.shared-cred-template .key, .shared-cred-template .value{
+  overflow-y: auto;
+  overflow-x: auto;
+  max-width: 48%;
+}
+#viewer-container  .shared-cred-template > *{
     width: 48%;
-  }
-  #editor-container  .shared-cred-template  .key {
+}
+#editor-container  .shared-cred-template  .key {
     width: 40%;
-  }
+}
+#author-container  .shared-cred-template  .key {
+    width: 40%;
+}
   
   .shared-cred-template > .edit-container {
     width: 10%;

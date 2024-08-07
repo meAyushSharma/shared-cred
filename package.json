@@ -1,4 +1,13 @@
 {
+  "name": "credential-manager",
+  "version": "1.0.0",
+  "description": "Manages your credentials for you",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Ayush Sharma",
+  "license": "MIT",
   "dependencies": {
     "@simplewebauthn/server": "^10.0.1",
     "bcrypt": "^5.1.1",

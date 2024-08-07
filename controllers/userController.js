@@ -6,6 +6,7 @@ const crypto = require("node:crypto");
 const {generateRegistrationOptions,verifyRegistrationResponse,generateAuthenticationOptions,verifyAuthenticationResponse} = require("@simplewebauthn/server");
 const { isTokenAndValid } = require("../utils/catchToken");
 const ExpressError = require("../utils/ExpressError");
+const permitAuthorization = require('../utils/permitAuthorization');
 
 if (!globalThis.crypto) {
   globalThis.crypto = crypto;
@@ -46,12 +47,13 @@ module.exports.registerUser = async (req, res) => {
   if (alreadyExists) return res.send("user already exists");
 
   try {
-    User.create(user).then((user) => {
+    User.create(user).then(async (user) => {
       const token = jwt.sign(
         { username: user.username, password: user.password, name: user.name },
         process.env.JWT_SECRET_KEY
       );
       console.log("user created and signed in successfully");
+      await permitAuthorization.createPermitUser(user.username);
       res.cookie("token", token, {
         maxAge: 3 * 60 * 60 * 1000,
         httpOnly: true,

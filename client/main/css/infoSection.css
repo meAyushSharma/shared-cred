@@ -38,6 +38,17 @@
     border-radius: 3px;
     padding: 5px;
   }
+
+  .role-ele {
+    display:grid;
+    place-content: center;
+  }
+
+  .username-ele {
+    overflow-x: auto;
+    scrollbar-color: #8c8c73 #fafaf9;
+    scrollbar-width: thin;
+  }
   
   .remove-ele {
     display: grid;

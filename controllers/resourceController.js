@@ -1,6 +1,8 @@
+const { Permit } = require("permitio");
 const { Resource } = require("../models/schema");
 const { User } = require("../models/schema");
 const ExpressError = require('../utils/ExpressError');
+const permitAuthorization = require('../utils/permitAuthorization');
 
 function createResource(key, value, user) {
   return new Promise((resolve, reject) => {
@@ -13,6 +15,12 @@ function createResource(key, value, user) {
         const userOwnedResources = await Resource.find({
           resourceOwner: user._id,
         });
+        // make permit resource
+        await permitAuthorization.createPermitResource(resource._id, resource.resourceName).then(async ()=>{
+          // assign user its role
+          await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "owner");
+        })
+    
         resolve(userOwnedResources);
       })
       .catch((err) => {
@@ -93,65 +101,58 @@ module.exports.addMemberToResource = async (req, res) => {
     `user._id (member) is: ${user._id} && resource.resourceOwner is: ${resource.resourceOwner}`
   );
 
-  if (user._id.toString() == resource.resourceOwner.toString()) {
-    console.log("You are the OWNER");
-    return res.status(200).json({ response: 2 });
-  }
+  // if (user._id.toString() == resource.resourceOwner.toString()) {
+  //   console.log("You are the OWNER");
+  //   return res.status(200).json({ response: 2 });
+  // }
+  const permitCheck = await permitAuthorization.checkPermission(user.username, "share", resource._id, "cred");
+  if(permitCheck) return res.status(200).json({ response: 2 });
+
   // check for role: add, remove others
 
   if (role == "viewer") {
     console.log("--------------- A REQUEST IS SENT TO VIEWER ---------------");
     if (resource.viewers.includes(user._id)) {
-      console.log(
-        `user: ${user.username} is ALREADY viewer of: ${resourceId}/${resource.resourceName}`
-      );
+      console.log(`user: ${user.username} is ALREADY viewer of: ${resourceId}/${resource.resourceName}`);
       return res.status(200).json({ response: 1 });
-    } else if (
-      resource.editors.includes(user._id) ||
-      resource.authors.includes(user._id)
-    ) {
+    } else if (resource.editors.includes(user._id) || resource.authors.includes(user._id)) {
       await resource.updateOne({
         $pull: { editors: { $in: [user._id] }, authors: { $in: [user._id] } },
         $push: { viewers: user._id },
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is now VIEWER of: ${resourceId}/${resource.resourceName} after removing from others`
-      );
-      return res.status(200).json({ response: 1 });
+      console.log(`user: ${user.username} is now VIEWER of: ${resourceId}/${resource.resourceName} after removing from others`);
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "viewer").then(()=> {
+        return res.status(200).json({ response: 1 });
+       })
     } else {
       await resource.updateOne({
         $push: { viewers: user._id },
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is NOW author of: ${resourceId}/${resource.resourceName}`
-      );
-      res.status(200).json({ response: 1 });
+      console.log(`user: ${user.username} is NOW viewer of: ${resourceId}/${resource.resourceName}`);
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "viewer").then(()=> {
+        return res.status(200).json({ response: 1 });
+       })
     }
   } else if (role == "editor") {
     console.log("--------------- A REQUEST IS SENT TO EDITOR ---------------");
     if (resource.editors.includes(user._id)) {
-      console.log(
-        `user: ${user.username} is ALREADY editor of: ${resourceId}/${resource.resourceName}`
-      );
-      res.status(200).json({ response: 1 });
-    } else if (
-      resource.viewers.includes(user._id) ||
-      resource.authors.includes(user._id)
-    ) {
+      console.log(`user: ${user.username} is ALREADY editor of: ${resourceId}/${resource.resourceName}`);
+      return res.status(200).json({ response: 1 });
+    } else if ( resource.viewers.includes(user._id) || resource.authors.includes(user._id) ) {
       await resource.updateOne({
         $pull: { viewers: { $in: [user._id] }, authors: { $in: [user._id] } },
         $push: { editors: user._id },
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is now EDITOR of: ${resourceId}/${resource.resourceName} after removing from others`
-      );
-      return res.status(200).json({ response: 1 });
+      console.log(`user: ${user.username} is now EDITOR of: ${resourceId}/${resource.resourceName} after removing from others`);
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "editor").then(()=> {
+        return res.status(200).json({ response: 1 });
+       })
     } else {
       await resource.updateOne({
         $push: { editors: user._id },
@@ -161,7 +162,9 @@ module.exports.addMemberToResource = async (req, res) => {
       console.log(
         `user: ${user.username} is NOW editor of: ${resourceId}/${resource.resourceName}`
       );
-      return res.status(200).json({ response: 1 });
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "editor").then(()=> {
+        return res.status(200).json({ response: 1 });
+       })
     }
   } else if (role == "author") {
     console.log("--------------- A REQUEST IS SENT TO AUTHOR ---------------");
@@ -170,30 +173,27 @@ module.exports.addMemberToResource = async (req, res) => {
         `user: ${user.username} is already author of: ${resourceId}/${resource.resourceName}`
       );
       return res.status(200).json({ response: 1 });
-    } else if (
-      resource.viewers.includes(user._id) ||
-      resource.editors.includes(user._id)
-    ) {
+    } else if ( resource.viewers.includes(user._id) || resource.editors.includes(user._id) ) {
       await resource.updateOne({
         $pull: { viewers: { $in: [user._id] }, editors: { $in: [user._id] } },
         $push: { authors: user._id },
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is now AUTHOR of: ${resourceId}/${resource.resourceName} after removing from others`
-      );
-      return res.status(200).json({ response: 1 });
+      console.log(`user: ${user.username} is now AUTHOR of: ${resourceId}/${resource.resourceName} after removing from others`);
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "author").then(()=> {
+        return res.status(200).json({ response: 1 });
+       })
     } else {
       await resource.updateOne({
         $push: { authors: user._id },
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is NOW author of: ${resourceId}/${resource.resourceName}`
-      );
-      return res.status(200).json({ response: 1 });
+      console.log(`user: ${user.username} is NOW author of: ${resourceId}/${resource.resourceName}`);
+      await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "author").then(()=> {
+       return res.status(200).json({ response: 1 });
+      })
     }
   } else {
     console.log("Not a Role T_T");
@@ -208,6 +208,8 @@ module.exports.editResource = async (req, res) => {
       response: 0,
     });
   }
+  const permitResult = await permitAuthorization.checkPermission(req.userDetails.username, "edit", resId, "cred");
+  if(!permitResult) return res.status(403).json({ msg: "Not permitted"});
   try{
   Resource.findOneAndUpdate(
     { _id: resId , 
@@ -242,8 +244,11 @@ module.exports.showSharedResources = async (req, res) => {
   })
   // console.log(resourcesSharedWithUser)
   const resourcesToSend = { viewer: [], editor:[], author: [] };
-  resourcesSharedWithUser.forEach(resource => {
+  resourcesSharedWithUser.forEach(async resource => {
     if(resource.viewers.includes(req.userDetails._id)){
+      permitAuthorization.checkPermission(req.userDetails.username, "view", resource._id, "cred").then((response) => {
+        if(!response.check) return res.status(401).json({ msg: "unauthorized to view" });
+      })
       resourcesToSend.viewer.push({
         resourceName: resource.resourceName,
         resourceValue: resource.resourceValue,
@@ -252,6 +257,9 @@ module.exports.showSharedResources = async (req, res) => {
         _id: resource._id
       });
     }else if(resource.editors.includes(req.userDetails._id)){
+      permitAuthorization.checkPermission(req.userDetails.username, "edit", resource._id, "cred").then((response) => {
+        if(!response.check) return res.status(401).json({ msg: "unauthorized to edit" });
+      })
       resourcesToSend.editor.push({
         resourceName: resource.resourceName,
         resourceValue: resource.resourceValue,
@@ -260,6 +268,9 @@ module.exports.showSharedResources = async (req, res) => {
         _id: resource._id
       });
     }else{
+      permitAuthorization.checkPermission(req.userDetails.username, "delete", resource._id, "cred").then((response) => {
+        if(!response.check) return res.status(401).json({ msg: "unauthorized to author" });
+      })
       resourcesToSend.author.push({
         resourceName: resource.resourceName,
         resourceValue: resource.resourceValue,
@@ -277,6 +288,9 @@ module.exports.showResourceInfo = async (req, res) => {
   Resource.findOne({_id:resId}).populate('viewers').populate('editors').populate('authors').then(resource =>{
     if(!resource) return res.json({
       msg:"Resource not found (┬┬﹏┬┬)"
+    })
+    permitAuthorization.checkPermission(req.userDetails.username, "share", resource._id, "cred").then((response) => {
+      if(!response.check) return res.status(401).json({ msg: "unauthorized to view the resource info" });
     })
     // console.log(resource)
     const resourceToSend = { viewers:[], editors:[], authors:[] }
@@ -296,11 +310,15 @@ module.exports.showResourceInfo = async (req, res) => {
 
 module.exports.removeResourcePermission = async (req, res) => {
   const {resId, username, role} = req.body;
-  User.findOne({username: username}).then(user => {
+  User.findOne({username: username}).then(async user => {
     if(!user) return res.json({
       msg: "User not found ━┳━ ━┳━",
       remove: false
     })
+    permitAuthorization.checkPermission(req.userDetails.username, "share", resId, "cred").then((response) => {
+      if(!response.check) return res.status(401).json({ msg: "unauthorized to remove the permissions" });
+    })
+
     // const actualRole = role.toLowerCase()+'s';
     if(role === "Viewer"){
     Resource.findOneAndUpdate({_id: resId},{ $pull : { viewers: { $in: [user._id]}}}, {new: true})

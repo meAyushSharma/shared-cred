@@ -12,6 +12,7 @@
     />
     <!-- <link rel="stylesheet" href="main-depreciated.css" /> -->
     <link rel="stylesheet" href="css/aboutSection.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/addUserDropdownAndDeleteSection.css" />
     <link rel="stylesheet" href="css/alertbox.css" />
     <link rel="stylesheet" href="css/contactSection.css" />
@@ -38,7 +39,16 @@
       <div class="about-and-template-container">
         <div class="about-container">about</div>
         <div class="credential-container">credentials</div>
-        <div class="dashboard-btn">dash</div>
+        <div id="dashboard-container">
+          <div class="dashboard-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12 3C12.5523 3 13 3.44771 13 4L13 10C13 10.5523 12.5523 11 12 11L4 11C3.44772 11 3 10.5523 3 10L3 4C3 3.44772 3.44772 3 4 3L12 3ZM20 3C20.5523 3 21 3.44771 21 4L21 10C21 10.5523 20.5523 11 20 11L16 11C15.4477 11 15 10.5523 15 10L15 4C15 3.44771 15.4477 3 16 3L20 3ZM20 13C20.5523 13 21 13.4477 21 14L21 20C21 20.5523 20.5523 21 20 21L12 21C11.4477 21 11 20.5523 11 20L11 14C11 13.4477 11.4477 13 12 13L20 13ZM3 14C3 13.4477 3.44772 13 4 13L8 13C8.55229 13 9 13.4477 9 14L9 20C9 20.5523 8.55229 21 8 21L4 21C3.44772 21 3 20.5523 3 20L3 14Z"></path>
+            </svg>
+          </div>
+          <div id="dashboard-dropdown">
+            <div class="logout">Logout</div>
+            <div class="register-passkey" id="passkey-registration-btn">Register Passkey</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="alert-container"></div>
@@ -124,17 +134,18 @@
       </div> -->
       <!--contact details ends here-->
       <div class="footer">
-        <div class="copyright">by Ayush Sharma</div>
+        <div class="copyright">© Ayush Sharma</div>
         <span class="material-symbols-outlined navigate-up">navigation</span>
       </div>
     </div>
 
     <!--long div ENDS HERE-->
-    <button id="passkey-registration-btn">Register passkey</button>
+    <!-- <button id="passkey-registration-btn">Register passkey</button> -->
     <!-- Script tags here -->
     <!-- WARNING : the sequence is important, DO NOT change this sequence -->
     <script src="js/showAlert.js" defer></script>
     <script src="js/passkeyRegistration.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
     <script src="js/editCredALL.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="js/addUserHandler.js" defer></script>

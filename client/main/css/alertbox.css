@@ -21,14 +21,14 @@
     transform: translateY(-50%);
     transition: opacity 200ms ease-in-out , transform 200ms ease-in-out;
     font-family: var(--body-font);
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-size: 1.2rem;
     color: #fafaf9;
-    /* border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px; */
     position: sticky;
     top: 65px;
     z-index: -2;
+    overflow-x: auto;
+    overflow-y: auto;
   }
   
   .alert-box-activate {

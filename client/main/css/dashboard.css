@@ -1,0 +1,60 @@
+:root {
+    --bg-color: #fafaf9;
+    --hero-text-color: #262626;
+    --nav-color: #000000;
+    --about-body-color: #aeae9d;
+    --about-body-color: rgb(146, 146, 131);
+    --about-credential-heading-color: #8c8c73;
+    --heading-font: "General Sans", sans-serif;
+    --body-font: "Cabinet Grotesk", sans-serif;
+    --link-color: #262626cc;
+    --link-color-hover: #262626;
+    --classic-blue: #5959fc;
+  }
+
+.dashboard-btn {
+    color: var(--link-color);
+    cursor: pointer;
+    z-index: 4;
+}
+.dashboard-btn:hover {
+    color: var(--link-color-hover);
+}
+
+#dashboard-dropdown {
+    opacity: 0;
+    position: absolute;
+    top: calc(0 + .25rem);
+    right:2vw;
+    transform: translateY(-30px);
+    transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
+    background-color: var(--bg-color);
+    width: 16%;
+    height: auto;
+    box-shadow:  2px 5px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(146, 146, 131, 0.23);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 3px;
+}
+
+#dashboard-container.activated > #dashboard-dropdown {
+    opacity: 1;
+    transform: translateY(20px);
+    pointer-events: auto;
+    z-index: 4;
+}
+
+#dashboard-dropdown .logout,  #dashboard-dropdown .register-passkey {
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+    background-color: var(--classic-blue);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 4;
+}

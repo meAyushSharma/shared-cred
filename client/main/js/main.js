@@ -57,4 +57,18 @@ document.addEventListener('click', e => {
   })
 })
 
+document.addEventListener('click', e => {
+  const ifClickedOn = e.target.matches('.dashboard-btn, .dashboard-btn>svg, .dashboard-btn>svg>path ');
+  if(!ifClickedOn && e.target.closest("#dashboard-container") != null ) return;
+  let currentDropdown;
+  if(ifClickedOn) {
+    currentDropdown = e.target.closest('#dashboard-container');
+    currentDropdown.classList.toggle('activated')
+  }
+  document.querySelectorAll('#dashboard-container').forEach(dropdown => {
+    if(dropdown === currentDropdown) return;
+    dropdown.classList.remove('activated')
+  })
+})
+
 
