@@ -1,4 +1,3 @@
-
 const showSharedBtn = document.getElementsByClassName('shared-cred-heading')[0];
 showSharedBtn.addEventListener('click', async e =>{
   const viewerContainer = document.getElementById('viewer-container');
@@ -15,22 +14,26 @@ showSharedBtn.addEventListener('click', async e =>{
   });
   const {resourcesToSend} = await response.json();
   if(!resourcesToSend || resourcesToSend == undefined){
-    await showAlertBox("Problem fetching credentials ━┳━　━┳━");
+    await showAlertBox("Problem fetching credentials ━┳━ ━┳━");
     return;
   }
-  console.log(resourcesToSend);
-  
   let inc = 1;
-  await resourcesToSend.viewer.forEach(resource => {
-    createSharedCredEle(resource, role="viewer", inc);
+  for (const resource of resourcesToSend.viewer) {
+    console.log("this is resource:: ", resource);
+    const resourceValue = await decryptResourceValue(resource.resourceValue, resource.encryptedSymmetricKey);
+    createSharedCredEle(resource, role="viewer", inc, resourceValue);
     inc++;
-  });
-  await resourcesToSend.editor.forEach(resource => {
-    createSharedCredEle(resource, role="editor", inc);
+  }
+  for (const resource of resourcesToSend.editor) {
+    console.log("this is resource:: ", resource);
+    const resourceValue = await decryptResourceValue(resource.resourceValue, resource.encryptedSymmetricKey);
+    createSharedCredEle(resource, role="editor", inc, resourceValue);
     inc++;
-  });
-  await resourcesToSend.author.forEach(resource => {
-    createSharedCredEle(resource, role="author", inc);
-    inc++
-  });
+  }
+  for (const resource of resourcesToSend.author) {
+    console.log("this is resource:: ", resource);
+    const resourceValue = await decryptResourceValue(resource.resourceValue, resource.encryptedSymmetricKey);
+    createSharedCredEle(resource, role="author", inc, resourceValue);
+    inc++;
+  }
 })

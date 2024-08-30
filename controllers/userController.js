@@ -1,4 +1,4 @@
-const { User } = require("../models/schema");
+const { User, Resource } = require("../models/schema");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -7,6 +7,7 @@ const {generateRegistrationOptions,verifyRegistrationResponse,generateAuthentica
 const { isTokenAndValid } = require("../utils/catchToken");
 const ExpressError = require("../utils/ExpressError");
 const permitAuthorization = require('../utils/permitAuthorization');
+const cloudinary = require('../utils/cloudinary');
 
 if (!globalThis.crypto) {
   globalThis.crypto = crypto;
@@ -36,12 +37,14 @@ module.exports.registerUser = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const name = req.body.name;
+  const publicKey = req.body.publicKey;
+  console.log("this is public key:: ", publicKey);
   if (!username || !password || !name) {
     console.log("missing fileds in signup");
     return res.redirect("/credential-manager/signup");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { username: username, password: hashedPassword, name: name };
+  const user = { username: username, password: hashedPassword, name: name, publicKey: publicKey };
   const alreadyExists = await User.findOne({ username: username });
 
   if (alreadyExists) return res.send("user already exists");
@@ -162,3 +165,75 @@ module.exports.logoutUser = (req, res) => {
     res.redirect("/credential-manager/signup");
   });
 };
+
+
+module.exports.uploadCred = async (req, res) => {
+  cloudinary.uploader.upload(req.file.path, async (err, result) => {
+    if(err) {
+      console.log("this is error uploading: ", err);
+      return res.status(500).json({
+        msg: "error while uploading image",
+        success: false
+      });
+    }
+    const name = req.body.name;
+    const user = await User.findOneAndUpdate({ _id: req.userDetails._id }, { $push: { credImageURLs: { url: result.secure_url , name: name , publicId: result.public_id }}}, { new:true });
+    console.log("this is result: ", result);
+    return res.status(200).json({
+      msg: "successfully uploaded",
+      success: true,
+      imageData: user.credImageURLs
+    })
+  })
+}
+
+module.exports.getImages = async (req, res) => {
+  return res.status(200).json({
+    imagesArray: req.userDetails.credImageURLs,
+    userId: req.userDetails._id
+  });
+}
+
+module.exports.deleteImage = async (req, res) => {
+  const {userId, imageURL} = req.body;
+  const user = await User.findOne({_id: req.userDetails._id});
+  const publicId = user.credImageURLs.find(obj => obj.url === imageURL).publicId;
+  await cloudinary.uploader.destroy(publicId, { invalidate: true }, (error, result) => {
+    if (error) {
+      console.error("error deleting image from cloudinary: ", error);
+      return res.status(500).json({
+        msg: "Error deleting image from cloudinary",
+        success: false
+      })
+    } else {
+      console.log(`Image deleted: ${publicId}`);
+    }
+  });
+  await user.updateOne({ $pull: {credImageURLs : { url: imageURL }}});
+  await user.save();
+  return res.status(200).json({
+    msg: "Image Credential deleted successfully (*￣3￣)╭",
+    success: true
+  })
+}
+
+module.exports.getPublicKey = async (req, res) => {
+  const username = req.body.member;
+  const resourceId = req.body.resourceId;
+  const resource = await Resource.findOne({_id: resourceId});
+  const user = await User.findOne({ username: username })
+  if(!user || !resource) return res.status(401).json({ msg: "User or Resource not found in getPublicKey" });
+  return res.status(200).json({
+    publicKeyBase64: user.publicKey,
+    symmetricKeybase64: resource.symmetricKey
+  });
+}
+
+module.exports.getEncryptedSymmetricKey = async (req, res) => {
+  const resourceId = req.body.resourceId;
+  const symmetricKeyObj = req.userDetails.encryptedSymmetricKeys.find(obj => obj.resourceId.toString() === resourceId);
+  if(!symmetricKeyObj) return res.status(401).json({ msg: "symmetric key not found" });
+  return res.status(200).json({
+    symmetricKeyBase64: symmetricKeyObj.encryptedSymmetricKey
+  });
+}

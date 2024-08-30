@@ -71,4 +71,31 @@ document.addEventListener('click', e => {
   })
 })
 
+document.addEventListener('click', e => {
+  const ifClickedOn = e.target.matches('.cred-image-upload-container, .cred-image-upload-container>svg, .cred-image-upload-container>svg>path ');
+  if(!ifClickedOn && e.target.closest(".upload-container") != null ) return;
+  let currentDropdown;
+  if(ifClickedOn) {
+    currentDropdown = e.target.closest('.upload-container');
+    currentDropdown.classList.toggle('activated-upload')
+  }
+  document.querySelectorAll('.upload-container').forEach(dropdown => {
+    if(dropdown === currentDropdown) return;
+    dropdown.classList.remove('activated-upload')
+  })
+})
+
+document.addEventListener('click', e => {
+  const ifClickedOn = e.target.matches('.image-credential-name');
+  if(!ifClickedOn && e.target.closest(".show-image-template") != null ) return;
+  let currentDropdown;
+  if(ifClickedOn) {
+    currentDropdown = e.target.closest('.show-image-template');
+    currentDropdown.classList.toggle('activated-image-dropdown')
+  }
+  document.querySelectorAll('.show-image-template').forEach(dropdown => {
+    if(dropdown === currentDropdown) return;
+    dropdown.classList.remove('activated-image-dropdown');
+  })
+})
 

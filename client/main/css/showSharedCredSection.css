@@ -1,19 +1,19 @@
 :root {
-    --bg-color: #fafaf9;
-    --hero-text-color: #262626;
-    --nav-color: #000000;
-    --about-body-color: #aeae9d;
-    --about-body-color: rgb(146, 146, 131);
-    --about-credential-heading-color: #8c8c73;
-    --heading-font: "General Sans", sans-serif;
-    --body-font: "Cabinet Grotesk", sans-serif;
-    --link-color: #262626cc;
-    --link-color-hover: #262626;
-  }
+  --bg-color: #fafaf9;
+  --hero-text-color: #262626;
+  --nav-color: #000000;
+  --about-body-color: #aeae9d;
+  --about-body-color: rgb(146, 146, 131);
+  --about-credential-heading-color: #8c8c73;
+  --heading-font: "General Sans", sans-serif;
+  --body-font: "Cabinet Grotesk", sans-serif;
+  --link-color: #262626cc;
+  --link-color-hover: #262626;
+}
 
-#shared-cred-container{
-    margin: 6px;
-    margin-bottom: 5rem;
+#shared-cred-container {
+  margin: 6px;
+  margin-bottom: 5rem;
 }
 
 #shared-cred-store-container {
@@ -25,88 +25,139 @@
   margin-left: auto;
   margin-right: auto;
 }
-  
-  .shared-cred-heading {
-    width: fit-content;
-    color: var(--about-credential-heading-color);
-    font-weight: 600;
-    padding: 5px;
-    cursor: pointer;
-    margin-inline: auto;
-    font-family: var(--heading-font);
-    font-size: 1.7rem;
-    margin-bottom: 4vh;
-    position: relative; 
-  }
-  
-  .shared-cred-heading::after {
-    content: "";
-    display: block;
-    height: 3px;
-    width: 0;
-    background-color: var(--about-credential-heading-color);
-    transition: all 0.4s ease;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-  }
-  
-  .shared-cred-heading:hover::after {
-    width: 100%;
-  }
-  
-#viewer, #editor, #author {
-    max-width: 100%;
-    width: 100%;
-    font-family: var(--body-font);
-    margin: 20px;
-    padding: 10px;
-    margin-bottom: 30px;
-    border-radius: 5px;
+
+.shared-cred-heading {
+  height: 60px;
+  width: fit-content;
+  color: var(--about-credential-heading-color);
+  font-weight: 600;
+  padding: 5px;
+  cursor: pointer;
+  margin-inline: auto;
+  font-family: var(--heading-font);
+  font-size: 1.7rem;
+  margin-bottom: 4vh;
+  position: relative;
 }
 
-  
-  #viewer > legend,  #editor > legend,  #author > legend {
-    padding: 5px;
-  }
-  
-#viewer-container fieldset , #editor-container fieldset, #author-container fieldset {
-    padding:0;
-    border:none;
-    width: 100%;
-    overflow: hidden;
-  }
-  #viewer-container legend, #editor-container legend, #author-container legend {
-    padding:0;
-    font-size: .87rem;
-  }
-  
-.shared-cred-template {
-    margin-bottom: 5px;
-    margin-top: 0;
+.shared-cred-heading::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 0;
+  background-color: var(--about-credential-heading-color);
+  transition: all 0.4s ease;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
-.shared-cred-template .key, .shared-cred-template .value{
+
+.shared-cred-heading:hover::after {
+  width: 100%;
+}
+
+#viewer,
+#editor,
+#author {
+  max-width: 100%;
+  width: 100%;
+  font-family: var(--body-font);
+  margin: 20px;
+  padding: 10px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+}
+
+#viewer > legend,
+#editor > legend,
+#author > legend {
+  padding: 5px;
+}
+
+#viewer-container fieldset,
+#editor-container fieldset,
+#author-container fieldset {
+  padding: 0;
+  border: none;
+  width: 100%;
+  overflow: hidden;
+}
+#viewer-container legend,
+#editor-container legend,
+#author-container legend {
+  padding: 0;
+  font-size: 0.87rem;
+}
+
+.shared-cred-template {
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+.shared-cred-template .key,
+.shared-cred-template .value {
   overflow-y: auto;
   overflow-x: auto;
   max-width: 48%;
 }
-#viewer-container  .shared-cred-template > *{
-    width: 48%;
+#viewer-container .shared-cred-template > * {
+  width: 48%;
 }
-#editor-container  .shared-cred-template  .key {
+#editor-container .shared-cred-template .key {
+  width: 40%;
+}
+#author-container .shared-cred-template .key {
+  width: 40%;
+}
+
+.shared-cred-template > .edit-container {
+  width: 10%;
+  border: 2px solid #8c8c73d3;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 6px;
+}
+
+@media (max-width: 30rem) {
+  .shared-cred-template {
+    height: 100%;
+    max-height: 100%;
+  }
+  .shared-cred-heading {
+    font-size: 1.1rem;
+    margin-bottom: 1vh;
+  }
+  #viewer > legend,
+  #editor > legend,
+  #author > legend {
+    font-size: 0.8rem;
+  }
+  #viewer-container .shared-cred-template .key,
+  #viewer-container .shared-cred-template .value,
+  #editor-container .shared-cred-template .key,
+  #editor-container .shared-cred-template .value,
+  #author-container .shared-cred-template .key,
+  #author-container .shared-cred-template .value {
+    height: 90%;
+    max-height: 90%;
+    padding: 0;
+    display: grid;
+    place-content: center;
+    margin: 3px;
+    overflow-y: auto;
+    overflow-x: auto;
+    font-size: .62rem;
+    resize: none;
+  }
+  #editor-container .shared-cred-template .value {
+    overflow: scroll;
     width: 40%;
-}
-#author-container  .shared-cred-template  .key {
+    max-width: 40%;
+  }
+  #editor-container .shared-cred-template .key {
+    overflow: scroll;
     width: 40%;
+    max-width: 40%;
+  }
 }
-  
-  .shared-cred-template > .edit-container {
-    width: 10%;
-    border: 2px solid #8c8c73d3;
-    display: flex;
-    justify-content: space-around;
-    cursor: pointer;
-    align-items: center;
-    border-radius: 6px;
-  } 
-  

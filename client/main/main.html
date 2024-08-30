@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
     />
     <!-- <link rel="stylesheet" href="main-depreciated.css" /> -->
+    <link rel="stylesheet" href="css/rootShared.css" />
     <link rel="stylesheet" href="css/aboutSection.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/addUserDropdownAndDeleteSection.css" />
@@ -21,9 +22,9 @@
     <link rel="stylesheet" href="css/heroSection.css" />
     <link rel="stylesheet" href="css/infoSection.css" />
     <link rel="stylesheet" href="css/navbar.css" />
-    <link rel="stylesheet" href="css/rootShared.css" />
     <link rel="stylesheet" href="css/selection.css" />
     <link rel="stylesheet" href="css/sharedCredSection.css" />
+    <link rel="stylesheet" href="css/credImageSection.css" />
     <link rel="stylesheet" href="css/showSharedCredSection.css" />
 
     <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
@@ -58,16 +59,16 @@
     <div id="top-here"></div>
     <div id="hero-container">
       <div class="central-image-container">
-          <img
+          <!-- <img
             src="hero-bg-c&c-main-page.png"
             alt="hero-bg"
             aspect-ratio="11/9"
-          />
+          /> -->
+
       </div>
-      <!-- <div class="central-text-container"> -->
-      <div class="scribble-container"><p class="hero-text-para">secure</p></div>
+      <!-- <div class="scribble-container"><p class="hero-text-para">secure</p></div>
       <div class="sculpt-container"><p class="hero-text-para">safe</p></div>
-      <div class="curate-container"><P class="hero-text-para">related</P></div>
+      <div class="curate-container"><P class="hero-text-para">related</P></div> -->
     </div>
 
     <!--  long div section here   -->
@@ -85,6 +86,28 @@
           <!-- div below contains the dynamic credentials -->
           <div id="cred-store-container"></div>
         </div>
+
+        <div id="credImages-container">
+          <div class="cred-image-heading">Upload Credentials</div>
+          <div class="cred-image-choose-container">
+              <label for="credImage" id="custom-file-upload">Choose</label>
+              <input type="file" name="credImage" id="credImage">
+              <input type="text" id="upload-form-name" name="name" placeholder="Credential Name">
+              <input type="button" value="Upload" id="upload-submit">
+              <div class="show-cred-images" id="show-image">Show</div>
+          </div>
+          <div class="show-image-container">
+            <!-- <div class="show-image-template">
+              <div class="image-credential-name">something</div>
+              <div class="delete-image-credential">delete</div>
+              <div id="image-container">
+                <img src="https://www.wikipedia.org/portal/wikipedia.org/assets/img/Wikipedia-logo-v2.png" alt="">
+              </div>
+            </div> -->
+          </div>
+        </div>
+        
+
          <!-- shared credential starts here -->
         <div id="shared-cred-container">
           <div class="shared-cred-heading">Show shared credentials</div>
@@ -133,6 +156,7 @@
         </div>
       </div> -->
       <!--contact details ends here-->
+
       <div class="footer">
         <div class="copyright">© Ayush Sharma</div>
         <span class="material-symbols-outlined navigate-up">navigation</span>
@@ -140,11 +164,11 @@
     </div>
 
     <!--long div ENDS HERE-->
-    <!-- <button id="passkey-registration-btn">Register passkey</button> -->
     <!-- Script tags here -->
     <!-- WARNING : the sequence is important, DO NOT change this sequence -->
     <script src="js/showAlert.js" defer></script>
     <script src="js/passkeyRegistration.js" defer></script>
+    <script src="js/encryptionALL.js" defer></script>
     <script src="js/dashboard.js" defer></script>
     <script src="js/editCredALL.js" defer></script>
     <script src="js/main.js" defer></script>
@@ -156,6 +180,7 @@
     <script src="js/deleteSharedCred.js" defer></script>
     <script src="js/createSharedCred.js" defer></script>
     <script src="js/showSharedCred.js" defer></script>
+    <script src="js/imageProcessing.js" defer></script>
     <!-- <script src="dataHandle-depreciated.js" defer></script> -->
   </body>
 </html>

@@ -7,9 +7,7 @@ async function addUserOnclickHandler(increment) {
           roleIs = role.value;
         }
     });
-    const credId = document
-      .getElementById(`dropdown-content${increment}`)
-      .closest(`.new-class`).id;
+    const credId = document.getElementById(`dropdown-content${increment}`).closest(`.new-class`).id;
     if (member == "" || roleIs == undefined) {
       await showAlertBox("Fill out the missing fields ━┳━ ━┳━")
       return;
@@ -19,6 +17,23 @@ async function addUserOnclickHandler(increment) {
       return;
     }
     console.log(`member: ${member} && roleIs: ${roleIs} && credId is: ${credId}`);
+    const response = await fetch('/credential-manager/encrytption-info', { 
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        member: member,
+        resourceId: credId
+      })
+    });
+    const result = await response.json();
+    const publicKey = await importPublicKey(result.publicKeyBase64);
+    const symmetricKey = await convertTokey(result.symmetricKeybase64);
+    const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(symmetricKey, publicKey);
+    const stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
+    console.log("its base64, to be saved in db of member: ", stringEncryptedSymmetricKey);
+
     fetch("/credential-manager/add-user", {
       method: "POST",
       headers: {
@@ -28,6 +43,7 @@ async function addUserOnclickHandler(increment) {
         addedUser: member,
         role: roleIs,
         resourceId: credId,
+        stringEncryptedSymmetricKey: stringEncryptedSymmetricKey, 
       }),
     })
       .then((response) => {
@@ -54,4 +70,7 @@ async function addUserOnclickHandler(increment) {
       .catch((err) => {
         console.log(`the error in addMember getting res response from backend is: ${err}`);
       });
-  }
+}
+
+
+

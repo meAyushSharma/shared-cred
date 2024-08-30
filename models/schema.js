@@ -22,7 +22,10 @@ const UserSchema = new mongoose.Schema({
   },
   loginPasskeyChallenge: {
     type: String,
-  }
+  },
+  credImageURLs: [ { url: { type: String }, name: { type: String } , publicId: { type: String }} ],
+  encryptedSymmetricKeys: [ { resourceId: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" }, encryptedSymmetricKey: { type: String } } ],
+  publicKey: String
 });
 
 const ResourceSchema = new mongoose.Schema({
@@ -54,6 +57,7 @@ const ResourceSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  symmetricKey: String
 });
 
 const User = mongoose.model("User", UserSchema);

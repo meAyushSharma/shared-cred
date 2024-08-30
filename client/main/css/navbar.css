@@ -1,61 +1,64 @@
 :root {
-    --bg-color: #fafaf9;
-    --hero-text-color: #262626;
-    --nav-color: #000000;
-    --about-body-color: #aeae9d;
-    --about-body-color: rgb(146, 146, 131);
-    --about-credential-heading-color: #8c8c73;
-    --heading-font: "General Sans", sans-serif;
-    --body-font: "Cabinet Grotesk", sans-serif;
-    --link-color: #262626cc;
-    --link-color-hover: #262626;
-  }
-  
-  #nav-bar-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 15px 20px;
-    font-family: var(--body-font);
-    background-color: var(--bg-color);
-    position: sticky;
-    top: 0;
-    z-index: 3;
-  }
-  
-  .logo-container {
-    cursor: pointer;
-  }
-  
+  --bg-color: #fafaf9;
+  --nav-color: #000000;
+  --about-credential-heading-color: #8c8c73;
+  --body-font: "Cabinet Grotesk", sans-serif;
+}
+
+#nav-bar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px 20px;
+  font-family: var(--body-font);
+  background-color: var(--bg-color);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.logo-container {
+  cursor: pointer;
+}
+
+.about-and-template-container {
+  display: flex;
+  flex-direction: row;
+  width: 20rem;
+  justify-content: space-around;
+  font-size: 1.1rem;
+  color: var(--nav-color);
+  align-items: center;
+}
+
+.about-container,
+.credential-container {
+  display: grid;
+  place-content: center;
+  height: 20px;
+  width: auto;
+  cursor: pointer;
+}
+
+.about-container::after,
+.credential-container::after {
+  content: "";
+  height: 2px;
+  width: 0;
+  background-color: var(--about-credential-heading-color);
+  transition: all 0.3s ease;
+}
+
+.about-container:hover::after,
+.credential-container:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 30rem) {
   .about-and-template-container {
+    font-size: .8rem;
     display: flex;
-    flex-direction: row;
-    width: 20rem;
-    justify-content: space-around;
-    font-size: 1.1rem;
-    color: var(--nav-color);
-    align-items: center;
+    justify-content: end;
+    gap: 1rem;
   }
-  
-  .about-container,
-  .credential-container {
-    display: grid;
-    place-content: center;
-    height: 20px;
-    width: auto;
-    cursor: pointer;
-  }
-  
-  .about-container::after,
-  .credential-container::after {
-    content: "";
-    height: 2px;
-    width: 0;
-    background-color: var(--about-credential-heading-color);
-    transition: all 0.3s ease;
-  }
-  
-  .about-container:hover::after,
-  .credential-container:hover::after {
-    width: 100%;
-  }
+}

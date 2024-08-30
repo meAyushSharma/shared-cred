@@ -9,6 +9,7 @@ const googleAuth = require('../controllers/googleAuth');
 const resourceController = require('../controllers/resourceController');
 const passkeyController = require('../controllers/passkeyController')
 const catchAsync = require('../utils/catchAsync');
+const upload = require("../middleware/multerUpload");
 const router = express.Router();
 
 
@@ -38,6 +39,13 @@ router.post("/signup", catchAsync(userController.registerUser));
 router.get("/login", catchAsync(userController.sendStaticLogin));
 router.post("/login", catchAsync(userController.loginUser));
 router.get("/logout", userAuth, userController.logoutUser);
+router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
+router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey))
+router.get("/get-images", userAuth, catchAsync(userController.getImages));
+router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage))
+
+// upload route
+router.post("/upload", userAuth, upload.single('credImage'), userController.uploadCred);
 
 // google auth0 routes
 router.get("/auth/google", googleAuth.passportScope);
@@ -58,9 +66,11 @@ router.post("/create-resource", userAuth, catchAsync(resourceController.createRe
 router.post("/delete-resource", userAuth, catchAsync(resourceController.deleteResource));
 router.post("/add-user", userAuth, catchAsync(resourceController.addMemberToResource));
 router.post("/edit-resource", userAuth, catchAsync(resourceController.editResource));
+router.post("/encrypted-symmetric-key", userAuth, catchAsync(resourceController.getSymmetricKey));
 
 router.get('/show-shared-resources', userAuth, catchAsync(resourceController.showSharedResources));
 router.post('/show-resource-info', userAuth, catchAsync(resourceController.showResourceInfo));
 router.post('/remove-resource-permission', userAuth, catchAsync(resourceController.removeResourcePermission));
+
 
 module.exports = { router };

@@ -11,7 +11,7 @@ const app = express();
 // to read body inputs and parse cookies
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 

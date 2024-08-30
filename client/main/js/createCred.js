@@ -78,58 +78,70 @@ function createCredential(key, value, resourceId, increment, resourceSharedWith)
     credStoreContainer.appendChild(credContainer);
   }
 
+async function sendDataGetResponse(credKey, credValue) {
+  try {
+      if (credKey === "" || credValue === "") {
+          await showAlertBox("Refreshed credentials (*￣3￣)╭");
+      }
 
-  
-  async function sendDataGetResponse(key, value) {
-      if (key == "" || value == "") {
-    await showAlertBox("Refreshed credentials (*￣3￣)╭");
-  }
+      const key = await generateSymmetricKey();
+      const publicKey = await getPublicKey();
+      const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(key, publicKey);
+      const stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
+      const encryptedCredValue = await encryptData(key, credValue);
 
-  fetch("/credential-manager/create-resource", {
-      method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-        key: key,
-      value: value,
-    }),
-  })
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
+      const response = await fetch("/credential-manager/create-resource", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              key: credKey,
+              value: encryptedCredValue,
+              symmetricKey: stringEncryptedSymmetricKey
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error("Network response was not ok");
+      }
+
+      const resources = await response.json();
+      console.log("the resources are: ", resources);
+      if (credKey || credValue) {
+          await showAlertBox('Created resource successfully (〃￣︶￣)人(￣︶￣〃) !');
+      }
+
+      let i = 1;
+      for (const ele of resources) {
+        try {
+          const resourceValue = await decryptResourceValue(ele.resourceValue, ele.symmetricKey);
+          createCredential(ele.resourceName, resourceValue, ele._id, i, ele.resourceSharedWith);
+          i++;
+        } catch (error) {
+          console.error(`Error decrypting resource ${ele._id}:`, error);
         }
+      }
       document.getElementById("key").value = '';
       document.getElementById("value").value = '';
-      
-      return response.json();
-    })
-    .then(async (resources) => {
-        let i = 1;
-        if(key || value){
-            await showAlertBox('Created resource successfully (〃￣︶￣)人(￣︶￣〃) !'); 
-        }
-        resources.forEach((ele) => {
-            createCredential(ele.resourceName, ele.resourceValue, ele._id, i, ele.resourceSharedWith);
-            i++;
-        });
-    })
-    .catch((err) => {
-        console.log(
-            `there was error while sending cred details from client side::::   ${err}`
-      );
-    });
+
+  } catch (err) {
+      console.log(`There was an error while sending cred details from client side: ${err}`);
+  }
 }
 
+
 const addBtn = document.getElementById("add-btn-id");
-addBtn.addEventListener("click", () => {
-  const key = document.getElementById("key").value;
-  const value = document.getElementById("value").value;
-
-  const credStoreContainer = document.getElementById("cred-store-container");
-  credStoreContainer.innerHTML = "";
-
-  sendDataGetResponse(key, value);
+addBtn.addEventListener("click", async () => {
+  try {
+    const credKey = document.getElementById("key").value;
+    const credValue = document.getElementById("value").value;
+    const credStoreContainer = document.getElementById("cred-store-container");
+    credStoreContainer.innerHTML = "";
+    await sendDataGetResponse(credKey, credValue);
+  } catch (err) {
+    console.error("An error occurred in the click event handler:", err);
+  }
 });
 
 

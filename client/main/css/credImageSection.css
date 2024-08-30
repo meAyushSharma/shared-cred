@@ -1,0 +1,143 @@
+#credImages-container {
+  /* border: 1px solid salmon; */
+  margin-top: 3rem;
+  margin-bottom: 7rem;
+}
+
+.show-image-container {
+  width: 100%;
+  height: auto;
+}
+
+.cred-image-heading {
+  height: 60px;
+  width: fit-content;
+  color: var(--about-credential-heading-color);
+  font-weight: 600;
+  padding: 5px;
+  cursor: pointer;
+  margin-inline: auto;
+  font-family: var(--heading-font);
+  font-size: 1.7rem;
+  margin-bottom: 4vh;
+  position: relative;
+}
+.cred-image-heading::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 0;
+  background-color: var(--about-credential-heading-color);
+  transition: all 0.4s ease;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.cred-image-heading:hover::after {
+  width: 100%;
+}
+
+.cred-image-choose-container, .show-image-template {
+  width: 80%;
+  height: 3.75rem;
+  text-align: center;
+  font-family: var(--body-font);
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(146, 146, 131, 0.23);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-inline: auto;
+}
+
+.cred-image-choose-container {
+  margin-bottom: 30px;
+}
+
+input[type="file"] {
+  display: none;
+  text-decoration: none;
+}
+
+#custom-file-upload {
+  background-color: var(--about-credential-heading-color);
+  /* height: 80%; */
+  font-family: var(--body-font);
+  font-size: 1.1rem;
+  border-radius: 6px;
+  text-align: center;
+  color: #fafaf9;
+  text-align: center;
+  padding: 0.8rem;
+  font-weight: 450;
+  cursor: pointer;
+}
+
+#upload-form-name,
+#upload-submit,
+.show-cred-images, .image-credential-name, .delete-image-credential {
+  height: 78%;
+  width: 50%;
+  border: 2px solid #8c8c73d3;
+  font-family: var(--body-font);
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--link-color);
+  font-weight: 450;
+}
+
+#upload-submit,
+.show-cred-images, .delete-image-credential {
+  width: 15%;
+  background-color: var(--about-credential-heading-color);
+  text-align: center;
+  color: #fafaf9;
+  cursor: pointer;
+}
+/* .show-cred-images {
+  width: 14%;
+} */
+
+.image-credential-name {
+  cursor: pointer;
+  width: 70%;
+}
+
+#image-container {
+  opacity: 0;
+  position: absolute;
+  top: calc(0 + 0.25rem);
+  transform: translateY(-50px) translateX(0);
+  transition: opacity 120ms ease-in-out, transform 120ms ease-in-out;
+  background-color: var(--bg-color);
+  width: 70%;
+  height: 78%;
+  box-shadow: 2px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(146, 146, 131, 0.23);
+  border: 3px solid #8c8c73d3;
+  pointer-events: none;
+  display: grid;
+  place-content: center;
+  padding: 1.3rem;
+  z-index: -1;
+  border-radius: 10px;
+  margin: 3px;
+}
+
+.show-image-template.activated-image-dropdown > #image-container {
+  opacity: 1;
+  transform: translateY(0) translateX(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.credential-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}

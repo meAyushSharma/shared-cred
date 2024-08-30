@@ -31,7 +31,7 @@
 }
 
 .credential-heading {
-  margin-bottom: 50px;
+  margin-bottom: 3.125rem;
 }
 
 .about-text {
@@ -39,5 +39,22 @@
   font-size: 4rem;
   font-weight: 600;
   color: var(--about-body-color);
-  margin-top: 50px;
+  margin-top: 3.125rem;
+}
+
+@media (max-width: 30rem) {
+  .credential-heading, .about-heading{
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+  #about {
+    margin-top: 5vh;
+    padding: 1rem 0;
+    min-height: 60vh;
+  }
+  .about-text {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
 }

@@ -4,7 +4,7 @@
   }
 
 #hero-container {
-  width: calc(100-100vw);
+  width: calc(100 - 100vw);
   height: auto;
   overflow-x: hidden;
   display: grid;
@@ -14,15 +14,20 @@
 }
 
 .central-image-container {
-  margin: auto;
-  z-index: -1;
+  /* margin: auto;
+    z-index: -1;
+  border: 1px solid black;
+  width: 45vw;
+  height: 110vh;
+  background-image: url(../hero-bg-c&c-main-page.png);
+  background-size: cover; */
 }
 
 .scribble-container,
 .sculpt-container,
 .curate-container {
   font-family: var(--heading-font);
-  font-size: 8rem;
+  font-size: 8em;
   text-transform: uppercase;
   font-weight: bolder;
   color: var(--hero-text-color);
@@ -61,5 +66,14 @@
 #till-the-contact {
   width: 90vw;
   margin: auto;
-  margin-top: 8rem;
+  /* margin-top: 8rem; */
 }
+
+
+/* @media (max-width: 30rem) {
+  .central-image-container {
+    width: 70vw;
+    height: 60vh;
+    margin: 0 auto;
+  }
+} */
