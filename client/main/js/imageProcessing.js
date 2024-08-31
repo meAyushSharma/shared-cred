@@ -17,9 +17,18 @@ document.getElementById('upload-submit').addEventListener('click', async functio
     })
     .then(response => response.json())
     .then(async data => {
-      if(!data.success) await showAlertBox("something went wrong ━┳━ ━┳━");
-      nameContainer.innerHTML = "";
+      if(!data.success){
+        nameContainer.value = "";
+        const node = document.getElementById('custom-file-upload');
+        node.classList.remove('choose-container-change');
+        return await showAlertBox(`${data.msg}`);
+      }
+      nameContainer.value = "";
       await showAlertBox("Credential saved successfully (～￣▽￣)～");
+      const showImage = document.getElementById('show-image');
+      const node = document.getElementById('custom-file-upload');
+      node.classList.remove('choose-container-change');
+      showImage.click();
     })
     .catch(error => {
       console.error('Error:', error);
@@ -44,6 +53,8 @@ document.getElementById('show-image').addEventListener('click', async () => {
 
 async function deleteImage(increment, imageURL) {
   const userId = document.getElementsByClassName(`delete-image-credential${increment}`)[0].closest('.show-image-template').id;
+  const showImageTemplate = document.getElementById(`${userId}`);
+  showImageTemplate.remove();
   const response = await fetch('/credential-manager/delete-cred-image', {
     method: "POST",
     headers: {
@@ -56,8 +67,6 @@ async function deleteImage(increment, imageURL) {
   });
   const result = await response.json();
   if(!result.success) return await showAlertBox(result.msg);
-  const showImageTemplate = document.getElementById(`${userId}`);
-  showImageTemplate.remove();
   return await showAlertBox(result.msg);
 }
 
@@ -73,6 +82,12 @@ function createImageShowTemplate(imageName, imageURL, increment, userId) {
               </div>`
   return showImageTemplateNode;
 }
+
+document.getElementById('credImage').addEventListener('change', (e) => {
+  const node = document.getElementById('custom-file-upload');
+  console.log(node);
+  node.setAttribute('class', "choose-container-change");
+})
 
 
   

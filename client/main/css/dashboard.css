@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --bg-color: #fafaf9;
     --hero-text-color: #262626;
     --nav-color: #000000;
@@ -10,7 +10,7 @@
     --link-color: #262626cc;
     --link-color-hover: #262626;
     --classic-blue: #5959fc;
-  }
+  } */
 
 .dashboard-btn {
     color: var(--link-color);

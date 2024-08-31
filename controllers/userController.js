@@ -9,6 +9,7 @@ const ExpressError = require("../utils/ExpressError");
 const permitAuthorization = require('../utils/permitAuthorization');
 const cloudinary = require('../utils/cloudinary');
 
+
 if (!globalThis.crypto) {
   globalThis.crypto = crypto;
 }
@@ -172,7 +173,7 @@ module.exports.uploadCred = async (req, res) => {
     if(err) {
       console.log("this is error uploading: ", err);
       return res.status(500).json({
-        msg: "error while uploading image",
+        msg: "error while uploading image on cloud",
         success: false
       });
     }

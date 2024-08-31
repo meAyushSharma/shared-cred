@@ -1,8 +1,8 @@
-:root {
+/* :root {
     --hero-text-color: #262626;
     --heading-font: "General Sans", sans-serif;
     --link-color: #262626cc;
-  }
+  } */
 
 .footer {
     display: flex;

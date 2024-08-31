@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --bg-color: #fafaf9;
     --hero-text-color: #262626;
     --nav-color: #000000;
@@ -9,7 +9,7 @@
     --body-font: "Cabinet Grotesk", sans-serif;
     --link-color: #262626cc;
     --link-color-hover: #262626;
-  }
+  } */
 
 .info-btn.activated > .cred-info{
     opacity: 1;

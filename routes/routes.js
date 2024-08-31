@@ -9,7 +9,8 @@ const googleAuth = require('../controllers/googleAuth');
 const resourceController = require('../controllers/resourceController');
 const passkeyController = require('../controllers/passkeyController')
 const catchAsync = require('../utils/catchAsync');
-const upload = require("../middleware/multerUpload");
+// const upload = require("../middleware/multerUpload");
+const multerErrorHandler = require('../middleware/multerErrorHandler');
 const router = express.Router();
 
 
@@ -45,7 +46,7 @@ router.get("/get-images", userAuth, catchAsync(userController.getImages));
 router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage))
 
 // upload route
-router.post("/upload", userAuth, upload.single('credImage'), userController.uploadCred);
+router.post("/upload", userAuth, catchAsync(multerErrorHandler.errHandle), catchAsync(userController.uploadCred));
 
 // google auth0 routes
 router.get("/auth/google", googleAuth.passportScope);

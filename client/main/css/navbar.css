@@ -1,9 +1,9 @@
-:root {
+/* :root {
   --bg-color: #fafaf9;
   --nav-color: #000000;
   --about-credential-heading-color: #8c8c73;
   --body-font: "Cabinet Grotesk", sans-serif;
-}
+} */
 
 #nav-bar-container {
   display: flex;
