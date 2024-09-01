@@ -20,9 +20,10 @@ async function encryptSymmetricKey(symmetricKey, publicKey) {
 
         dbRequest.onsuccess = function(event) {
             const db = event.target.result;
-            // Check if the "keys" object store already exists; if not, create it
-            if (!db.objectStoreNames.contains("keys"))
-                db.createObjectStore("keys", { keyPath: "id" });
+            if (!db.objectStoreNames.contains("keys")) {
+                reject("Object store 'keys' not found.");
+                return;
+            }
             const transaction = db.transaction(["keys"], "readonly");
             const store = transaction.objectStore("keys");
             const getRequest = store.get("publicKey");
@@ -31,20 +32,21 @@ async function encryptSymmetricKey(symmetricKey, publicKey) {
                 const storedKey = event.target.result;
   
                 if (!storedKey) {
+                    console.log("Public key not found");
                     reject("Public key not found.");
                     return;
                 }
   
                 try {
                     const publicKey = await window.crypto.subtle.importKey(
-                        "spki", // Correct format for public keys
+                        "spki",
                         storedKey.key,
                         {
                             name: "RSA-OAEP",
                             hash: "SHA-256",
                         },
                         true,
-                        ["encrypt"] // Operations allowed with the public key
+                        ["encrypt"]
                     );
                     resolve(publicKey);
                 } catch (error) {
@@ -66,25 +68,19 @@ async function encryptSymmetricKey(symmetricKey, publicKey) {
   async function getPrivateKey() {
     return new Promise((resolve, reject) => {
         const dbRequest = indexedDB.open("crypto-keys", 2);
-        
 
         dbRequest.onsuccess = function(event) {
             const db = event.target.result;
-            // Check if the "keys" object store already exists; if not, create it
-            if (!db.objectStoreNames.contains("keys"))
-                db.createObjectStore("keys", { keyPath: "id" });
+            if (!db.objectStoreNames.contains("keys")) {
+                reject("Object store 'keys' not found.");
+                return;
+            }
             const transaction = db.transaction(["keys"], "readonly");
             const store = transaction.objectStore("keys");
             const getRequest = store.get("privateKey");
   
             getRequest.onsuccess = async function(event) {
                 const storedKey = event.target.result;
-  
-                if (!storedKey) {
-                    reject("Private key not found.");
-                    return;
-                }
-  
                 try {
                     const privateKey = await window.crypto.subtle.importKey(
                         "pkcs8", // Correct format for private keys
@@ -177,14 +173,19 @@ async function encryptSymmetricKey(symmetricKey, publicKey) {
   
   
 async function decryptResourceValue(encryptedResourceValue, encryptedSymmetricKey){
-    const symmetricKey = await convertTokey(encryptedSymmetricKey);
-  // make encrypted resource value into suitable format
-  const buffer = await stringToKey(encryptedResourceValue);
-  const view = new DataView(buffer);
-  const ivLength = 12; 
-  const iv = new Uint8Array(buffer, 0, ivLength);
-  const encryptedData = new Uint8Array(buffer, ivLength);
-      const decryptedData = await crypto.subtle.decrypt(
+    let symmetricKey;
+    try{
+        symmetricKey = await convertTokey(encryptedSymmetricKey);
+    } catch(err) {
+        console.log("error form convertToKey: ", err);
+        return;
+    }
+    const buffer = await stringToKey(encryptedResourceValue);
+    const view = new DataView(buffer);
+    const ivLength = 12; 
+    const iv = new Uint8Array(buffer, 0, ivLength);
+    const encryptedData = new Uint8Array(buffer, ivLength);
+    const decryptedData = await crypto.subtle.decrypt(
         {
             name: "AES-GCM",
             iv: iv,           
@@ -199,7 +200,13 @@ async function decryptResourceValue(encryptedResourceValue, encryptedSymmetricKe
   
 async function convertTokey(encryptedSymmetricKey){
     const arrayBuffer = await stringToKey(encryptedSymmetricKey);
-    const privateKey = await getPrivateKey();
+    let privateKey;
+    try {
+        privateKey = await getPrivateKey();
+    } catch(err) {
+        reject('Error fetching private key: ', err)
+        return;
+    }
     let symmetricKeyArrayBuffer;
     try {
      symmetricKeyArrayBuffer = await window.crypto.subtle.decrypt(
@@ -209,9 +216,10 @@ async function convertTokey(encryptedSymmetricKey){
         privateKey,
         arrayBuffer
     );
-} catch(err) {
-    console.log("the error in symmericKeyArrayBuffer is: ", err);
-}
+    } catch(err) {
+        console.log("the error in symmericKeyArrayBuffer is: ", err);
+        return;
+    }
     const symmetricKey = await crypto.subtle.importKey(
       "raw",
       symmetricKeyArrayBuffer,       // ArrayBuffer
@@ -221,7 +229,7 @@ async function convertTokey(encryptedSymmetricKey){
       true,                     // Whether the key is extractable
       ["encrypt", "decrypt"]    // usages
     );
-  return symmetricKey;
+    return symmetricKey;
 }
   
 async function importPublicKey(base64Key) {
@@ -237,4 +245,85 @@ async function importPublicKey(base64Key) {
         ["encrypt"] // Key usages
     );
     return publicKey;
+}
+
+
+async function exportPublicKeyToBase64(publicKey) {
+    const exported = await window.crypto.subtle.exportKey(
+        "spki",
+        publicKey
+    );
+    const exportedAsString = String.fromCharCode.apply(null, new Uint8Array(exported));
+    const exportedAsBase64 = btoa(exportedAsString);
+    return exportedAsBase64;
+}
+
+async function isPublicKeyCorrect(publicKey, publicKeyBase64FromDB) {
+    const publicKeyBase64 = await exportPublicKeyToBase64(publicKey);
+    // console.log("public key on browser: ", publicKeyBase64);
+    return publicKeyBase64 === publicKeyBase64FromDB;
+}
+
+
+async function openDatabase() {
+    return new Promise((resolve, reject) => {
+        const dbRequest = indexedDB.open("crypto-keys", 2);
+
+        dbRequest.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("keys")) {
+                db.createObjectStore("keys", { keyPath: "name" });
+            }
+        };
+
+        dbRequest.onsuccess = function(event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("keys")) {
+                db.close();
+                indexedDB.deleteDatabase("crypto-keys");
+                console.log("Database is missing the 'keys' object store, recreating...");
+                openDatabase().then(resolve).catch(reject);
+                return;
+            }
+            console.log("deleted and recreated!");
+            resolve(db);
+        };
+
+        dbRequest.onerror = function(event) {
+            reject("Failed to open the database.");
+        };
+    });
+}
+
+
+
+async function deleteKeys() {
+    return new Promise((resolve, reject) => {
+        const dbRequest = indexedDB.open("crypto-keys", 2);
+
+        dbRequest.onsuccess = function(event) {
+            const db = event.target.result;
+
+            const transaction = db.transaction(["keys"], "readwrite");
+            const store = transaction.objectStore("keys");
+
+            store.delete("privateKey");
+            store.delete("publicKey");
+
+            transaction.oncomplete = function() {
+                console.log("Keys deleted successfully.");
+                resolve();
+            };
+
+            transaction.onerror = function(event) {
+                console.error("Failed to delete keys.", event.target.error);
+                reject("Failed to delete keys.");
+            };
+        };
+
+        dbRequest.onerror = function(event) {
+            console.error("Failed to open the database.", event.target.error);
+            reject("Failed to open the database.");
+        };
+    });
 }

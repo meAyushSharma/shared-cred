@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("successfully connected to database...");
-  })
+mongoose.connect(process.env.MONGO_URL).then(() => { console.log("successfully connected to database...") })
   .catch((err) => {
     console.log(`there was some error while creating the database::: ${err}`);
   });

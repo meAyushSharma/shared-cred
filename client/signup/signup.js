@@ -5,8 +5,8 @@ document.getElementById('signup-form').addEventListener('submit', async e=>{
     const name = document.getElementById('signup-name').value;
 
     generateKeyPair().then(async keyPair => {
-        console.log("Public Key:", keyPair.publicKey);
-        console.log("Private Key:", keyPair.privateKey);
+        // console.log("Public Key:", keyPair.publicKey);
+        // console.log("Private Key:", keyPair.privateKey);
 
         const exportedPublicKey = await exportPublicKey(keyPair.publicKey);
 
@@ -51,14 +51,56 @@ async function generateKeyPair() {
     return keyPair;
 }
 
+async function openDatabase() {
+    return new Promise((resolve, reject) => {
+        const dbRequest = indexedDB.open("crypto-keys", 2);
+
+        dbRequest.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("keys")) {
+                db.createObjectStore("keys", { keyPath: "name" });
+            }
+        };
+
+        dbRequest.onsuccess = function(event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains("keys")) {
+                db.close();
+                indexedDB.deleteDatabase("crypto-keys");
+                console.log("Database is missing the 'keys' object store, recreating...");
+                openDatabase().then(resolve).catch(reject);
+                return;
+            }
+            console.log("deleted and recreated!");
+            resolve(db);
+        };
+
+        dbRequest.onerror = function(event) {
+            reject("Failed to open the database.");
+        };
+    });
+}
+
+
+async function exportPublicKey(publicKey) {
+    const exported = await window.crypto.subtle.exportKey(
+        "spki", // SubjectPublicKeyInfo format
+        publicKey
+    );
+    // Convert ArrayBuffer to Base64 string
+    const exportedAsString = String.fromCharCode.apply(null, new Uint8Array(exported));
+    const exportedAsBase64 = btoa(exportedAsString);
+    return exportedAsBase64;
+}
+
 
 async function storeKeys(privateKey, publicKey) {
-    // Open an IndexedDB database
+    const db = await openDatabase();
+    // console.log("------------------------------------------------------------------------------------------------------------------------------------")
     const dbRequest = indexedDB.open("crypto-keys", 2);
 
     dbRequest.onupgradeneeded = function(event) {
         const db = event.target.result;
-        // Create an object store for keys if it doesn't exist
         if (!db.objectStoreNames.contains("keys")) {
             db.createObjectStore("keys", { keyPath: "name" });
         }
@@ -68,7 +110,6 @@ async function storeKeys(privateKey, publicKey) {
         const exportedPrivateKey = await window.crypto.subtle.exportKey("pkcs8", privateKey);
         const exportedPublicKey = await window.crypto.subtle.exportKey("spki", publicKey);
 
-        // Create the transaction and store the keys
         const transaction = db.transaction(["keys"], "readwrite");
         const store = transaction.objectStore("keys");
 
@@ -86,18 +127,6 @@ async function storeKeys(privateKey, publicKey) {
     dbRequest.onerror = function(event) {
         console.error("Failed to open the database.", event.target.error);
     };
-}
-
-
-async function exportPublicKey(publicKey) {
-    const exported = await window.crypto.subtle.exportKey(
-        "spki", // SubjectPublicKeyInfo format
-        publicKey
-    );
-    // Convert ArrayBuffer to Base64 string
-    const exportedAsString = String.fromCharCode.apply(null, new Uint8Array(exported));
-    const exportedAsBase64 = btoa(exportedAsString);
-    return exportedAsBase64;
 }
 
 

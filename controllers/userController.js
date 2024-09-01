@@ -75,6 +75,8 @@ module.exports.registerUser = async (req, res) => {
     );
   }
 };
+
+
 module.exports.sendStaticLogin = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
@@ -179,7 +181,7 @@ module.exports.uploadCred = async (req, res) => {
     }
     const name = req.body.name;
     const user = await User.findOneAndUpdate({ _id: req.userDetails._id }, { $push: { credImageURLs: { url: result.secure_url , name: name , publicId: result.public_id }}}, { new:true });
-    console.log("this is result: ", result);
+    console.log("this is result.secure_url = success : ", result.secure_url);
     return res.status(200).json({
       msg: "successfully uploaded",
       success: true,
@@ -218,15 +220,88 @@ module.exports.deleteImage = async (req, res) => {
   })
 }
 
+module.exports.sendDataForDownload = async (req, res) => {
+  let downloadableData = {};
+  downloadableData.credImageURLs = req.userDetails.credImageURLs;
+  downloadableData.resources = [];
+  const resources = await Resource.find({resourceOwner: req.userDetails._id}).populate('viewers').populate('editors').populate('authors');
+  if(!resources) return res.status(401).json({msg: "Credentials not found (┬┬﹏┬┬)", success: false});
+  for(let resource of resources){
+    let viewers = [];
+    let editors = [];
+    let authors = [];
+    resource.viewers.forEach( viewer => viewers.push(viewer.username) );
+    resource.editors.forEach( editor => editors.push(editor.username) );
+    resource.authors.forEach( author => authors.push(author.username) );
+    downloadableData.resources.push({
+      resourceName:resource.resourceName,
+      resourceValue: resource.resourceValue, 
+      resourceSymmetricKey: resource.symmetricKey,
+      resourceViewers: viewers, 
+      resourceEditors: editors, 
+      resourceAuthors: authors
+    });
+  }
+  return res.status(200).json({ downloadableData, success: true })
+}
+
+module.exports.deleteAccount = async (req, res) => {
+  const deletedUser = await User.findByIdAndDelete(req.userDetails._id);
+  if(!deletedUser) return res.status(500).json({ msg: "Error deleting User", success: false })
+  let public_ids = [];
+  for(let credURL of deletedUser.credImageURLs) public_ids.push(credURL.publicId);
+  const check = await deleteMultipleImages(public_ids);
+  if(!check) return res.status(500).json({ msg: "Error in deleting image credentials", success: false });
+  const resources = await Resource.deleteMany({resourceOwner: req.userDetails._id});
+  if(!resources) return res.status(500).json({ msg: "Error in deleting credentials", success: false });
+  const resourcesAssociated = await Resource.updateMany(
+    {
+      $or: [
+        { viewers: req.userDetails._id },
+        { editors: req.userDetails._id },
+        { authors: req.userDetails._id }
+      ]
+    },
+    {
+      $pull: {
+        viewers: req.userDetails._id,
+        editors: req.userDetails._id,
+        authors: req.userDetails._id
+      }
+    }
+  );
+  if(!resourcesAssociated) return res.status(500).json({ msg: "Error in deleting shared with info", success: false });
+  res.clearCookie("token");
+  res.clearCookie("googleToken");
+  res.clearCookie("passkeyToken");
+  req.logout(function(err) {
+    if (err) console.log('the error dstroying the session is: ', err);
+    console.log("Cleared cookies and killed session");
+  });
+  return res.status(200).json({ msg: "Deleted Account successfully", success: true });
+}
+
+const deleteMultipleImages = async (public_ids) => {
+ try {
+    const result = await cloudinary.v2.api.delete_resources(public_ids, { invalidate: true });
+    console.log('Images deleted:', result);
+    return true;
+  } catch (error) {
+    console.error('Error deleting images from Cloudinary:', error);
+    return false;
+  }
+}
+
 module.exports.getPublicKey = async (req, res) => {
   const username = req.body.member;
   const resourceId = req.body.resourceId;
   const resource = await Resource.findOne({_id: resourceId});
   const user = await User.findOne({ username: username })
-  if(!user || !resource) return res.status(401).json({ msg: "User or Resource not found in getPublicKey" });
+  if(!user || !resource) return res.status(401).json({ msg: "User or Resource not found in getPublicKey", success: false });
   return res.status(200).json({
     publicKeyBase64: user.publicKey,
-    symmetricKeybase64: resource.symmetricKey
+    symmetricKeybase64: resource.symmetricKey,
+    success: true
   });
 }
 

@@ -36,7 +36,7 @@ module.exports.createResource = async (req, res) => {
     const user = req.userDetails;
     if (key != "" && value != "") {
       createResource(key, value, user, symmetricKey).then((userOwnedResources) => {
-        return res.status(200).send(userOwnedResources);
+        return res.status(200).send({ userOwnedResources, publicKeyFromDBString: user.publicKey });
       });
     } else {
       // means request is sent to refresh the documents
@@ -45,7 +45,7 @@ module.exports.createResource = async (req, res) => {
       }).catch((err) => {
         throw new ExpressError(`the error while fetching resources from DB is::  ${err}`, 500);
       });
-      return res.status(200).send(userOwnedResources);
+      return res.status(200).send({ userOwnedResources, publicKeyFromDBString: user.publicKey, username: user.username });
     }
   } catch (error) {
     console.error("Unexpected error:", error);

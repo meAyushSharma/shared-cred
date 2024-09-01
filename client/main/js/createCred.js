@@ -1,4 +1,4 @@
-
+let userName = "User";
 
 function createCredential(key, value, resourceId, increment, resourceSharedWith) {
     const credContainer = document.createElement("div");
@@ -80,16 +80,20 @@ function createCredential(key, value, resourceId, increment, resourceSharedWith)
 
 async function sendDataGetResponse(credKey, credValue) {
   try {
-      if (credKey === "" || credValue === "") {
-          await showAlertBox("Refreshed credentials (*￣3￣)╭");
-      }
+      if (credKey === "" || credValue === "") await showAlertBox("Refreshed credentials (*￣3￣)╭");
+      if(credKey !="" || credValue != "") await showAlertBox("Creating credential....");
 
       const key = await generateSymmetricKey();
-      const publicKey = await getPublicKey();
+      let publicKey;
+      try{
+        publicKey = await getPublicKey();
+      } catch(err) {
+        console.log('error fetching public key: ', err);
+        return await showAlertBox("Please import crypto keys (づ￣ 3￣)づ ");
+      }
       const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(key, publicKey);
       const stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
       const encryptedCredValue = await encryptData(key, credValue);
-
       const response = await fetch("/credential-manager/create-resource", {
           method: "POST",
           headers: {
@@ -106,8 +110,16 @@ async function sendDataGetResponse(credKey, credValue) {
           throw new Error("Network response was not ok");
       }
 
-      const resources = await response.json();
-      console.log("the resources are: ", resources);
+      const { userOwnedResources, publicKeyFromDBString, username } = await response.json();
+      const resources = userOwnedResources;
+      userName = username;
+      document.getElementById('username').innerText=`User: ${userName}`;
+
+      // console.log("public key from databse", publicKeyFromDBString);
+      const checkPublicKeyAuth = await isPublicKeyCorrect(publicKey, publicKeyFromDBString);
+      if(!checkPublicKeyAuth) return await showAlertBox("Please import crypto keys (づ￣ 3￣)づ ");
+
+
       if (credKey || credValue) {
           await showAlertBox('Created resource successfully (〃￣︶￣)人(￣︶￣〃) !');
       }

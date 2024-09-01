@@ -28,11 +28,18 @@ async function addUserOnclickHandler(increment) {
       })
     });
     const result = await response.json();
-    const publicKey = await importPublicKey(result.publicKeyBase64);
-    const symmetricKey = await convertTokey(result.symmetricKeybase64);
-    const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(symmetricKey, publicKey);
-    const stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
-    console.log("its base64, to be saved in db of member: ", stringEncryptedSymmetricKey);
+    if(!result.success) return await showAlertBox("Either user-to-add or credential not found (┬┬﹏┬┬)");
+    let stringEncryptedSymmetricKey;
+    try{
+      const publicKey = await importPublicKey(result.publicKeyBase64);
+      const symmetricKey = await convertTokey(result.symmetricKeybase64);
+      const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(symmetricKey, publicKey);
+      stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
+    } catch(err) {
+      console.log("Error in addMember, encryption part is: ", err);
+      return;
+    }
+    // console.log("its base64, to be saved in db of member: ", stringEncryptedSymmetricKey);
 
     fetch("/credential-manager/add-user", {
       method: "POST",

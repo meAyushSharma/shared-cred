@@ -40,10 +40,12 @@ router.post("/signup", catchAsync(userController.registerUser));
 router.get("/login", catchAsync(userController.sendStaticLogin));
 router.post("/login", catchAsync(userController.loginUser));
 router.get("/logout", userAuth, userController.logoutUser);
-router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
-router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey))
 router.get("/get-images", userAuth, catchAsync(userController.getImages));
-router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage))
+router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage));
+router.get('/download-data', userAuth, catchAsync(userController.sendDataForDownload));
+router.get('/delete-account', userAuth, catchAsync(userController.deleteAccount));
+router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
+router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey));
 
 // upload route
 router.post("/upload", userAuth, catchAsync(multerErrorHandler.errHandle), catchAsync(userController.uploadCred));

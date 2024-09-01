@@ -1,3 +1,7 @@
+*::selection {
+  background-color: #959590a3;
+}
+
 .about-and-template-container > div::selection,
 #hero-container > div::selection,
 #about > div::selection,

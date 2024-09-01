@@ -6,6 +6,7 @@ document.getElementById('upload-submit').addEventListener('click', async functio
     const credImage = document.getElementById('credImage').files[0];
     const nameContainer = document.getElementById('upload-form-name');
     const name = nameContainer.value;
+    await showAlertBox("Uploading.... =]");
   if(name == "" || !credImage) return await showAlertBox("Missing fields (┬┬﹏┬┬)");
     if (credImage) {
       formData.append('credImage', credImage);
@@ -17,6 +18,7 @@ document.getElementById('upload-submit').addEventListener('click', async functio
     })
     .then(response => response.json())
     .then(async data => {
+      console.log(data)
       if(!data.success){
         nameContainer.value = "";
         const node = document.getElementById('custom-file-upload');
