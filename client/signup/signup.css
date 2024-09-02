@@ -54,6 +54,7 @@ body {
   border: 2px solid var(--about-credential-heading-color);
   border-radius: 3px;
 }
+
 .signup-heading {
   text-align: center;
   margin: 5px;

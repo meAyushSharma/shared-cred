@@ -36,7 +36,7 @@ module.exports.createResource = async (req, res) => {
     const user = req.userDetails;
     if (key != "" && value != "") {
       createResource(key, value, user, symmetricKey).then((userOwnedResources) => {
-        return res.status(200).send({ userOwnedResources, publicKeyFromDBString: user.publicKey });
+        return res.status(200).send({ userOwnedResources, publicKeyFromDBString: user.publicKey, username: user.username });
       });
     } else {
       // means request is sent to refresh the documents
@@ -99,8 +99,15 @@ module.exports.addMemberToResource = async (req, res) => {
       msg: "No matching {credential} found for adding {member} ...(*￣０￣)ノ",
     });
   }
-  const user = await User.findOneAndUpdate({ username: addedUser, 'encryptedSymmetricKeys.resourceId': { $ne: resourceId } },
-    { $push: { encryptedSymmetricKeys: {encryptedSymmetricKey: stringEncryptedSymmetricKey, resourceId: resourceId} } },
+  const user = await User.findOneAndUpdate({ username: addedUser},
+    { 
+      $addToSet: { 
+        encryptedSymmetricKeys: { 
+          encryptedSymmetricKey: stringEncryptedSymmetricKey, 
+          resourceId: resourceId 
+        } 
+      } 
+    },
     { new: true }
   );
   if (!user) {

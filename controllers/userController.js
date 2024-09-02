@@ -8,6 +8,7 @@ const { isTokenAndValid } = require("../utils/catchToken");
 const ExpressError = require("../utils/ExpressError");
 const permitAuthorization = require('../utils/permitAuthorization');
 const cloudinary = require('../utils/cloudinary');
+const cloudinaryAPI = require('cloudinary').v2;
 
 
 if (!globalThis.crypto) {
@@ -246,8 +247,8 @@ module.exports.sendDataForDownload = async (req, res) => {
 }
 
 module.exports.deleteAccount = async (req, res) => {
-  const deletedUser = await User.findByIdAndDelete(req.userDetails._id);
-  if(!deletedUser) return res.status(500).json({ msg: "Error deleting User", success: false })
+  const deletedUser = await User.findOne({_id: req.userDetails._id});
+  if(!deletedUser) return res.status(500).json({ msg: "Error finding User", success: false })
   let public_ids = [];
   for(let credURL of deletedUser.credImageURLs) public_ids.push(credURL.publicId);
   const check = await deleteMultipleImages(public_ids);
@@ -270,6 +271,7 @@ module.exports.deleteAccount = async (req, res) => {
       }
     }
   );
+  await deletedUser.deleteOne();
   if(!resourcesAssociated) return res.status(500).json({ msg: "Error in deleting shared with info", success: false });
   res.clearCookie("token");
   res.clearCookie("googleToken");
@@ -283,7 +285,7 @@ module.exports.deleteAccount = async (req, res) => {
 
 const deleteMultipleImages = async (public_ids) => {
  try {
-    const result = await cloudinary.v2.api.delete_resources(public_ids, { invalidate: true });
+    const result = await cloudinaryAPI.api.delete_resources(public_ids, { invalidate: true });
     console.log('Images deleted:', result);
     return true;
   } catch (error) {

@@ -5,9 +5,6 @@ document.getElementById('signup-form').addEventListener('submit', async e=>{
     const name = document.getElementById('signup-name').value;
 
     generateKeyPair().then(async keyPair => {
-        // console.log("Public Key:", keyPair.publicKey);
-        // console.log("Private Key:", keyPair.privateKey);
-
         const exportedPublicKey = await exportPublicKey(keyPair.publicKey);
 
         storeKeys(keyPair.privateKey, keyPair.publicKey).then(async ()=> {
@@ -130,3 +127,18 @@ async function storeKeys(privateKey, publicKey) {
 }
 
 
+document.getElementById('signup-password').addEventListener('mouseover', (e) => {
+    if(e.target.type === 'text'){
+        e.target.type = 'text'
+    }else{
+        e.target.type = 'text';
+    }
+});
+
+document.getElementById('signup-password').addEventListener('mouseout', (e) => {
+    if(e.target.type === 'password'){
+        e.target.type = 'password'
+    }else{
+        e.target.type = 'password';
+    }
+});

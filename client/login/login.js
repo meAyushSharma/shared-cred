@@ -52,3 +52,19 @@ document.getElementById('passkey-login-form').addEventListener('submit', async e
         window.location.href = "/credential-manager"
     }
 })
+
+document.getElementById('login-password').addEventListener('mouseover', (e) => {
+    if(e.target.type === 'text'){
+        e.target.type = 'text'
+    }else{
+        e.target.type = 'text';
+    }
+});
+
+document.getElementById('login-password').addEventListener('mouseout', (e) => {
+    if(e.target.type === 'password'){
+        e.target.type = 'password'
+    }else{
+        e.target.type = 'password';
+    }
+});
