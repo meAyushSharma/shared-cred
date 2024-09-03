@@ -13,6 +13,7 @@ async function editOnClickHandler(increment, role){
         console.log('missing resId for editing');
         return;
       }
+      await showAlertBox("Editing credential....");
       const response = await fetch('/credential-manager/encrypted-symmetric-key', {
         method: "POST",
         headers: {
@@ -71,7 +72,7 @@ async function editOnClickHandler(increment, role){
         return;
       }
 
-
+      await showAlertBox("Editing credential....");
       const response = await fetch('/credential-manager/encrypted-symmetric-key-shared', {
         method: "POST",
         headers: {
@@ -130,7 +131,7 @@ async function editOnClickHandler(increment, role){
         return;
       }
 
-
+      await showAlertBox("Editing credential....");
       const response = await fetch('/credential-manager/encrypted-symmetric-key-shared', {
         method: "POST",
         headers: {

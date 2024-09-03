@@ -67,13 +67,14 @@ module.exports.deleteResource = async (req, res) => {
       {authors: {$in: [req.userDetails._id]}}
     ]
   })
-    .then((response) => {
+    .then(async (response) => {
       if(!response.acknowledged){
         return res.status(401).json({
           deleted: false,
           msg: "User not permitted"
         });
       }
+      await permitAuthorization.deleteResource(resourceId);
       User.updateMany({},{ $pull: {encryptedSymmetricKeys: { resourceId: resourceId }}})
       .then(result => {
         return res.status(200).json({
@@ -90,15 +91,10 @@ module.exports.deleteResource = async (req, res) => {
 
 module.exports.addMemberToResource = async (req, res) => {
   const { addedUser, role, resourceId, stringEncryptedSymmetricKey } = req.body;
-  if (!addedUser || !role || !resourceId || !stringEncryptedSymmetricKey)
-    return res.status(200).json({ response: 0 });
+  if (!addedUser || !role || !resourceId || !stringEncryptedSymmetricKey) return res.status(200).json({ response: 0 });
   const resource = await Resource.findOne({ _id: resourceId, resourceOwner: req.userDetails._id });
-  if (!resource) {
-    return res.json({
-      response: 4,
-      msg: "No matching {credential} found for adding {member} ...(*￣０￣)ノ",
-    });
-  }
+  if (!resource) return res.json({ response: 4, msg: "No matching {credential} found for adding {member} ...(*￣０￣)ノ" });
+  
   const user = await User.findOneAndUpdate({ username: addedUser},
     { 
       $addToSet: { 
@@ -110,12 +106,9 @@ module.exports.addMemberToResource = async (req, res) => {
     },
     { new: true }
   );
-  if (!user) {
-    return res.json({
-      response: 3,
-      msg: "No {member} found ¯¯|_(ツ)_|¯¯",
-    });
-  }
+
+  if (!user) return res.json({ response: 3, msg: "No {member} found ¯¯|_(ツ)_|¯¯" });
+  
   console.log(`user._id (member) is: ${user._id} && resource.resourceOwner is: ${resource.resourceOwner}`);
 
   // if (user._id.toString() == resource.resourceOwner.toString()) {
@@ -139,6 +132,10 @@ module.exports.addMemberToResource = async (req, res) => {
         $set: { resourceSharedWith: true },
       });
       resource.save();
+
+      if(resource.editors.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "editor");
+      if(resource.authors.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "author");
+      
       console.log(`user: ${user.username} is now VIEWER of: ${resourceId}/${resource.resourceName} after removing from others`);
       await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "viewer").then(()=> {
         return res.status(200).json({ response: 1 });
@@ -166,6 +163,10 @@ module.exports.addMemberToResource = async (req, res) => {
         $set: { resourceSharedWith: true },
       });
       resource.save();
+
+      if(resource.viewers.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "viewer");
+      if(resource.authors.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "author");
+
       console.log(`user: ${user.username} is now EDITOR of: ${resourceId}/${resource.resourceName} after removing from others`);
       await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "editor").then(()=> {
         return res.status(200).json({ response: 1 });
@@ -176,9 +177,7 @@ module.exports.addMemberToResource = async (req, res) => {
         $set: { resourceSharedWith: true },
       });
       resource.save();
-      console.log(
-        `user: ${user.username} is NOW editor of: ${resourceId}/${resource.resourceName}`
-      );
+      console.log(`user: ${user.username} is NOW editor of: ${resourceId}/${resource.resourceName}`);
       await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "editor").then(()=> {
         return res.status(200).json({ response: 1 });
        })
@@ -186,9 +185,7 @@ module.exports.addMemberToResource = async (req, res) => {
   } else if (role == "author") {
     console.log("--------------- A REQUEST IS SENT TO AUTHOR ---------------");
     if (resource.authors.includes(user._id)) {
-      console.log(
-        `user: ${user.username} is already author of: ${resourceId}/${resource.resourceName}`
-      );
+      console.log(`user: ${user.username} is already author of: ${resourceId}/${resource.resourceName}`);
       return res.status(200).json({ response: 1 });
     } else if ( resource.viewers.includes(user._id) || resource.editors.includes(user._id) ) {
       await resource.updateOne({
@@ -197,6 +194,10 @@ module.exports.addMemberToResource = async (req, res) => {
         $set: { resourceSharedWith: true },
       });
       resource.save();
+
+      if(resource.editors.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "editor");
+      if(resource.viewers.includes(user._id)) await permitAuthorization.unassignPermitRole(user.username, resource._id, "viewer");
+
       console.log(`user: ${user.username} is now AUTHOR of: ${resourceId}/${resource.resourceName} after removing from others`);
       await permitAuthorization.createPermitResourceInstanceAndAssignRole(user.username, resource._id, "author").then(()=> {
         return res.status(200).json({ response: 1 });
@@ -361,10 +362,8 @@ module.exports.showResourceInfo = async (req, res) => {
 module.exports.removeResourcePermission = async (req, res) => {
   const {resId, username, role} = req.body;
   User.findOne({username: username}).then(async user => {
-    if(!user) return res.json({
-      msg: "User not found ━┳━ ━┳━",
-      remove: false
-    })
+    if(!user) return res.json({ msg: "User not found ━┳━ ━┳━", remove: false });
+    
     const check = await permitAuthorization.checkPermission(req.userDetails.username, "share", resId, "cred");
     if(!check.check) return res.status(401).json({ msg: "unauthorized to remove the permissions" });
     // await User.updateMany( {}, { $pull: { encryptedSymmetricKeys: { resourceId: resId } } } );
@@ -383,6 +382,7 @@ module.exports.removeResourcePermission = async (req, res) => {
         resource.resourceSharedWith = false;
         await resource.save();
       }
+      await permitAuthorization.unassignPermitRole(username, resId, "viewer");
       return res.status(200).json({
         msg: "Removed permission successfully （￣︶￣）↗　",
         remove: true
@@ -404,6 +404,7 @@ module.exports.removeResourcePermission = async (req, res) => {
         resource.resourceSharedWith = false;
         await resource.save();
       }
+      await permitAuthorization.unassignPermitRole(username, resId, "author");
       return res.status(200).json({
         msg: "Removed permission successfully （￣︶￣）↗　",
         remove: true
@@ -425,6 +426,7 @@ module.exports.removeResourcePermission = async (req, res) => {
         resource.resourceSharedWith = false;
         await resource.save();
       }
+      await permitAuthorization.unassignPermitRole(username, resId, "editor");
       return res.status(200).json({
         msg: "Removed permission successfully （￣︶￣）↗　",
         remove: true

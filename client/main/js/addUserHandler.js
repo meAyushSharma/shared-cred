@@ -16,6 +16,7 @@ async function addUserOnclickHandler(increment) {
       await showAlertBox("Missing ResourceId")
       return;
     }
+    await showAlertBox("Sharing credential....");
     console.log(`member: ${member} && roleIs: ${roleIs} && credId is: ${credId}`);
     const response = await fetch('/credential-manager/encrytption-info', { 
       method: "POST",
@@ -63,7 +64,7 @@ async function addUserOnclickHandler(increment) {
         let res = resource.response;
         if(res.toString() == '1'){
           document.getElementById(credId).classList.add('shared-color');
-          await showAlertBox(`Added USER: ${member} || ROLE: ${roleIs} || RESOURCE: ${document.getElementById(`key${increment}`).innerText} successfully (～￣▽￣)～`);
+          await showAlertBox(`Added member successfully (～￣▽￣)～`);
         }else if(res.toString() == '2'){
           await showAlertBox(`You are the OWNER of the resource already  (～￣▽￣)～`);
         }else if(res.toString() == '3'){

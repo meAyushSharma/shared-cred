@@ -29,7 +29,7 @@ function createCredential(key, value, resourceId, increment, resourceSharedWith)
         <div class="dropdown-content" id="dropdown-content${increment}">
             <div class="dropdown-info">
               <span class="dropdown-heading">Member Email:</span><br>
-              <input type="email" id="member-email${increment}" class="member-email-input" name="member-info" placeholder="enter email" required/>
+              <input type="email" id="member-email${increment}" class="member-email-input" name="member-info" placeholder="enter email" autocomplete="off" required/>
               <br>
               <span class="dropdown-heading">Member Role:</span><br>
               <input type="radio" id="viewer${increment}" name="role${increment}" value="viewer" checked/>
@@ -156,5 +156,26 @@ addBtn.addEventListener("click", async () => {
   }
 });
 
-
-addBtn.click();
+document.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch('/credential-manager/check-public-key', {
+    method: "GET",
+    headers: {
+      'Content-Type': "application/json"
+    }
+  });
+  const result = await response.json();
+  if(result.publicKey == ""){
+    const publicKey = await getPublicKey();
+    const exportedPublicKey = await exportPublicKeyToBase64(publicKey);
+    const sendPublicKey = await fetch('/credential-manager/set-public-key', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ publicKey: exportedPublicKey })
+    });
+    const data = await sendPublicKey.json();
+    if(!data.success) return await showAlertBox("Error setting public key");
+    await showAlertBox("Set public key Successfully");
+    return addBtn.click();
+  }
+  return addBtn.click();
+})

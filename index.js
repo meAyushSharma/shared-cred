@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const session = require('express-session');
+// const MongoStore = require('connect-mongo');
 const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -19,7 +20,7 @@ app.set('view engine', 'ejs');
 app.use(session({
   secret:process.env.SESSION_SECRET,
   resave:true,
-  saveUninitialized:true
+  saveUninitialized:true,
 }));
 
 

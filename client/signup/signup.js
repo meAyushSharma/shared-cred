@@ -142,3 +142,16 @@ document.getElementById('signup-password').addEventListener('mouseout', (e) => {
         e.target.type = 'password';
     }
 });
+
+
+// document.getElementById("google-text").addEventListener('click', async () => {
+//     const keyPair = await generateKeyPair();
+//     await storeKeys(keyPair.privateKey, keyPair.publicKey);
+// })
+
+document.getElementById('google-text').addEventListener('click', async function (event) {
+    event.preventDefault();
+    const keyPair = await generateKeyPair();
+    await storeKeys(keyPair.privateKey, keyPair.publicKey);
+    window.location.href = `/credential-manager/auth/google`;
+});

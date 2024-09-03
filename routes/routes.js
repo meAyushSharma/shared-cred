@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const passport = require("passport");
+// const session = require('express-session');
 
 require("../utils/passport");
 const { userAuth } = require("../middleware/userAuth");
@@ -19,11 +20,11 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 // to check if the user has previous session details
-router.use(function(req, res, next) {
-    if (!req.user)
-        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-    next();
-});
+// router.use(function(req, res, next) {
+//     if (!req.user)
+//         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+//     next();
+// });
 
 // to serve static files
 router.use(express.static(path.join(__dirname, "../client")));
@@ -44,8 +45,12 @@ router.get("/get-images", userAuth, catchAsync(userController.getImages));
 router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage));
 router.get('/download-data', userAuth, catchAsync(userController.sendDataForDownload));
 router.get('/delete-account', userAuth, catchAsync(userController.deleteAccount));
+
 router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
 router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey));
+router.get('/check-public-key', userAuth, catchAsync(userController.checkPublicKey));
+router.post('/set-public-key', userAuth, catchAsync(userController.setPublicKey))
+
 
 // upload route
 router.post("/upload", userAuth, catchAsync(multerErrorHandler.errHandle), catchAsync(userController.uploadCred));
@@ -53,7 +58,7 @@ router.post("/upload", userAuth, catchAsync(multerErrorHandler.errHandle), catch
 // google auth0 routes
 router.get("/auth/google", googleAuth.passportScope);
 router.get("/auth/google/callback", googleAuth.passportAuthenticate);
-router.get("/success", catchAsync(googleAuth.googleAuthSuccess));
+router.get("/success",  googleAuth.googleAuthSuccess);
 router.get("/failure", catchAsync(googleAuth.googleAuthFailure));
 
 // passkey routes
@@ -69,6 +74,7 @@ router.post("/create-resource", userAuth, catchAsync(resourceController.createRe
 router.post("/delete-resource", userAuth, catchAsync(resourceController.deleteResource));
 router.post("/add-user", userAuth, catchAsync(resourceController.addMemberToResource));
 router.post("/edit-resource", userAuth, catchAsync(resourceController.editResource));
+
 router.post("/encrypted-symmetric-key", userAuth, catchAsync(resourceController.getSymmetricKey));
 
 router.get('/show-shared-resources', userAuth, catchAsync(resourceController.showSharedResources));

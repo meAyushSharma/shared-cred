@@ -40,7 +40,6 @@ module.exports.registerUser = async (req, res) => {
   const password = req.body.password;
   const name = req.body.name;
   const publicKey = req.body.publicKey;
-  console.log("this is public key:: ", publicKey);
   if (!username || !password || !name) {
     console.log("missing fileds in signup");
     return res.redirect("/credential-manager/signup");
@@ -251,8 +250,15 @@ module.exports.deleteAccount = async (req, res) => {
   if(!deletedUser) return res.status(500).json({ msg: "Error finding User", success: false })
   let public_ids = [];
   for(let credURL of deletedUser.credImageURLs) public_ids.push(credURL.publicId);
-  const check = await deleteMultipleImages(public_ids);
-  if(!check) return res.status(500).json({ msg: "Error in deleting image credentials", success: false });
+  if(public_ids.length != 0){
+    const check = await deleteMultipleImages(public_ids);
+    if(!check) return res.status(500).json({ msg: "Error in deleting image credentials", success: false });
+  }
+  const resourcesForPermit = await Resource.find({resourceOwner: req.userDetails._id});
+  // delete permit resources
+  for(let resource of resourcesForPermit){
+    await permitAuthorization.deleteResource(resource._id);
+  }
   const resources = await Resource.deleteMany({resourceOwner: req.userDetails._id});
   if(!resources) return res.status(500).json({ msg: "Error in deleting credentials", success: false });
   const resourcesAssociated = await Resource.updateMany(
@@ -272,6 +278,7 @@ module.exports.deleteAccount = async (req, res) => {
     }
   );
   await deletedUser.deleteOne();
+  await permitAuthorization.deleteUser(req.userDetails.username);
   if(!resourcesAssociated) return res.status(500).json({ msg: "Error in deleting shared with info", success: false });
   res.clearCookie("token");
   res.clearCookie("googleToken");
@@ -314,4 +321,14 @@ module.exports.getEncryptedSymmetricKey = async (req, res) => {
   return res.status(200).json({
     symmetricKeyBase64: symmetricKeyObj.encryptedSymmetricKey
   });
+}
+
+module.exports.checkPublicKey = async (req, res) => { return res.status(200).json({ publicKey: req.userDetails.publicKey }) }
+
+module.exports.setPublicKey = async (req, res) => { 
+  const publicKey = req.body.publicKey;
+  if(!publicKey) return res.status(401).json({ msg: "public key empty", success: false})
+  const user = await User.findOneAndUpdate({ _id: req.userDetails._id }, { publicKey: publicKey }, { new: true });
+  if(user.publicKey == "") return res.status(401).json({ msg: "public key not updated/set", success: false });
+  return res.status(200).json({ msg: "Updated/set public key", success: true });
 }

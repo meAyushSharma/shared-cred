@@ -3,6 +3,8 @@ removePermission = async (increment) => {
     const resId = document.getElementsByClassName(`new-class${increment}`)[0].id;
     const username = document.getElementById(`username-ele${increment}`).innerText;
     const role = document.getElementById(`role-ele${increment}`).innerText;
+    if(username == "" || !username || !resId || !role) return await showAlertBox("Missing details");
+    await showAlertBox("Removing permission....");
     fetch('/credential-manager/remove-resource-permission', {
       method: "POST",
       headers: {

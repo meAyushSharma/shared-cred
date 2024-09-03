@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
   credImageURLs: [ { url: { type: String }, name: { type: String } , publicId: { type: String }} ],
   encryptedSymmetricKeys: [ { resourceId: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" }, encryptedSymmetricKey: { type: String } } ],
-  publicKey: String
+  publicKey: { type: String, default: "" }
 });
 
 const ResourceSchema = new mongoose.Schema({
