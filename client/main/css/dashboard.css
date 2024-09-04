@@ -64,23 +64,41 @@
     text-align: center;
 }
 
-#dashboard-dropdown .logout,  #dashboard-dropdown .register-passkey, #dashboard-dropdown .download-credential, #dashboard-dropdown .import-keys, #dashboard-dropdown .export-keys, #dashboard-dropdown .delete-account {
+#dashboard-dropdown .logout,  #dashboard-dropdown .register-passkey, #dashboard-dropdown .download-credential, #dashboard-dropdown .import-keys, #dashboard-dropdown .export-keys, #dashboard-dropdown .delete-account, #dashboard-dropdown .submit-reset {
     text-align: center;
     padding: 5px;
     margin: 5px;
     background-color: var(--classic-blue);
+    /* background-color: #8c8c733d; */
     color: #fff;
+    /* color: var(--link-color-hover); */
     border-radius: 5px;
     cursor: pointer;
     z-index: 3;
 }
-
+#dashboard-dropdown .reset-password {
+    cursor: pointer;
+}
 #dashboard-dropdown .download-credential, #dashboard-dropdown .import-keys, #dashboard-dropdown .export-keys, #dashboard-dropdown .delete-account {
     display: grid;
     grid-template-columns: 70% 30%;
 }
 #dashboard-dropdown .download-credential > span, #dashboard-dropdown .import-keys > span, #dashboard-dropdown .export-keys > span, #dashboard-dropdown .delete-account > span {
     text-align: right;
+}
+
+#reset-password-container {
+    display: none;
+}
+
+#reset-password-container input {
+    border: none;
+    text-align: left;
+    padding: 5px;
+    margin: 3px;
+    border-radius: 5px;
+    width: 100%;
+    border: 2px solid var(--about-body-color);
 }
 
 #dashboard-dropdown .delete-account {

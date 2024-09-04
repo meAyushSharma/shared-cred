@@ -55,6 +55,13 @@
             <input type="file" name="imp-keys" id="imp-keys" accept=".zip" onchange="importUserKeysFromZip()">
             <div class="export-keys" id="export" onclick="exportKeysAsZip()"><span>Export Keys : </span> <i class="ri-upload-cloud-line"></i></div>
             <div class="line"></div>
+            <span class="reset-password" id="reset-btn">Reset Password</span>
+            <div id="reset-password-container" style="display: none;">
+              <input type="text" name="reset-password" id="reset-password" placeholder="New Password" oncopy="return false" onpaste="return false" oncut="return false" autocomplete="off">
+              <input type="text" name="confirm-password" id="confirm-password" placeholder="Confirm Password" oncopy="return false" onpaste="return false" oncut="return false" autocomplete="off">
+              <div class="submit-reset" id="reset-submit">Submit</div>
+            </div>
+            <div class="line"></div>
             <div class="logout">Logout</div>
             <div class="line"></div>
             <span>Account Deletion </span>
@@ -90,8 +97,8 @@
         <div class="credential-heading">Credentials</div>
         <div class="credential-value-container">
           <div class="credential-template">
-            <input type="text" placeholder="key" class="key" style="text-decoration: none" id="key" />
-            <input type="text" placeholder="value" class="value" style="text-decoration: none" id="value" />
+            <input type="text" placeholder="key" class="key" style="text-decoration: none" id="key" autocomplete="off"/>
+            <input type="text" placeholder="value" class="value" style="text-decoration: none" id="value" autocomplete="off"/>
             <span class="material-symbols-outlined add-btn" id="add-btn-id">add</span>
           </div>
           <!-- div below contains the dynamic credentials -->
@@ -103,7 +110,7 @@
           <div class="cred-image-choose-container">
               <label for="credImage" id="custom-file-upload">Choose</label>
               <input type="file" name="credImage" id="credImage">
-              <input type="text" id="upload-form-name" name="name" placeholder="Credential Name">
+              <input type="text" id="upload-form-name" name="name" placeholder="Credential Name" autocomplete="off" />
               <input type="button" value="Upload" id="upload-submit">
               <div class="show-cred-images" id="show-image">Show</div>
           </div>
@@ -143,6 +150,66 @@
       <div id="about">
         <div class="about-heading">about</div>
         <div class="about-text">
+          <div class="about-text-area">
+            <div class="tldr">TL;DR :</div>
+            <div class="main-about-line">Credential Manager keeps your credentials secure and private while giving you cross-platform usability and seamless access.
+            </div>
+            <div class="about-child-container">
+            <div class="child-heading">Vision :</div>
+            <div class="feature-list">
+              <ul type="disc">
+                <li>To provide a platform which allows management of credentials (primarily for developers), securely and privately.</li>
+                <li>To take away the pain of storing them on machine.</li>
+                <li>To provide multi-platform support and service in a few clicks.</li>
+              </ul>
+            </div>
+          </div>
+            <div class="about-child-container">
+              <div class="child-heading">Features :</div>
+              <div class="feature-list">
+                <ol type="1">
+                  <li>Manage your credentials securely and privately <i class="ri-lock-star-line" style="font-size: 1.4rem;"></i> with End-To-End Encryption.</li>
+                  <li>Share and manage them with others while having full control over permissions.</li>
+                  <li>Manage your image credentials with cloud storage*.</li>
+                  <li>Seamlessly authenticate yourself with Passkey (login with pin), Single-Sign-On with Google, or simple via your username-password.</li>
+                  <li>Download all your credentials including images in beautiful markdown format.</li>
+                  <li>Manage credentials shared with you with the same level of privacy and security.</li>
+                  <li>Import your crypto-keys and enjoy multi-platform functionality without compromising privacy.</li>
+                </ol>
+              </div>
+            </div>
+            <div class="about-child-container" id="guide">
+              <div class="child-heading">Guide :</div>
+              <div class="feature-list">
+                <ol type="disc">
+                  <li> <i class="ri-dashboard-fill" style="font-size: 1.4rem;"></i> : Represents Dashboard.</li>
+                  <li> <i class="ri-add-box-line" style="font-size: 1.4rem;"></i> : Represents add credential and refresh credentials.</li>
+                  <li> <i class="ri-information-fill" style="font-size: 1.4rem;"></i> : Represents list of members whom the credential is shared with.</li>
+                  <li>Shared credential access details:
+                    <ol type="a" id="access-control-list">
+                      <li> Viewer : Member can only 'view' the credential.</li>
+                      <li> Editor : Member can 'view' and 'edit' the credential.</li>
+                      <li> Author : Member can 'view', 'edit' and 'delete' the credential.</li>
+                    </ol>
+                  </li>
+                  <li>To download crypto-keys, essentially keys to credential manager, go to dashboard and click on 'Export Keys'. Keep in mind, you do not extract the keys, as it expects a ZIP file for import. You MUST save them.</li>
+                  <li>To import crypto-keys, go to dashboard, click on 'Import Keys'.</li>
+                  <li>To download your credentials, go to dashboard, click on 'Get Creds'.</li>
+                  <li>'Register Passkey' in dashboard generates a local passkey saved on your system, you use it to login, but incase you deleted it, simple regenerate it.</li>
+                  <li>'Drop Account' in dashboard permanently deletes ALL your data including credentials, image credentials from server and cloud*, those whom shared with will also lose their access over the credentials. Exercise caution using it.</li>
+                </ol>
+              </div>
+            </div>
+            <div class="tldr" id="faq">FAQs :</div>
+            <div class="ques">Why trust credential manager ?</div>
+            <div class="answer"> Credential Manager provides End-to-End Encryption (E2EE) meaning your credential data is encrypted on your browser and then stored, when you view credentials they are then deciphered on your browser-only. We do not have access to your 'private key' at all, hence you along with whom you have allowed are the only ones who can access and see your credentials. That is why you should download and keep your 'crypto-keys' safely as they are keys to your digital wallet.</div>
+            <div class="ques">How does the encryption works ?</div>
+            <div class="answer">Your credential data, essentially 'credential-value' is encrypted using a symmetric-key, which is further encrypted using your own 'public-key' and that is the encrypted data we deal with, and perform operations on. <br> When you request for credentials, the encrypted data along with encrypted symmetric-key is deciphered on your browser with the your 'private-key'. Both public and private keys are stored on your browser, we only have access to your public-key, which is harmless, since it can not decipher the data.</div>
+            <div class="ques">How do sharing of credential works ?</div>
+            <div class="answer">When you share your credential with a member, you give them Relationship Based Access Control (ReBAC) to that credential, with relation being 'viewer', 'editor' or 'author' each with its own set of accessibility and control over credential. You can remove permission anytime you want, but the modified document can not be reversed nor can it be tracked as to who has edited the credential among the access holders, so give access mindfully.<br>Also, in the entire process your security is not compromised at all, only you have the right to share the credential with others, and a separate process is used to decipher those credentials at member's browser.</div>
+          </div>
+          <div class="about-image-area"></div>
+           
           Blending modern design with inclusivity to transform the digital space
           into a connective, creative playground for all. Driving forward with
           accessible tech, we're crafting experiences where creativity meets
@@ -150,7 +217,7 @@
         </div>
       </div>
 
-      <!-- <div class="contact-at-heading">Contact</div>
+      <div class="contact-at-heading">Contact</div>
       <div class="contact-container">
         <div class="contact-details">
           <p class="contact-heading">Contact Details</p>
@@ -159,12 +226,12 @@
         <div class="socials">
           <div class="socials-heading">Socials</div>
           <div class="social-links">
-            <a href="https://github.com/meAyushSharma" class="github" target="_blank" >Github</a>
+            <a href="https://github.com/meAyushSharma/shared-cred" class="github" target="_blank" >Github</a>
             <a href="https://www.linkedin.com/in/ayush-sharma-b07617290/" class="linkedin" target="_blank" >LinkedIn</a>
             <a href="https://meayush.hashnode.dev/" class="hashnode" target="_blank" >Hashnode</a>
           </div>
         </div>
-      </div> -->
+      </div>
       <!--contact details ends here-->
 
       <div class="footer">

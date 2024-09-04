@@ -11,7 +11,7 @@
     --link-color-hover: #262626;
   } */
 
-/* .contact-at-heading {
+.contact-at-heading {
   margin-top: 2rem;
 }
 .contact-container {
@@ -51,4 +51,4 @@
 .mail:hover,
 .social-links > a:hover {
   color: var(--link-color-hover);
-} */
+} 

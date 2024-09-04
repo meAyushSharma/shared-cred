@@ -4,9 +4,7 @@ document.getElementById('del-account').addEventListener('click', async () => {
     await showAlertBox("Deleting user account....")
     const response = await fetch('/credential-manager/delete-account', {
         method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
+        headers: { "Content-Type": "application/json" }
     });
     const result = await response.json();
     if(!result.success) return await showAlertBox(result.msg);

@@ -39,10 +39,79 @@
 
 .about-text {
   font-family: var(--heading-font);
-  font-size: 4rem;
-  font-weight: 600;
+  /* font-size: 4rem;
+  font-weight: 600; */
   color: var(--about-body-color);
   margin-top: 3.125rem;
+}
+
+.main-about-line {
+  color: #272727b9;
+  font-size: 1.5rem;
+  font-weight: 550;
+  margin-bottom: 2rem;
+}
+
+.tldr {
+  color: #272727b9;
+  font-size: 1.7rem;
+  font-weight: 550;
+  /* margin-bottom: 1rem; */
+}
+
+#guide {
+  margin-bottom: 5rem;
+}
+
+.about-text-area .ques {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--link-color);
+  margin: 1rem 0;
+  border-top: 1px solid var(--link-color-hover);
+  border-bottom: 1px solid var(--link-color-hover);
+  cursor: pointer;
+}
+
+.about-child-container {
+  margin-bottom: 2rem;
+}
+
+.about-child-container .feature-list {
+  margin: 1rem 0;
+  padding-left: 4ch;
+  font-size: 1.1rem;
+  color: #272727b9;
+  font-weight: 500;
+  line-height: 140%;
+}
+.about-child-container .child-heading {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--link-color);
+  margin: 1rem 0;
+  /* border-top: 1px solid var(--link-color-hover);
+  border-bottom: 1px solid var(--link-color-hover); */
+  cursor: pointer;
+}
+
+.about-text-area .answer {
+  font-size: 1.1rem;
+  color: #272727b9;
+  font-weight: 500;
+  margin-bottom: 3rem;
+}
+
+#faq {
+  color: var(--link-color);
+}
+
+#access-control-list {
+  margin-left: 2rem;
+}
+
+.feature-list li{
+  line-height: 150%;
 }
 
 @media (max-width: 30rem) {

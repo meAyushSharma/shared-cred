@@ -36,9 +36,9 @@ module.exports.registerUser = async (req, res) => {
   if (response != null) {
     return res.redirect("/credential-manager");
   }
-  const username = req.body.username;
+  const username = req.body.username.toLowerCase().trim();
   const password = req.body.password;
-  const name = req.body.name;
+  const name = req.body.name.trim();
   const publicKey = req.body.publicKey;
   if (!username || !password || !name) {
     console.log("missing fileds in signup");
@@ -169,6 +169,14 @@ module.exports.logoutUser = (req, res) => {
   });
 };
 
+module.exports.resetPassword = async (req, res) => {
+  const { newPassword } = req.body;
+  if(!newPassword) return res.status(401).json({ msg: "No password, error", success: false });
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  const user = await User.findOneAndUpdate({ _id: req.userDetails._id }, { password: hashedPassword }, { new: true });
+  if(!(user.password == hashedPassword)) return res.status(401).json({ msg: "Reset password failed", success: false});
+  return res.status(200).json({msg: "Reset password successfully", success: true});
+}
 
 module.exports.uploadCred = async (req, res) => {
   cloudinary.uploader.upload(req.file.path, async (err, result) => {

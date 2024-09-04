@@ -84,3 +84,18 @@
     align-self: center;
     margin: 5px;
 }
+
+#login-form .forgot-password {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  padding-right: 8px;
+  margin-bottom: 5px;
+}
+
+#login-form .forgot-name {
+  /* background-color: rgb(89, 89, 252); */
+  /* color: #fff; */
+  cursor: pointer;
+  font-weight: 400;
+}
