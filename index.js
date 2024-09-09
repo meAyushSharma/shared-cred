@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 
 // set the session
@@ -33,6 +34,6 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server Error");
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3005, '0.0.0.0',  () => {
   console.log(`server running on: http://localhost:${process.env.PORT}/credential-manager/`);
 });

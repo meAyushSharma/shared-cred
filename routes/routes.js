@@ -45,7 +45,8 @@ router.get("/get-images", userAuth, catchAsync(userController.getImages));
 router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage));
 router.get('/download-data', userAuth, catchAsync(userController.sendDataForDownload));
 router.get('/delete-account', userAuth, catchAsync(userController.deleteAccount));
-router.post('/reset-password', userAuth, catchAsync(userController.resetPassword))
+router.post('/reset-password', userAuth, catchAsync(userController.resetPassword));
+router.get('/forgot-password', catchAsync(userController.sendForgotPassword));
 
 router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
 router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey));

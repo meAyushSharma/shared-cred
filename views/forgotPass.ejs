@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        body {
+            background-color: #fdfdfd;
+        }
+        .forgot-password-container {
+            width: 35%;
+            height: auto;
+            border: 2px solid #aeae9d;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            /* font-family: var(--body-font); */
+            position: absolute;
+            top: 15%;
+            left: calc(50% - 17.5%); /* 50% of body - 35%/2
+            /* transform: translate(-50%, -50%);  it was causing problem*/ 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px #9292833b;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.164), 0 3px 6px rgba(146, 146, 131, 0.231);
+            background-color: inherit;
+        }
+        input {
+            border: none;
+            border: 2px solid #8c8c73;
+            border-radius: 3px;
+            margin: 8px;
+            padding: 8px;
+            font-size: .9rem;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+        .line {
+            height: 2px;
+            width: 96%;
+            background-color: #8c8c73;
+            align-self: center;
+            margin: 5px;
+        }
+        .enter-new-pass-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .submit-new-pass, .send-code {
+            display: block;
+            background-color: #5959fc;
+            border-radius: 3px;
+            margin: 8px;
+            padding: 8px;
+            font-size: 1rem;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="forgot-password-container">
+        <input type="email" placeholder="Enter registered email" id="username" autocomplete="off" required />
+        <div class="send-code" id="send-code-btn">Send code</div>
+        <div class="line"></div>
+        <input type="text" placeholder="Enter code" autocomplete="off" id="enter-code" required />
+        <div class="enter-new-pass-container" style="display: none;" id="confirmation-container">
+            <input type="text" placeholder="Enter new password" id="new-password" autocomplete="off" onpaste="return false" oncopy="return false" oncut="return false" required />
+            <input type="text" placeholder="Confirm new password" id="confirm-password" autocomplete="off" onpaste="return false" oncopy="return false" oncut="return false" required />
+            <div class="submit-new-pass">Submit</div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('enter-code').addEventListener('input', (e) => {
+            console.log(e)
+            if(e.target.value.length === 7 || e.target.value.length > 7 ){
+                const container = document.getElementById('confirmation-container');
+                if(container.style.display == "none") container.style.display = "";
+            }
+        })
+
+        document.getElementById('new-password').addEventListener('mouseover', (e) => {
+            if(e.target.type === 'text'){
+                e.target.type = 'text'
+            }else{
+                e.target.type = 'text';
+            }
+        });
+        document.getElementById('new-password').addEventListener('mouseout', (e) => {
+            if(e.target.type === 'password'){
+                e.target.type = 'password'
+            }else{
+                e.target.type = 'password';
+            }
+        });
+        document.getElementById('confirm-password').addEventListener('mouseover', (e) => {
+            if(e.target.type === 'text'){
+                e.target.type = 'text'
+            }else{
+                e.target.type = 'text';
+            }
+        });
+        document.getElementById('confirm-password').addEventListener('mouseout', (e) => {
+            if(e.target.type === 'password'){
+                e.target.type = 'password'
+            }else{
+                e.target.type = 'password';
+            }
+        });
+        document.getElementById('send-code-btn').addEventListener('click', async (e) => {
+            const username = document.getElementById('username').value;
+            if(username == "") return alert("Missing email");
+
+        })
+    </script>
+</body>
+</html>

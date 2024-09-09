@@ -5,7 +5,6 @@ dashboardBtn.addEventListener('click', async e => {
 
 document.getElementById('reset-btn').addEventListener('click', (e) => {
     const resetBtn = document.getElementById('reset-password-container');
-    // resetBtn.style.display = "block";
     if(resetBtn.style.display == "none") {
         resetBtn.style.display = "block";
     }else {

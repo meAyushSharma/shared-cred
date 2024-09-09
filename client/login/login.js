@@ -68,3 +68,7 @@ document.getElementById('login-password').addEventListener('mouseout', (e) => {
         e.target.type = 'password';
     }
 });
+
+document.getElementById('forgot-pass-btn').addEventListener('click', async (e) => {
+    window.location.href = '/credential-manager/forgot-password';
+})

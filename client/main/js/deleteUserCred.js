@@ -6,7 +6,7 @@ document
       // Find the parent .new-class element and remove it
       const credContainer = event.target.closest(".new-class");
       if (credContainer) {
-        await showAlertBox("Deleting credntial....");
+        await showAlertBox("Deleting credential....");
         // send fetch request
         fetch("/credential-manager/delete-resource", {
           method: "POST",

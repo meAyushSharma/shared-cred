@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Credential Manager</title>
-    <!-- <link rel="icon" href="img/logo-design-c&c-32x32.ico.ico" type="image/icon type" /> -->
+    <!-- <link rel="icon" href="https://res.cloudinary.com/dubrgx4b1/image/upload/v1725648645/ypfoovsyskgowftudt8i.jpg" type="image/icon type" height="32px" aspect-ratio="1/1"/> -->
+    <link rel="icon" href="lock-2-fill.svg" type="image/icon type" height="32px" aspect-ratio="1/1"/>
     <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -27,6 +28,7 @@
     <link rel="stylesheet" href="css/sharedCredSection.css" />
     <link rel="stylesheet" href="css/credImageSection.css" />
     <link rel="stylesheet" href="css/showSharedCredSection.css" />
+    <link rel="stylesheet" href="css/animateOnScroll.css">
 
     <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
@@ -36,7 +38,7 @@
     <!--nav bar here-->
     <div id="nav-bar-container">
       <div class="logo-container" id="logo-id">
-        <img src="hero-bg-c&c-main-page.png" alt="logo" height="45px" aspect-ratio="1/1"/>
+        <img src="https://res.cloudinary.com/dubrgx4b1/image/upload/v1725640130/fgizbff75xissfg41vpe.png" alt="logo" height="28px" style="margin-left: 2rem;" aspect-ratio="1/1"/>
       </div>
       <div class="about-and-template-container">
         <div class="about-container">about</div>
@@ -151,10 +153,10 @@
         <div class="about-heading">about</div>
         <div class="about-text">
           <div class="about-text-area">
-            <div class="tldr">TL;DR :</div>
-            <div class="main-about-line">Credential Manager keeps your credentials secure and private while giving you cross-platform usability and seamless access.
+            <div class="tldr animate">TL;DR :</div>
+            <div class="main-about-line animate">Credential Manager keeps your credentials secure and private while giving you cross-platform usability and seamless access.
             </div>
-            <div class="about-child-container">
+            <div class="about-child-container animate">
             <div class="child-heading">Vision :</div>
             <div class="feature-list">
               <ul type="disc">
@@ -164,12 +166,12 @@
               </ul>
             </div>
           </div>
-            <div class="about-child-container">
+            <div class="about-child-container animate">
               <div class="child-heading">Features :</div>
               <div class="feature-list">
                 <ol type="1">
                   <li>Manage your credentials securely and privately <i class="ri-lock-star-line" style="font-size: 1.4rem;"></i> with End-To-End Encryption.</li>
-                  <li>Share and manage them with others while having full control over permissions.</li>
+                  <li >Share and manage them with others while having full control over permissions.</li>
                   <li>Manage your image credentials with cloud storage*.</li>
                   <li>Seamlessly authenticate yourself with Passkey (login with pin), Single-Sign-On with Google, or simple via your username-password.</li>
                   <li>Download all your credentials including images in beautiful markdown format.</li>
@@ -178,7 +180,7 @@
                 </ol>
               </div>
             </div>
-            <div class="about-child-container" id="guide">
+            <div class="about-child-container animate" id="guide">
               <div class="child-heading">Guide :</div>
               <div class="feature-list">
                 <ol type="disc">
@@ -200,20 +202,14 @@
                 </ol>
               </div>
             </div>
-            <div class="tldr" id="faq">FAQs :</div>
-            <div class="ques">Why trust credential manager ?</div>
-            <div class="answer"> Credential Manager provides End-to-End Encryption (E2EE) meaning your credential data is encrypted on your browser and then stored, when you view credentials they are then deciphered on your browser-only. We do not have access to your 'private key' at all, hence you along with whom you have allowed are the only ones who can access and see your credentials. That is why you should download and keep your 'crypto-keys' safely as they are keys to your digital wallet.</div>
-            <div class="ques">How does the encryption works ?</div>
-            <div class="answer">Your credential data, essentially 'credential-value' is encrypted using a symmetric-key, which is further encrypted using your own 'public-key' and that is the encrypted data we deal with, and perform operations on. <br> When you request for credentials, the encrypted data along with encrypted symmetric-key is deciphered on your browser with the your 'private-key'. Both public and private keys are stored on your browser, we only have access to your public-key, which is harmless, since it can not decipher the data.</div>
-            <div class="ques">How do sharing of credential works ?</div>
-            <div class="answer">When you share your credential with a member, you give them Relationship Based Access Control (ReBAC) to that credential, with relation being 'viewer', 'editor' or 'author' each with its own set of accessibility and control over credential. You can remove permission anytime you want, but the modified document can not be reversed nor can it be tracked as to who has edited the credential among the access holders, so give access mindfully.<br>Also, in the entire process your security is not compromised at all, only you have the right to share the credential with others, and a separate process is used to decipher those credentials at member's browser.</div>
+            <div class="tldr animate" id="faq">FAQs :</div>
+            <div class="ques animate">Why trust credential manager ?</div>
+            <div class="answer animate"> Credential Manager provides End-to-End Encryption (E2EE) meaning your credential data is encrypted on your browser and then stored, when you view credentials they are then deciphered on your browser-only. We do not have access to your 'private key' at all, hence you along with whom you have allowed are the only ones who can access and see your credentials. That is why you should download and keep your 'crypto-keys' safely as they are keys to your digital wallet.</div>
+            <div class="ques animate">How does the encryption works ?</div>
+            <div class="answer animate">Your credential data, essentially 'credential-value' is encrypted using a symmetric-key, which is further encrypted using your own 'public-key' and that is the encrypted data we deal with, and perform operations on. <br> When you request for credentials, the encrypted data along with encrypted symmetric-key is deciphered on your browser with the your 'private-key'. Both public and private keys are stored on your browser, we only have access to your public-key, which is harmless, since it can not decipher the data.</div>
+            <div class="ques animate">How do sharing of credential works ?</div>
+            <div class="answer animate">When you share your credential with a member, you give them Relationship Based Access Control (ReBAC) to that credential, with relation being 'viewer', 'editor' or 'author' each with its own set of accessibility and control over credential. You can remove permission anytime you want, but the modified document can not be reversed nor can it be tracked as to who has edited the credential among the access holders, so give access mindfully.<br>Also, in the entire process your security is not compromised at all, only you have the right to share the credential with others, and a separate process is used to decipher those credentials at member's browser.</div>
           </div>
-          <div class="about-image-area"></div>
-           
-          Blending modern design with inclusivity to transform the digital space
-          into a connective, creative playground for all. Driving forward with
-          accessible tech, we're crafting experiences where creativity meets
-          community in every click.
         </div>
       </div>
 
@@ -233,7 +229,6 @@
         </div>
       </div>
       <!--contact details ends here-->
-
       <div class="footer">
         <div class="copyright">© Ayush Sharma</div>
         <span class="material-symbols-outlined navigate-up">navigation</span>

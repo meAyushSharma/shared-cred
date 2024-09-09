@@ -253,6 +253,10 @@ module.exports.sendDataForDownload = async (req, res) => {
   return res.status(200).json({ downloadableData, success: true })
 }
 
+module.exports.sendForgotPassword = async (req, res) => {
+  return res.render('forgotPass');
+}
+
 module.exports.deleteAccount = async (req, res) => {
   const deletedUser = await User.findOne({_id: req.userDetails._id});
   if(!deletedUser) return res.status(500).json({ msg: "Error finding User", success: false })

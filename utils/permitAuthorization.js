@@ -1,11 +1,18 @@
 const { Permit } = require('permitio');
 const ExpressError = require("./ExpressError");
 
-const permit = new Permit({
-    pdp: "http://localhost:7766",
-    token: process.env.PERMIT_API_KEY,
-});
 
+// this is for local machine
+// const permit = new Permit({
+//     pdp: "http://localhost:7766",
+//     token: process.env.PERMIT_API_KEY,
+// });
+
+// this is for docker/containerization
+const permit = new Permit({
+  pdp: "http://host.docker.internal:7766", 
+  token: process.env.PERMIT_API_KEY,
+});
 
 module.exports.createPermitResource = async (resourceId, resourceName) => {
     const permitResource = await permit.api.createResource(

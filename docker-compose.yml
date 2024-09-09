@@ -1,0 +1,16 @@
+version: '3.8'
+
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  permit-pdp: 
+    image: permitio/pdp-v2
+    ports:
+      - '7766:7000'
+    environment:
+      - PDP_API_KEY=${PERMIT_API_KEY}
+      - PDP_DEBUG=True
+    networks:
+      - my_network
