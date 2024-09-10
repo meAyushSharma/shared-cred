@@ -1,8 +1,8 @@
 document.getElementById('signup-form').addEventListener('submit', async e=>{
     e.preventDefault();
-    const username = document.getElementById('signup-username').value;
-    const password = document.getElementById('signup-password').value;
-    const name = document.getElementById('signup-name').value;
+    const username = document.getElementById('signup-username').value.toLowerCase().trim();
+    const password = document.getElementById('signup-password').value.toString().trim();
+    const name = document.getElementById('signup-name').value.trim();
 
     generateKeyPair().then(async keyPair => {
         const exportedPublicKey = await exportPublicKey(keyPair.publicKey);

@@ -1,7 +1,7 @@
 document.getElementById('login-form').addEventListener('submit', async e=>{
     e.preventDefault();
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
+    const username = document.getElementById('login-username').value.toLowerCase().trim();
+    const password = document.getElementById('login-password').value.trim();
     const response = await fetch('/credential-manager/login', {
         "method": "POST",
         "headers": {

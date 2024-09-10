@@ -68,12 +68,12 @@
         <div class="enter-new-pass-container" style="display: none;" id="confirmation-container">
             <input type="text" placeholder="Enter new password" id="new-password" autocomplete="off" onpaste="return false" oncopy="return false" oncut="return false" required />
             <input type="text" placeholder="Confirm new password" id="confirm-password" autocomplete="off" onpaste="return false" oncopy="return false" oncut="return false" required />
-            <div class="submit-new-pass">Submit</div>
+            <div class="submit-new-pass" id="submit-code">Submit</div>
         </div>
     </div>
     <script>
         document.getElementById('enter-code').addEventListener('input', (e) => {
-            console.log(e)
+            // console.log(e)
             if(e.target.value.length === 7 || e.target.value.length > 7 ){
                 const container = document.getElementById('confirmation-container');
                 if(container.style.display == "none") container.style.display = "";
@@ -109,9 +109,38 @@
             }
         });
         document.getElementById('send-code-btn').addEventListener('click', async (e) => {
-            const username = document.getElementById('username').value;
+            e.preventDefault();
+            const username = document.getElementById('username').value.toLowerCase().trim();
             if(username == "") return alert("Missing email");
+            const response = await fetch('/credential-manager/send-username-forgot-pass', {
+                method: "POST",
+                headers: { "Content-Type": 'application/json'},
+                body: JSON.stringify({ username: username })
+            });
+            const result = await response.json();
+            console.log(result);
+            if(!result.success) return alert("Error sending code");
+            alert("Sent code successfully!");
+        });
 
+        document.getElementById('submit-code').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('new-password').value.trim();
+            const confirmPass = document.getElementById('confirm-password').value.trim();
+            const enterCode = document.getElementById('enter-code').value.trim();
+            const username = document.getElementById('username').value.toLowerCase().trim();
+            if(username == "") return alert("Missing Email field");
+            if(newPass == "" || confirmPass == "" || enterCode == "") return alert("Missing fields");
+            if(newPass != confirmPass) return alert("Values not matching.");
+            const response = await fetch("/credential-manager/verify-code-change-pass", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ newPass, enterCode, username })
+            })
+            const result = await response.json();
+            if(!result.success) return alert("Some error occured");
+            alert("Updated password successfully!");
+            window.location.href = '/credential-manager/login'
         })
     </script>
 </body>

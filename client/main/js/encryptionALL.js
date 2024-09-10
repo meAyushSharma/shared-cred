@@ -307,8 +307,16 @@ async function deleteKeys() {
             const transaction = db.transaction(["keys"], "readwrite");
             const store = transaction.objectStore("keys");
 
-            store.delete("privateKey");
-            store.delete("publicKey");
+            // store.delete("privateKey");
+            // store.delete("publicKey");
+
+            const deletePrivateKeyRequest = store.delete("privateKey");
+            const deletePublicKeyRequest = store.delete("publicKey");
+    
+            deletePrivateKeyRequest.onsuccess = function() { console.log("Private key deleted successfully.") };
+            deletePrivateKeyRequest.onerror = function() { console.error("Failed to delete private key.") };
+            deletePublicKeyRequest.onsuccess = function() { console.log("Public key deleted successfully.") };
+            deletePublicKeyRequest.onerror = function() { console.error("Failed to delete public key.") };
 
             transaction.oncomplete = function() {
                 console.log("Keys deleted successfully.");

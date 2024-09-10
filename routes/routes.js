@@ -47,6 +47,8 @@ router.get('/download-data', userAuth, catchAsync(userController.sendDataForDown
 router.get('/delete-account', userAuth, catchAsync(userController.deleteAccount));
 router.post('/reset-password', userAuth, catchAsync(userController.resetPassword));
 router.get('/forgot-password', catchAsync(userController.sendForgotPassword));
+router.post('/send-username-forgot-pass', catchAsync(userController.verifyAndSendCode))
+router.post('/verify-code-change-pass', catchAsync(userController.forgotPasswordReset))
 
 router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
 router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey));

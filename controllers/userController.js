@@ -9,6 +9,7 @@ const ExpressError = require("../utils/ExpressError");
 const permitAuthorization = require('../utils/permitAuthorization');
 const cloudinary = require('../utils/cloudinary');
 const cloudinaryAPI = require('cloudinary').v2;
+const transporter = require('../utils/nodemailer');
 
 
 if (!globalThis.crypto) {
@@ -109,9 +110,7 @@ module.exports.loginUser = async (req, res) => {
   console.log("this is password: ", password)
 
   if (!username || !password) {
-    console.log(
-      "no username or password in /login form {missing fields} : backend"
-    );
+    console.log("no username or password in /login form {missing fields} : backend");
     return res.redirect(200, "/credential-manager/signup");
   }
   User.findOne({ username: username })
@@ -177,6 +176,54 @@ module.exports.resetPassword = async (req, res) => {
   if(!(user.password == hashedPassword)) return res.status(401).json({ msg: "Reset password failed", success: false});
   return res.status(200).json({msg: "Reset password successfully", success: true});
 }
+
+module.exports.verifyAndSendCode = async (req, res) => {
+  const {username} = req.body;
+  const user = await User.findOne({username: username});
+  if(!user) return res.status(301).json({ msg: "User not found", success:false });
+  if(username != user.username) return res.status(301).json({ msg: "User not found", success:false });
+  const code = Math.floor(Math.random()*10000000);
+  user.code.forgotCode = code;
+  user.code.timeCreatedAt = new Date();
+  await user.save();
+  const mailOptions = {
+    from: process.env.NODEMAILER_EMAIL_USER,  
+    to: username,
+    subject: 'Forgot password code', 
+    text: `Hello! This is the code for forgot password, code: ${code}`,
+    html: `Hello! <b>${user.name}</b>, we hope this finds you well. <br> The code is: ${code} <br> This code is valid only for 10 minutes.`
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error sending email:', error);
+      return res.status(400).json({ msg: "Error sending code", success: false });
+    }
+    console.log('Email sent successfully:', info.response);
+    return res.status(200).json({ msg: "Code sent successfully", success: true });
+  });
+}
+
+module.exports.forgotPasswordReset = async (req, res) => {
+  const { newPass, enterCode, username } = req.body;
+  const user = await User.findOne({username: username});
+  if(!user) return res.status(400).json({msg:"User not found", success:false});
+  const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+  console.log(user.code.timeCreatedAt);
+  const savedDate = new Date(user.code.timeCreatedAt.toString());
+  const savedDateInMilliSec = savedDate.getTime();
+  try{
+    if(savedDateInMilliSec >= tenMinutesAgo && enterCode == user.code.forgotCode){
+      console.log("conditions met for updating passford after forgetting ....");
+      const hashedPassword = await bcrypt.hash(newPass, 10);
+      await User.updateOne({ username: username }, { password: hashedPassword, $unset: {"code.forgotCode": "", "code.timeCreatedAt": 1} });
+    }
+  } catch(err){
+    console.log("the error during updating password after forgetting is: ", err);
+    return res.status(500).json({msg:"Some Error occured", success:false});
+  }
+  return res.status(200).json({msg:"Password updated successfully", success:true});
+}
+
 
 module.exports.uploadCred = async (req, res) => {
   cloudinary.uploader.upload(req.file.path, async (err, result) => {
