@@ -6,14 +6,15 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { router } = require("./routes/routes");
-
 const cors = require('cors');
+
+const app = express();
+
 app.use(cors({
   origin: 'https://credential-manager-cdl1.onrender.com',
   credentials: true
 }));
 
-const app = express();
 // to read body inputs and parse cookies
 app.use(cookieParser());
 app.use(bodyParser.json());
