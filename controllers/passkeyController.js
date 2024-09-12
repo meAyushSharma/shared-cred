@@ -12,7 +12,8 @@ const {
 module.exports.generatePasskey = async (req, res) => {
     console.log("at generate passkey")
     const challengePayLoad = await generateRegistrationOptions({
-      rpID: "localhost",
+      // rpID: "localhost",
+      rpID: "credential-manager-cdl1.onrender.com",
       rpName: "My machine",
       userName: req.userDetails.username,
     });
