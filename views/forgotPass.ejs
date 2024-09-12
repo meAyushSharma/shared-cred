@@ -57,10 +57,19 @@
             color: #fff;
             cursor: pointer;
         }
+        @media (max-width: 30rem) {
+            .forgot-password-container {
+                width: 80%;
+                position: absolute;
+                top: 15%;
+                left: calc(50% - 40%);
+            }
+        }
     </style>
 </head>
 <body>
     <div class="forgot-password-container">
+        <div class="forgot-password-heading"></div>
         <input type="email" placeholder="Enter registered email" id="username" autocomplete="off" required />
         <div class="send-code" id="send-code-btn">Send code</div>
         <div class="line"></div>

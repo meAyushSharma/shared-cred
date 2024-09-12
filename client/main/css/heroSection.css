@@ -1,6 +1,6 @@
 
 
-#hero-container {
+/* #hero-container {
   width: calc(100 - 100vw);
   height: auto;
   overflow-x: hidden;
@@ -11,16 +11,16 @@
 }
 
 .central-image-container {
-  /* margin: auto;
+  margin: auto;
     z-index: -1;
   border: 1px solid black;
   width: 45vw;
   height: 110vh;
   background-image: url(../hero-bg-c&c-main-page.png);
-  background-size: cover; */
-}
+  background-size: cover;
+} */
 
-.scribble-container,
+/* .scribble-container,
 .sculpt-container,
 .curate-container {
   font-family: var(--heading-font);
@@ -58,7 +58,7 @@
   background-clip: border-box;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
-}
+} */
 
 #till-the-contact {
   width: 90vw;

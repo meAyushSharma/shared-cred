@@ -74,6 +74,7 @@ async function addUserOnclickHandler(increment) {
         }else{
           await showAlertBox("In adding user: missing fields on backend  ━┳━ ━┳━");
         }
+        document.getElementById(`member-email${increment}`).value = "";
       })
       .catch((err) => {
         console.log(`the error in addMember getting res response from backend is: ${err}`);

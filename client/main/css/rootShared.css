@@ -4,6 +4,8 @@
     box-sizing: border-box;
     /* background-color: hsla(120, 94%, 69%, 0.226); */
   }
+
+
   :root {
     --bg-color: #fafaf9;
     --hero-text-color: #262626;
@@ -25,6 +27,10 @@
   
   body {
     background-color: var(--bg-color);
+  }
+
+  html, body {
+    overflow-x: hidden;
   }
   
   [href] {

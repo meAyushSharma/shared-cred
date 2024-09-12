@@ -34,22 +34,27 @@ router.use(express.static(path.join(__dirname, "../client", "signup")));
 
 
 
-//signup and static routes: 
+// signup and static routes: 
 router.get("/", catchAsync(userController.sendStaticMain));
 router.get("/signup", catchAsync(userController.sendStaticSignup));
 router.post("/signup", catchAsync(userController.registerUser));
 router.get("/login", catchAsync(userController.sendStaticLogin));
 router.post("/login", catchAsync(userController.loginUser));
 router.get("/logout", userAuth, userController.logoutUser);
+
+// image-credential-routes
 router.get("/get-images", userAuth, catchAsync(userController.getImages));
 router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage));
+
+// dashboard routes
 router.get('/download-data', userAuth, catchAsync(userController.sendDataForDownload));
 router.get('/delete-account', userAuth, catchAsync(userController.deleteAccount));
 router.post('/reset-password', userAuth, catchAsync(userController.resetPassword));
 router.get('/forgot-password', catchAsync(userController.sendForgotPassword));
-router.post('/send-username-forgot-pass', catchAsync(userController.verifyAndSendCode))
-router.post('/verify-code-change-pass', catchAsync(userController.forgotPasswordReset))
+router.post('/send-username-forgot-pass', catchAsync(userController.verifyAndSendCode));
+router.post('/verify-code-change-pass', catchAsync(userController.forgotPasswordReset));
 
+// encryption related routes
 router.post("/encrytption-info", userAuth, catchAsync(userController.getPublicKey));
 router.post("/encrypted-symmetric-key-shared", userAuth, catchAsync(userController.getEncryptedSymmetricKey));
 router.get('/check-public-key', userAuth, catchAsync(userController.checkPublicKey));
@@ -81,6 +86,7 @@ router.post("/edit-resource", userAuth, catchAsync(resourceController.editResour
 
 router.post("/encrypted-symmetric-key", userAuth, catchAsync(resourceController.getSymmetricKey));
 
+// shared resources related routes
 router.get('/show-shared-resources', userAuth, catchAsync(resourceController.showSharedResources));
 router.post('/show-resource-info', userAuth, catchAsync(resourceController.showResourceInfo));
 router.post('/remove-resource-permission', userAuth, catchAsync(resourceController.removeResourcePermission));

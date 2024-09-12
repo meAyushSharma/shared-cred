@@ -69,3 +69,9 @@
     width: 30%;
     transform: translateY(0) translateX(-50%);
   }
+
+@media (max-width: 30rem) {
+  .cred-info {
+    padding: 3px;
+  }
+}

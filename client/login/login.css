@@ -99,3 +99,12 @@
   cursor: pointer;
   font-weight: 400;
 }
+
+@media (max-width: 30rem) {
+  .main-container {
+    width: 80%;
+    position: absolute;
+    top: 15%;
+    left: calc(50% - 40%);
+  }
+}

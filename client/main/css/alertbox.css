@@ -30,5 +30,8 @@
 @media (max-width: 30rem) {
   .alert-container {
     font-size: .67rem;
+    height: min-content;
+    padding: .27rem 0;
+    top: 40px;
   }
 }

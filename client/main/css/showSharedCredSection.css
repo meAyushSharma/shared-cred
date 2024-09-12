@@ -116,6 +116,7 @@
   .shared-cred-heading {
     font-size: 1.1rem;
     margin-bottom: 1vh;
+    height: auto;
   }
   #viewer > legend,
   #editor > legend,
@@ -148,5 +149,12 @@
     overflow: scroll;
     width: 40%;
     max-width: 40%;
+  }
+
+  #viewer-container legend, #editor-container legend, #author-container legend {
+    font-size: 0.67rem
+  }
+  .shared-cred-template > .edit-container {
+    font-size: .63rem;
   }
 }

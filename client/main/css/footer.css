@@ -40,3 +40,12 @@
     text-decoration: underline;
     color: var(--link-color);
   }
+
+@media (max-width: 30rem) {
+  .copyright {
+    font-size: .7rem;
+  }
+  .navigate-up {
+    font-size: 1.7rem;
+  }
+}

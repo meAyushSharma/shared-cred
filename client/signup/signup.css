@@ -96,3 +96,17 @@ body {
   font-size: 1.1rem;
 }
 
+@media (max-width: 30rem) {
+  .main-container {
+    width: 80%;
+    position: absolute;
+    top: 15%;
+    left: calc(50% - 40%);
+  }
+  .links > a {
+    padding: 3px;
+    font-size: .8rem;
+    display: grid;
+    place-content: center;
+  }
+}

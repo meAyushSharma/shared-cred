@@ -151,3 +151,30 @@ input[type="file"] {
   color: #262626cc;
   height: 80%;
 }
+
+
+@media (max-width: 30rem) {
+  .cred-image-heading {
+    font-size: 1.1rem;
+    height: auto;
+    margin-bottom: 3vh;
+  }
+
+  .cred-image-choose-container, .show-image-template {
+    height: 2.3rem;
+    margin-bottom: .675rem;
+    width: 100%;
+  }
+  #upload-submit {
+    padding: 0;
+  }
+  #custom-file-upload, #upload-form-name, #upload-submit, .show-cred-images, .image-credential-name, .delete-image-credential {
+    display: grid;
+    place-content: center;
+    font-size: .7rem;
+  }
+  #image-container {
+    width: 90vw;
+    height: 30vh;
+  }
+}

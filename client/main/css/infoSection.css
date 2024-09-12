@@ -47,3 +47,25 @@
   .info-btn {
     cursor: pointer;
   }
+
+@media (max-width: 30rem) {
+  .info-btn.activated > .cred-info {
+    width: 50vw;
+  }
+  .info-ele {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 23% 53% 8%;
+    gap: 5px;
+
+  }
+  .remove-ele {
+    font-size: .5rem;
+  }
+  .username-ele, .role-ele {
+    font-size: .67rem;
+    padding: 0;
+    margin: 3px;
+  }
+}
