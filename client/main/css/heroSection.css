@@ -1,24 +1,24 @@
 
 
-/* #hero-container {
-  width: calc(100 - 100vw);
+#hero-container {
+  /* width: calc(100 - 100vw);
   height: auto;
   overflow-x: hidden;
   display: grid;
   place-content: center;
   position: relative;
-  font-family: var(--heading-font);
+  font-family: var(--heading-font); */
 }
 
 .central-image-container {
-  margin: auto;
+  /* margin: auto;
     z-index: -1;
   border: 1px solid black;
   width: 45vw;
   height: 110vh;
   background-image: url(../hero-bg-c&c-main-page.png);
-  background-size: cover;
-} */
+  background-size: cover; */
+}
 
 /* .scribble-container,
 .sculpt-container,

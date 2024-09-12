@@ -9,10 +9,10 @@ const ExpressError = require("./ExpressError");
 // });
 
 // this is for docker/containerization
-const permit = new Permit({
-  pdp: "http://host.docker.internal:7766", 
-  token: process.env.PERMIT_API_KEY,
-});
+// const permit = new Permit({
+//   pdp: "http://host.docker.internal:7766", 
+//   token: process.env.PERMIT_API_KEY,
+// });
 
 module.exports.createPermitResource = async (resourceId, resourceName) => {
     const permitResource = await permit.api.createResource(

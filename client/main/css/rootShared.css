@@ -29,10 +29,10 @@
     background-color: var(--bg-color);
   }
 
-  html, body {
+  /* html, body {
     overflow-x: hidden;
   }
-  
+   */
   [href] {
     text-decoration: none;
   }

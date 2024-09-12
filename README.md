@@ -1,7 +1,5 @@
 <h1 align=center> CREDENTIAL MANAGER </h1>
 
----      
----         
 
 #### **Credential Manager** is an application that lets you manager your digital credentials and signatures such as secrets, API keys, passwords in a familiar key-value pairs with sharing feature enabled using Relationship Based Access Control (ReBAC), along with storing images as well.
 ---        
@@ -47,7 +45,7 @@
 **Database** : MongoDB      
 
 ---    
----    
+
 
 ## Installation          
 
@@ -66,7 +64,7 @@ A. Via Github repo:
         
 B. Via docker:      
 
-===       
+
 ## How does Encryption works here ?        
 To provide encryption along with the facility to share with others while maintaining your privacy and security, combination of **Symmetric key distribution** and **Proxy re-encryption** is used.     
 Flow of implementation :        
@@ -85,6 +83,15 @@ On client-side:
 
 > In this whole process ```private-key``` used for deciphering is NEVER shared with other(s) or ever reaches server. Admin or anyone can not view actual value of credentials as long as they do not have access to your crypto-keys.       
 
-    Note : Permit.io integration is only available on docker image.     
+> Note : Permit.io integration is only available on docker image.     
 
+
+---    
+## Image gallery      
+
+1. ![Screenshot 2024-09-13 010351](https://github.com/user-attachments/assets/d4da5333-50ed-4811-964d-554e58c2d5c0)
+
+2. ![Screenshot 2024-09-13 011416](https://github.com/user-attachments/assets/41e13897-4413-4336-8ca2-eb25788bb39c)
+
+3. ![Screenshot 2024-09-13 010749](https://github.com/user-attachments/assets/854cdc90-ca4c-4c37-9000-df07c5878391)
 
