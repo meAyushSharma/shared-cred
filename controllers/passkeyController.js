@@ -38,8 +38,10 @@ module.exports.generatePasskey = async (req, res) => {
     const challenge = user.passkeyChallenge;
     const verificationResult = await verifyRegistrationResponse({
       expectedChallenge: challenge,
-      expectedOrigin: "http://localhost:3005",
-      expectedRPID: "localhost",
+      // expectedOrigin: "http://localhost:3005",
+      expectedOrigin: "https://credential-manager-cdl1.onrender.com/",
+      // expectedRPID: "localhost",
+      expectedRPID: "credential-manager-cdl1.onrender.com",
       response: cred,
     });
     if (!verificationResult.verified)
@@ -61,7 +63,7 @@ module.exports.generatePasskey = async (req, res) => {
     }
     const { username } = req.body;
     const loginChallengePayload = await generateAuthenticationOptions({
-      rpID: "localhost",
+      rpID: "credential-manager-cdl1.onrender.com",
     });
     const user = await User.findOneAndUpdate(
       { username : username },
@@ -81,8 +83,8 @@ module.exports.generatePasskey = async (req, res) => {
     if(!user) throw new ExpressError(`user not found:`, 400);
     const verificationResult = await verifyAuthenticationResponse({
         expectedChallenge: user.loginPasskeyChallenge,
-        expectedOrigin: "http://localhost:3005",
-        expectedRPID: "localhost",
+        expectedOrigin: "https://credential-manager-cdl1.onrender.com/",
+        expectedRPID: "credential-manager-cdl1.onrender.com",
         response: cred,
         authenticator:{
           credentialID: user.passkey.credentialID,
