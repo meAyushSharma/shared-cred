@@ -39,7 +39,7 @@ module.exports.generatePasskey = async (req, res) => {
     const verificationResult = await verifyRegistrationResponse({
       expectedChallenge: challenge,
       // expectedOrigin: "http://localhost:3005",
-      expectedOrigin: "https://credential-manager-cdl1.onrender.com/",
+      expectedOrigin: "https://credential-manager-cdl1.onrender.com/credential-manager",
       // expectedRPID: "localhost",
       expectedRPID: "credential-manager-cdl1.onrender.com",
       response: cred,
@@ -83,7 +83,7 @@ module.exports.generatePasskey = async (req, res) => {
     if(!user) throw new ExpressError(`user not found:`, 400);
     const verificationResult = await verifyAuthenticationResponse({
         expectedChallenge: user.loginPasskeyChallenge,
-        expectedOrigin: "https://credential-manager-cdl1.onrender.com/",
+        expectedOrigin: "https://credential-manager-cdl1.onrender.com/credential-manager",
         expectedRPID: "credential-manager-cdl1.onrender.com",
         response: cred,
         authenticator:{
