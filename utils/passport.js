@@ -9,12 +9,13 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
+// callbackURL: "http://localhost:3005/credential-manager/auth/google/callback",
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3005/credential-manager/auth/google/callback",
+      callbackURL: "https://credential-manager-cdl1.onrender.com/auth/google/callback",
       passReqToCallback: true,
     },
     function (request, accessToken, refreshToken, profile, done) {

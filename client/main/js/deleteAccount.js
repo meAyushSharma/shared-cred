@@ -1,6 +1,6 @@
 document.getElementById('del-account').addEventListener('click', async () => {
     const answer = prompt("Enter your email to confirm deletion", "Enter your email/username");
-    if(answer != userName) return await showAlertBox("Answer not matching (┬┬﹏┬┬)");
+    // if(answer != userName) return await showAlertBox("Answer not matching (┬┬﹏┬┬)");
     await showAlertBox("Deleting user account....")
     const response = await fetch('/credential-manager/delete-account', {
         method: "GET",
