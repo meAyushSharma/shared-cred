@@ -32,21 +32,21 @@ module.exports.generatePasskey = async (req, res) => {
   module.exports.verifyPasskeyResult = async (req, res) => {
     console.log("at verifypasskeyresult passkey")
     const { cred } = req.body;
-    // console.log("this is cred: ", cred);
+
     const user = await User.findOne({ _id: req.userDetails._id });
     if(!user) throw new ExpressError(`user not found:`, 400);
     const challenge = user.passkeyChallenge;
+    // expectedOrigin: "http://localhost:3005",
+    // expectedRPID: "localhost",
     const verificationResult = await verifyRegistrationResponse({
       expectedChallenge: challenge,
-      // expectedOrigin: "http://localhost:3005",
-      expectedOrigin: "https://credential-manager-cdl1.onrender.com/credential-manager",
-      // expectedRPID: "localhost",
+      expectedOrigin: "https://credential-manager-cdl1.onrender.com",
       expectedRPID: "credential-manager-cdl1.onrender.com",
       response: cred,
     });
     if (!verificationResult.verified)
       return res.json({ msg: "Error, could not verify the passkey ＞︿＜" });
-    // console.log(verificationResult.registrationInfo);
+
     user.passkey = verificationResult.registrationInfo;
     user.save();
     return res.json({
@@ -83,7 +83,7 @@ module.exports.generatePasskey = async (req, res) => {
     if(!user) throw new ExpressError(`user not found:`, 400);
     const verificationResult = await verifyAuthenticationResponse({
         expectedChallenge: user.loginPasskeyChallenge,
-        expectedOrigin: "https://credential-manager-cdl1.onrender.com/credential-manager",
+        expectedOrigin: "https://credential-manager-cdl1.onrender.com",
         expectedRPID: "credential-manager-cdl1.onrender.com",
         response: cred,
         authenticator:{
