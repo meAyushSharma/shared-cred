@@ -2,7 +2,7 @@ require("../utils/passport");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/schema");
-// const permitAuthorization = require("../utils/permitAuthorization");
+const permitAuthorization = require("../utils/permitAuthorization");
 
 module.exports.passportAuthenticate = passport.authenticate("google", {
     successRedirect: "/credential-manager/success",
@@ -29,7 +29,7 @@ module.exports.googleAuthSuccess = async (req, res) => {
           },
           process.env.JWT_SECRET_KEY
         );
-        // await permitAuthorization.createPermitUser(username);
+        await permitAuthorization.createPermitUser(username);
         res.cookie("googleToken", userToken, {
           maxAge: 3 * 60 * 60 * 1000,
           httpOnly: true,

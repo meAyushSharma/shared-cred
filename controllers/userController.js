@@ -6,7 +6,7 @@ const crypto = require("node:crypto");
 const {generateRegistrationOptions,verifyRegistrationResponse,generateAuthenticationOptions,verifyAuthenticationResponse} = require("@simplewebauthn/server");
 const { isTokenAndValid } = require("../utils/catchToken");
 const ExpressError = require("../utils/ExpressError");
-// const permitAuthorization = require('../utils/permitAuthorization');
+const permitAuthorization = require('../utils/permitAuthorization');
 const cloudinary = require('../utils/cloudinary');
 const cloudinaryAPI = require('cloudinary').v2;
 const transporter = require('../utils/nodemailer');
@@ -58,7 +58,7 @@ module.exports.registerUser = async (req, res) => {
         process.env.JWT_SECRET_KEY
       );
       console.log("user created and signed in successfully");
-      // await permitAuthorization.createPermitUser(user.username);
+      await permitAuthorization.createPermitUser(user.username);
       res.cookie("token", token, {
         maxAge: 3 * 60 * 60 * 1000,
         httpOnly: true,
@@ -310,11 +310,11 @@ module.exports.deleteAccount = async (req, res) => {
     const check = await deleteMultipleImages(public_ids);
     if(!check) return res.status(500).json({ msg: "Error in deleting image credentials", success: false });
   }
-  // const resourcesForPermit = await Resource.find({resourceOwner: req.userDetails._id});
+  const resourcesForPermit = await Resource.find({resourceOwner: req.userDetails._id});
   // delete permit resources
-  // for(let resource of resourcesForPermit){
-  //   await permitAuthorization.deleteResource(resource._id);
-  // }
+  for(let resource of resourcesForPermit){
+    await permitAuthorization.deleteResource(resource._id);
+  }
   const resources = await Resource.deleteMany({resourceOwner: req.userDetails._id});
   if(!resources) return res.status(500).json({ msg: "Error in deleting credentials", success: false });
   const resourcesAssociated = await Resource.updateMany(
@@ -334,7 +334,7 @@ module.exports.deleteAccount = async (req, res) => {
     }
   );
   await deletedUser.deleteOne();
-  // await permitAuthorization.deleteUser(req.userDetails.username);
+  await permitAuthorization.deleteUser(req.userDetails.username);
   if(!resourcesAssociated) return res.status(500).json({ msg: "Error in deleting shared with info", success: false });
   res.clearCookie("token");
   res.clearCookie("googleToken");
