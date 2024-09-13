@@ -114,7 +114,7 @@ meayush/credential-manager:v1.0
 ### C. Run the application locally and build your own image:       
 
 > Note : For this setup you need docker installed and set up.     
-1. Ensure you have git-local branch forked and cloned.     
+1. Ensure you have git-local branch forked and cloned, copy from ```.env.example``` and paste in newly created ```.env``` with right values and remove ```.env``` from ```.dockerignore``` file.         
 2. Checkout on git-local branch by running ```git checkout git-local```.      
 3. Run following commands:      
 ```sh
