@@ -91,5 +91,10 @@ router.get('/show-shared-resources', userAuth, catchAsync(resourceController.sho
 router.post('/show-resource-info', userAuth, catchAsync(resourceController.showResourceInfo));
 router.post('/remove-resource-permission', userAuth, catchAsync(resourceController.removeResourcePermission));
 
+// health route
+router.get('/health', (req, res) => {
+    return res.status(200).send("Health is OK, working fine (～￣▽￣)～");
+});
+
 
 module.exports = { router };
