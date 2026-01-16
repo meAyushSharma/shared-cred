@@ -115,10 +115,12 @@ router.post('/remove-resource-permission', userAuth, catchAsync(resourceControll
 router.get("/health", (req, res) => {
   return res.status(200).json({
     status: "ok",
+    message: "Health is OK, working fine (～￣▽￣)～",
     service: "credential-manager",
     timestamp: new Date().toISOString()
   });
 });
+
 
 // wildcard routes
 router.get("*", (req, res) => {
