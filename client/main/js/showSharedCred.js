@@ -6,7 +6,7 @@ showSharedBtn.addEventListener('click', async e =>{
   viewerContainer.innerHTML = "";
   editorContainer.innerHTML="";
   authorContainer.innerHTML = "";
-  const response = await fetch("/credential-manager/show-shared-resources", {
+  const response = await fetch("/show-shared-resources", {
     method: "GET",
     headers : {
       'Content-Type': 'application/json'

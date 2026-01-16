@@ -2,7 +2,7 @@ document.getElementById('login-form').addEventListener('submit', async e=>{
     e.preventDefault();
     const username = document.getElementById('login-username').value.toLowerCase().trim();
     const password = document.getElementById('login-password').value.trim();
-    const response = await fetch('/credential-manager/login', {
+    const response = await fetch('/login', {
         "method": "POST",
         "headers": {
             "Content-Type": "application/json",
@@ -23,7 +23,7 @@ document.getElementById('login-form').addEventListener('submit', async e=>{
 document.getElementById('passkey-login-form').addEventListener('submit', async e => {
     e.preventDefault();
     const username = document.getElementById('passkey-login-username').value;
-    const response = await fetch('/credential-manager/login-passkey', {
+    const response = await fetch('/login-passkey', {
         "method": "POST",
         "headers": {
             "Content-Type": "application/json",
@@ -36,7 +36,7 @@ document.getElementById('passkey-login-form').addEventListener('submit', async e
     const authenticationResult = await SimpleWebAuthnBrowser.startAuthentication(result.options);
     console.log(authenticationResult);
 
-    const verificationResult = await fetch('/credential-manager/verify-login-passkey', {
+    const verificationResult = await fetch('/verify-login-passkey', {
         method: "POST",
         headers : {
             'Content-Type': "application/json"
@@ -49,7 +49,7 @@ document.getElementById('passkey-login-form').addEventListener('submit', async e
     const verificationResponse = await verificationResult.json();
     if(verificationResponse.verified){
         console.log("verified");
-        window.location.href = "/credential-manager"
+        window.location.href = "/"
     }
 })
 
@@ -70,5 +70,5 @@ document.getElementById('login-password').addEventListener('mouseout', (e) => {
 });
 
 document.getElementById('forgot-pass-btn').addEventListener('click', async (e) => {
-    window.location.href = '/credential-manager/forgot-password';
+    window.location.href = '/forgot-password';
 })

@@ -8,7 +8,7 @@ document
       if (credContainer) {
         await showAlertBox("Deleting credential....");
         // send fetch request
-        fetch("/credential-manager/delete-resource", {
+        fetch("/delete-resource", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

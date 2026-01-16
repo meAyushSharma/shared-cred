@@ -13,7 +13,8 @@ module.exports.generatePasskey = async (req, res) => {
     console.log("at generate passkey")
     const challengePayLoad = await generateRegistrationOptions({
       // rpID: "localhost",
-      rpID: "credential-manager-cdl1.onrender.com",
+      // rpID: "credential-manager-cdl1.onrender.com",
+      rpID: "cred.byayush.com",
       rpName: "My machine",
       userName: req.userDetails.username,
     });
@@ -38,10 +39,11 @@ module.exports.generatePasskey = async (req, res) => {
     const challenge = user.passkeyChallenge;
     // expectedOrigin: "http://localhost:3005",
     // expectedRPID: "localhost",
+    // expectedOrigin: "https://credential-manager-cdl1.onrender.com",
     const verificationResult = await verifyRegistrationResponse({
       expectedChallenge: challenge,
-      expectedOrigin: "https://credential-manager-cdl1.onrender.com",
-      expectedRPID: "credential-manager-cdl1.onrender.com",
+      expectedOrigin: "https://cred.byayush.com",
+      expectedRPID: "cred.byayush.com",
       response: cred,
     });
     if (!verificationResult.verified)
@@ -59,11 +61,12 @@ module.exports.generatePasskey = async (req, res) => {
     const response = await isTokenAndValid(req, res);
     if (response != null) {
       console.log("user logged while passkey login through token successfully! ", response);
-      return res.redirect(200, "/credential-manager");
+      return res.redirect(200, "/");
     }
     const { username } = req.body;
+    // rpID: "credential-manager-cdl1.onrender.com",
     const loginChallengePayload = await generateAuthenticationOptions({
-      rpID: "credential-manager-cdl1.onrender.com",
+      rpID: "cred.byayush.com",
     });
     const user = await User.findOneAndUpdate(
       { username : username },
@@ -83,8 +86,8 @@ module.exports.generatePasskey = async (req, res) => {
     if(!user) throw new ExpressError(`user not found:`, 400);
     const verificationResult = await verifyAuthenticationResponse({
         expectedChallenge: user.loginPasskeyChallenge,
-        expectedOrigin: "https://credential-manager-cdl1.onrender.com",
-        expectedRPID: "credential-manager-cdl1.onrender.com",
+        expectedOrigin: "https://cred.byayush.com",
+        expectedRPID: "cred.byayush.com",
         response: cred,
         authenticator:{
           credentialID: user.passkey.credentialID,

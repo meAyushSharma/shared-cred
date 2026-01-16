@@ -20,13 +20,13 @@ module.exports.sendStaticMain = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
     return res.sendFile(path.join(__dirname, "../client", "main/main.html"));
-  } else return res.redirect("/credential-manager/signup");
+  } else return res.redirect("/signup");
 };
 
 module.exports.sendStaticSignup = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
-    res.redirect("/credential-manager");
+    res.redirect("/");
   } else {
     res.sendFile(path.join(__dirname, "../client", "signup/signup.html"));
   }
@@ -35,7 +35,7 @@ module.exports.sendStaticSignup = async (req, res) => {
 module.exports.registerUser = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
-    return res.redirect("/credential-manager");
+    return res.redirect("/");
   }
   const username = req.body.username.toLowerCase().trim();
   const password = req.body.password;
@@ -43,7 +43,7 @@ module.exports.registerUser = async (req, res) => {
   const publicKey = req.body.publicKey;
   if (!username || !password || !name) {
     console.log("missing fileds in signup");
-    return res.redirect("/credential-manager/signup");
+    return res.redirect("/signup");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { username: username, password: hashedPassword, name: name, publicKey: publicKey };
@@ -66,7 +66,7 @@ module.exports.registerUser = async (req, res) => {
         sameSite: "Strict",
         path: "/",
       });
-      return res.redirect("/credential-manager");
+      return res.redirect("/");
     });
   } catch (err) {
     console.log("the error in creating user is: " + err);
@@ -81,7 +81,7 @@ module.exports.registerUser = async (req, res) => {
 module.exports.sendStaticLogin = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
-    res.redirect("/credential-manager");
+    res.redirect("/");
   } else {
     const filePath = path.join(__dirname, "../client", "login/login.html");
     res.sendFile(filePath, (err) => {
@@ -102,7 +102,7 @@ module.exports.loginUser = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
     console.log("user logged in successfully! ");
-    return res.redirect(200, "/credential-manager");
+    return res.redirect(200, "/");
   }
   const username = req.body.username;
   const password = req.body.password;
@@ -111,24 +111,24 @@ module.exports.loginUser = async (req, res) => {
 
   if (!username || !password) {
     console.log("no username or password in /login form {missing fields} : backend");
-    return res.redirect(200, "/credential-manager/signup");
+    return res.redirect(200, "/signup");
   }
   User.findOne({ username: username })
     .then(async (ifUserExist) => {
       if (!ifUserExist) {
         console.log("NO USER FOUND in db /login ");
-        return res.redirect("/credential-manager/signup");
+        return res.redirect("/signup");
       }
       if(!ifUserExist.password){
         console.log("No hashed password in db, must have signed up with google")
-        return res.redirect("/credential-manager/signup");
+        return res.redirect("/signup");
       }
       console.log("this is hashed password: ", ifUserExist.password);
       const isMatch = bcrypt.compareSync(password, ifUserExist.password);
       console.log(`password matching in logging:::: ${isMatch}`);
       if (!isMatch) {
         console.log("WRONG CREDENTIALS in /login");
-        return res.redirect("/credential-manager/signup");
+        return res.redirect("/signup");
       }
       console.log("user is logging through body inputs!");
       const token = jwt.sign(
@@ -147,7 +147,7 @@ module.exports.loginUser = async (req, res) => {
         path: "/",
       });
       console.log("user logged and token created/stored successfully");
-      return res.redirect(200, "/credential-manager");
+      return res.redirect(200, "/");
     })
     .catch((err) => {
       throw new ExpressError(`the error during logging with req.body in /login is:  ${err}`, 500);
@@ -161,7 +161,7 @@ module.exports.logoutUser = (req, res) => {
   req.logout(function(err) {
     if (err) { console.log('the error dstroying the session is: ', err); }
     console.log("Logging out...");
-    res.redirect("/credential-manager/signup");
+    res.redirect("/signup");
   });
 };
 

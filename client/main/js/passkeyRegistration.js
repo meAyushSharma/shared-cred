@@ -1,7 +1,7 @@
 
 const registrationPasskeyBtn = document.getElementById("passkey-registration-btn");
 registrationPasskeyBtn.addEventListener('click', async e => {
-  const response = await fetch('/credential-manager/register-passkey', {
+  const response = await fetch('/register-passkey', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -9,7 +9,7 @@ registrationPasskeyBtn.addEventListener('click', async e => {
   });
   const result = await response.json();
   const passkeyAuthResult = await SimpleWebAuthnBrowser.startRegistration(result.options);
-  const verificationResult = await fetch('/credential-manager/verify-passkey', {
+  const verificationResult = await fetch('/verify-passkey', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

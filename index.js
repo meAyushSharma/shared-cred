@@ -10,8 +10,10 @@ const cors = require('cors');
 
 const app = express();
 
+
+//   origin: 'https://credential-manager-cdl1.onrender.com',
 app.use(cors({
-  origin: 'https://credential-manager-cdl1.onrender.com',
+  origin: 'https://cred.byayush.com',
   credentials: true
 }));
 
@@ -32,7 +34,10 @@ app.use(session({
 
 
 
-app.use("/credential-manager", router);
+// app.use("/credential-manager", router);
+
+// for new domain
+app.use("/", router);
 
 // middleware to catch errors
 app.use((err, req, res, next) => {
@@ -41,5 +46,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(process.env.PORT || 3005, '0.0.0.0',  () => {
-  console.log(`server running on: http://localhost:${process.env.PORT}/credential-manager/`);
+  console.log(`server running on: http://localhost:${process.env.PORT}/`);
 });

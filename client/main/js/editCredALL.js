@@ -14,7 +14,7 @@ async function editOnClickHandler(increment, role){
         return;
       }
       await showAlertBox("Editing credential....");
-      const response = await fetch('/credential-manager/encrypted-symmetric-key', {
+      const response = await fetch('/encrypted-symmetric-key', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -27,7 +27,7 @@ async function editOnClickHandler(increment, role){
       const symmetricKey = await convertTokey(result.symmetricKeyBase64);
       const resourceValue = await encryptData(symmetricKey, newValue);
 
-      await fetch('/credential-manager/edit-resource', {
+      await fetch('/edit-resource', {
         "method": "POST",
         "headers": {
           "content-type": "application/json"
@@ -73,7 +73,7 @@ async function editOnClickHandler(increment, role){
       }
 
       await showAlertBox("Editing credential....");
-      const response = await fetch('/credential-manager/encrypted-symmetric-key-shared', {
+      const response = await fetch('/encrypted-symmetric-key-shared', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -86,7 +86,7 @@ async function editOnClickHandler(increment, role){
       const symmetricKey = await convertTokey(result.symmetricKeyBase64);
       const resourceValue = await encryptData(symmetricKey, newValue);
 
-      fetch('/credential-manager/edit-resource', {
+      fetch('/edit-resource', {
         "method": "POST",
         "headers": {
           "content-type": "application/json"
@@ -132,7 +132,7 @@ async function editOnClickHandler(increment, role){
       }
 
       await showAlertBox("Editing credential....");
-      const response = await fetch('/credential-manager/encrypted-symmetric-key-shared', {
+      const response = await fetch('/encrypted-symmetric-key-shared', {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -145,7 +145,7 @@ async function editOnClickHandler(increment, role){
       const symmetricKey = await convertTokey(result.symmetricKeyBase64);
       const resourceValue = await encryptData(symmetricKey, newValue);
 
-      fetch('/credential-manager/edit-resource', {
+      fetch('/edit-resource', {
         "method": "POST",
         "headers": {
           "content-type": "application/json"

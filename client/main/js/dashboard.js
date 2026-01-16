@@ -1,7 +1,7 @@
 const dashboardBtn = document.querySelector('#dashboard-dropdown .logout');
 dashboardBtn.addEventListener('click', async e => {
     await deleteKeys();
-    window.location.href = "/credential-manager/logout"
+    window.location.href = "/logout"
 });
 
 document.getElementById('reset-btn').addEventListener('click', (e) => {
@@ -51,7 +51,7 @@ document.getElementById('reset-submit').addEventListener('click', async () => {
     const newPass = document.getElementById('reset-password').value;
     const confirmPass = document.getElementById('confirm-password').value;
     if(!(newPass === confirmPass)) return await showAlertBox("Password not matching");
-    const response = await fetch("/credential-manager/reset-password", {
+    const response = await fetch("/reset-password", {
         method: "POST",
         headers: {
             'Content-Type': "application/json"

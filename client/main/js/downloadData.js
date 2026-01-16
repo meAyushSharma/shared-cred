@@ -1,5 +1,5 @@
 document.getElementById('download-cred').addEventListener('click', async () => {
-    const response = await fetch('/credential-manager/download-data', {
+    const response = await fetch('/download-data', {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

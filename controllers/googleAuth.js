@@ -5,8 +5,8 @@ const { User } = require("../models/schema");
 // const permitAuthorization = require("../utils/permitAuthorization");
 
 module.exports.passportAuthenticate = passport.authenticate("google", {
-    successRedirect: "/credential-manager/success",
-    failureRedirect: "/credential-manager/failure",
+    successRedirect: "/success",
+    failureRedirect: "/failure",
 })
 
 module.exports.passportScope = passport.authenticate("google", { scope: ["email", "profile"] })
@@ -37,7 +37,7 @@ module.exports.googleAuthSuccess = async (req, res) => {
           sameSite: "Strict",
           path: '/',
         });
-        return res.redirect(200, "/credential-manager"); // return, not really needed here
+        return res.redirect(200, "/"); // return, not really needed here
       });
     } else {
   
@@ -58,7 +58,7 @@ module.exports.googleAuthSuccess = async (req, res) => {
         path: '/'
       });
       // console.log("googleToken saved in else statement /success");
-      return res.redirect("/credential-manager");
+      return res.redirect("/");
     }
 }
 

@@ -25,7 +25,7 @@ function createShowResourceInfoEle(username, role, increment) {
   async function infoBtnOnClickHandler(increment) {
     const res = document.getElementsByClassName(`new-class${increment}`)[0];
     const resId = res.id;
-    fetch('/credential-manager/show-resource-info', {
+    fetch('/show-resource-info', {
       method:"POST",
       headers: {
         'Content-Type' : "application/json"

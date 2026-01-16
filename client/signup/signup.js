@@ -8,7 +8,7 @@ document.getElementById('signup-form').addEventListener('submit', async e=>{
         const exportedPublicKey = await exportPublicKey(keyPair.publicKey);
 
         storeKeys(keyPair.privateKey, keyPair.publicKey).then(async ()=> {
-            const response = await fetch('/credential-manager/signup', {
+            const response = await fetch('/signup', {
                 "method": "POST",
                 "headers": {
                     "Content-Type": "application/json",
@@ -149,5 +149,5 @@ document.getElementById('google-text').addEventListener('click', async function 
     event.preventDefault();
     const keyPair = await generateKeyPair();
     await storeKeys(keyPair.privateKey, keyPair.publicKey);
-    window.location.href = `/credential-manager/auth/google`;
+    window.location.href = `/auth/google`;
 });

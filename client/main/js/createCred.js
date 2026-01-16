@@ -94,7 +94,7 @@ async function sendDataGetResponse(credKey, credValue) {
       const arrayBufferEncryptedSymmetricKey = await encryptSymmetricKey(key, publicKey);
       const stringEncryptedSymmetricKey = arrayBufferToBase64(arrayBufferEncryptedSymmetricKey);
       const encryptedCredValue = await encryptData(key, credValue);
-      const response = await fetch("/credential-manager/create-resource", {
+      const response = await fetch("/create-resource", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -157,7 +157,7 @@ addBtn.addEventListener("click", async () => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const response = await fetch('/credential-manager/check-public-key', {
+  const response = await fetch('/check-public-key', {
     method: "GET",
     headers: {
       'Content-Type': "application/json"
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if(result.publicKey == ""){
     const publicKey = await getPublicKey();
     const exportedPublicKey = await exportPublicKeyToBase64(publicKey);
-    const sendPublicKey = await fetch('/credential-manager/set-public-key', {
+    const sendPublicKey = await fetch('/set-public-key', {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ publicKey: exportedPublicKey })

@@ -121,7 +121,7 @@
             e.preventDefault();
             const username = document.getElementById('username').value.toLowerCase().trim();
             if(username == "") return alert("Missing email");
-            const response = await fetch('/credential-manager/send-username-forgot-pass', {
+            const response = await fetch('/send-username-forgot-pass', {
                 method: "POST",
                 headers: { "Content-Type": 'application/json'},
                 body: JSON.stringify({ username: username })
@@ -141,7 +141,7 @@
             if(username == "") return alert("Missing Email field");
             if(newPass == "" || confirmPass == "" || enterCode == "") return alert("Missing fields");
             if(newPass != confirmPass) return alert("Values not matching.");
-            const response = await fetch("/credential-manager/verify-code-change-pass", {
+            const response = await fetch("/verify-code-change-pass", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ newPass, enterCode, username })
@@ -149,7 +149,7 @@
             const result = await response.json();
             if(!result.success) return alert("Some error occured");
             alert("Updated password successfully!");
-            window.location.href = '/credential-manager/login'
+            window.location.href = '/login'
         })
     </script>
 </body>

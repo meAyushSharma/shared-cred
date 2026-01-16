@@ -12,7 +12,7 @@ document.getElementById('upload-submit').addEventListener('click', async functio
       formData.append('credImage', credImage);
     }
     formData.append('name', name);
-    fetch('/credential-manager/upload', {
+    fetch('/upload', {
       method: 'POST',
       body: formData,
     })
@@ -38,7 +38,7 @@ document.getElementById('upload-submit').addEventListener('click', async functio
   });
 
 document.getElementById('show-image').addEventListener('click', async () => {
-  const response = await fetch('/credential-manager/get-images', {
+  const response = await fetch('/get-images', {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,7 @@ async function deleteImage(increment, imageURL) {
   const userId = document.getElementsByClassName(`delete-image-credential${increment}`)[0].closest('.show-image-template').id;
   const showImageTemplate = document.getElementById(`${userId}`);
   showImageTemplate.remove();
-  const response = await fetch('/credential-manager/delete-cred-image', {
+  const response = await fetch('/delete-cred-image', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

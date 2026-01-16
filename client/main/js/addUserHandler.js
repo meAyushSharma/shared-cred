@@ -18,7 +18,7 @@ async function addUserOnclickHandler(increment) {
     }
     await showAlertBox("Sharing credential....");
     console.log(`member: ${member} && roleIs: ${roleIs} && credId is: ${credId}`);
-    const response = await fetch('/credential-manager/encrytption-info', { 
+    const response = await fetch('/encrytption-info', { 
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,7 +42,7 @@ async function addUserOnclickHandler(increment) {
     }
     // console.log("its base64, to be saved in db of member: ", stringEncryptedSymmetricKey);
 
-    fetch("/credential-manager/add-user", {
+    fetch("/add-user", {
       method: "POST",
       headers: {
         "content-type": "application/json",
