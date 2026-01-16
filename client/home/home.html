@@ -3,107 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Credential Manager | Zero-Knowledge Security</title>
-  <link rel="icon" href="lock-2-fill.svg" type="image/icon type" height="32px" aspect-ratio="1/1"/>
+  <title>Credential Manager | Secure Sovereignty</title>
+   <link rel="icon" href="lock-2-fill.svg" type="image/icon type" height="32px" aspect-ratio="1/1"/>
   <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <nav class="glass-nav">
-    <div class="nav-container">
-      <img src="./removed background logo.png" alt="logo" class="logo-img" />
-      <div class="nav-actions">
-        <a href="/login" class="link-login">Login</a>
-        <a href="/signup" class="btn-nav">Get Started</a>
+  <nav class="glossy-nav">
+    <div class="nav-inner">
+      <div class="logo-area">
+        <img src="./removed background logo.png" alt="logo" class="logo-icon" />
+        <span class="logo-text">CREDENTIAL MGR.</span>
+      </div>
+      <div class="nav-links">
+        <a href="#guide">Guide</a>
+        <a href="#faq">Security FAQ</a>
+        <a href="/login" class="nav-secondary">Login</a>
+        <a href="/signup" class="nav-primary">Get Started</a>
       </div>
     </div>
   </nav>
 
-  <header class="hero">
+  <header class="hero-gloss">
     <div class="hero-container">
-      <div class="hero-content">
-        <div class="reveal-text">
-          <span class="badge-outline">
-            <i class="ri-shield-check-fill"></i> E2EE + Proxy Re-Encryption
-          </span>
-          <h1>Your digital keys, <br/><span class="text-serif">perfectly organized.</span></h1>
-          <p>Efficiently store, share, and manage your credentials in a single, zero-knowledge vault. Decryption happens on your device, not our server.</p>
-          <div class="hero-btns">
-            <a href="/signup" class="btn-main">Create Your Vault</a>
-            <a href="#features" class="btn-ghost">View Features</a>
-          </div>
+      <div class="hero-text">
+        <div class="tldr-pill">TL;DR: Secure, private, cross-platform access.</div>
+        <h1>Management for <span class="gloss-text">Developers.</span></h1>
+        <p class="hero-sub">Taking away the pain of storing sensitive keys on your machine. Efficiently share credentials while maintaining 100% data sovereignty.</p>
+        <div class="hero-actions">
+          <a href="/signup" class="btn-gloss">Create Vault</a>
+          <a href="https://github.com/meAyushSharma/shared-cred" class="btn-outline"><i class="ri-github-fill"></i> View Repo</a>
         </div>
       </div>
-      <div class="hero-image-wrapper">
-        <div class="floating-blob"></div>
-        <img src="cred.png" alt="Secure Visual" class="main-hero-img" />
+      <div class="hero-visual">
+        <div class="glass-card-stack">
+          <img src="cred.png" alt="Dashboard Preview" class="hero-img" />
+        </div>
       </div>
     </div>
   </header>
 
-  <section class="trust-section" id="features">
-    <div class="section-intro">
-      <span class="subtitle">Our Philosophy</span>
-      <h2 class="section-title">Built for efficiency & trust</h2>
+  <section class="info-grid">
+    <div class="info-card vision">
+      <h2>Vision</h2>
+      <ul>
+        <li>Securely manage credentials privately.</li>
+        <li>Eliminate local machine storage risks.</li>
+        <li>Multi-platform service in just a few clicks.</li>
+      </ul>
     </div>
-    
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-eye-off-line"></i></div>
-        <h3>Zero-Knowledge</h3>
-        <p>Decryption happens exclusively on the client-side. We never receive your private keys, ensuring absolute privacy.</p>
-      </div>
 
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-share-forward-box-line"></i></div>
-        <h3>Granular Sharing</h3>
-        <p>Assign Viewer, Editor, or Author roles with precision. You remain the sole authority over shared data.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-image-line"></i></div>
-        <h3>Image Vault</h3>
-        <p>Securely manage image-based credentials up to 1MB. Perfect for identity cards and secure QR codes.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-fingerprint-line"></i></div>
-        <h3>Passkey & SSO</h3>
-        <p>Experience seamless auth. Use Google SSO or modern Passkeys for a passwordless future.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-markdown-line"></i></div>
-        <h3>Markdown Exports</h3>
-        <p>Your data belongs to you. Export your vault in beautiful Markdown format in a single click.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="icon-wrap"><i class="ri-instance-line"></i></div>
-        <h3>Docker Ready</h3>
-        <p>Deploy your own instance. Decouple authorization logic using Permit.io for pro-grade management.</p>
+    <div class="info-card features">
+      <h2>Core Features</h2>
+      <div class="feature-tags">
+        <span><i class="ri-lock-star-line"></i> E2EE</span>
+        <span><i class="ri-share-line"></i> RBAC Sharing</span>
+        <span><i class="ri-cloud-line"></i> Image Vault</span>
+        <span><i class="ri-fingerprint-line"></i> Passkeys</span>
+        <span><i class="ri-markdown-line"></i> MD Exports</span>
       </div>
     </div>
   </section>
 
-  <section class="cta-banner">
-    <div class="cta-content">
-      <h2>Real Security, No Compromises.</h2>
-      <p>Using Symmetric key distribution, we ensure your private key never leaves your device. Not on login, not during sharing, not ever.</p>
-      <a href="/signup" class="btn-white">Start Securing Your Data</a>
+  <section class="guide-section" id="guide">
+    <div class="content-wrapper">
+      <h2 class="section-label">Interface Guide</h2>
+      <div class="guide-grid">
+        <div class="guide-item">
+          <i class="ri-dashboard-fill"></i>
+          <p><strong>Dashboard:</strong> Your central hub for vault management.</p>
+        </div>
+        <div class="guide-item">
+          <i class="ri-add-box-line"></i>
+          <p><strong>Add & Refresh:</strong> Quickly create or sync your vault.</p>
+        </div>
+        <div class="guide-item">
+          <i class="ri-information-fill"></i>
+          <p><strong>Members:</strong> Manage ReBAC permissions (Viewer, Editor, Author).</p>
+        </div>
+      </div>
+      
+      <div class="key-warning-card">
+        <h3><i class="ri-key-2-line"></i> Critical: Exporting Keys</h3>
+        <p>You MUST export your crypto-keys from the dashboard. These are ZIP files containing your local private keys. Without them, your data is unrecoverable on new browsers or devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section" id="faq">
+    <div class="content-wrapper">
+      <h2 class="section-label">Security Deep Dive</h2>
+      
+      <div class="faq-item">
+        <h3>Why trust Credential Manager?</h3>
+        <p>We use End-to-End Encryption (E2EE). Your data is encrypted in the browser before storage. We never touch your 'private key'. You, and those you explicitly authorize, are the only ones who can ever decipher the values.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How does encryption work?</h3>
+        <p>We use Symmetric Key distribution combined with Proxy Re-Encryption. Your credential value is locked with a symmetric key, which is then wrapped in your Public Key. The Private Key stays in your browser's IndexDB, never hitting our servers.</p>
+        
+      </div>
+
+      <div class="faq-item">
+        <h3>How does sharing work?</h3>
+        <p>We implement Relationship Based Access Control (ReBAC). You can grant roles like <strong>Viewer</strong> (view only), <strong>Editor</strong> (edit only), or <strong>Author</strong> (delete permissions). Access can be revoked instantly without compromising the master security of the vault.</p>
+      </div>
     </div>
   </section>
 
   <footer>
-    <div class="footer-container">
-      <div class="footer-left">
-        <p>&copy; 2026 Credential Manager. <br/>Designed for Sovereignty.</p>
-      </div>
-      <div class="footer-right">
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
+    <div class="footer-inner">
+      <p>&copy; 2026 Credential Manager. Built for the privacy-conscious developer.</p>
+      <div class="footer-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="mailto:lethimcookforgodssake@gmail.com">Contact</a>
       </div>
     </div>
   </footer>
