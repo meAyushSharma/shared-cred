@@ -1,7 +1,7 @@
 document.getElementById('login-form').addEventListener('submit', async e=>{
     e.preventDefault();
     const username = document.getElementById('login-username').value.toLowerCase().trim();
-    const password = document.getElementById('login-password').value.trim();
+    const password = document.getElementById('login-password').value;
     const response = await fetch('/login', {
         "method": "POST",
         "headers": {
@@ -20,55 +20,67 @@ document.getElementById('login-form').addEventListener('submit', async e=>{
     }
 })
 
-document.getElementById('passkey-login-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const username = document.getElementById('passkey-login-username').value;
-    const response = await fetch('/login-passkey', {
-        "method": "POST",
-        "headers": {
-            "Content-Type": "application/json",
-        },
-        "body": JSON.stringify({
-            username: username
-        })
-    });
-    const result = await response.json();
-    const authenticationResult = await SimpleWebAuthnBrowser.startAuthentication(result.options);
-    console.log(authenticationResult);
+document.getElementById("passkey-login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const verificationResult = await fetch('/verify-login-passkey', {
-        method: "POST",
-        headers : {
-            'Content-Type': "application/json"
-        },
-        body: JSON.stringify({
-            cred: authenticationResult,
-            username: username
-        })
+  // 1. Ask server for generic auth options
+  const response = await fetch("/login-passkey", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  });
+
+  const { options } = await response.json();
+
+  // 2. Browser handles passkey selection (or failure)
+  const authenticationResult =
+    await SimpleWebAuthnBrowser.startAuthentication(options);
+
+  // 3. Send assertion back — server infers user from credential ID
+  const verificationResult = await fetch("/verify-login-passkey", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      cred: authenticationResult
     })
-    const verificationResponse = await verificationResult.json();
-    if(verificationResponse.verified){
-        console.log("verified");
-        window.location.href = "/"
-    }
-})
+  });
 
-document.getElementById('login-password').addEventListener('mouseover', (e) => {
-    if(e.target.type === 'text'){
-        e.target.type = 'text'
-    }else{
-        e.target.type = 'text';
-    }
+  if (!verificationResult.ok) {
+    const text = await verificationResult.text();
+    throw new Error(text);
+  }
+
+  const verificationResponse = await verificationResult.json();
+
+  if (verificationResponse.verified) {
+    window.location.href = "/";
+  } else {
+    alert("Passkey verification failed.");
+  }
 });
 
-document.getElementById('login-password').addEventListener('mouseout', (e) => {
-    if(e.target.type === 'password'){
-        e.target.type = 'password'
-    }else{
-        e.target.type = 'password';
-    }
+
+const loginPwd = document.getElementById("login-password");
+const toggleLoginPwd = document.getElementById("toggle-login-password");
+
+toggleLoginPwd.addEventListener("change", () => {
+  loginPwd.type = toggleLoginPwd.checked ? "text" : "password";
 });
+
 
 document.getElementById('forgot-pass-btn').addEventListener('click', async (e) => {
     window.location.href = '/forgot-password';
 })
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!window.PublicKeyCredential) return;
+
+  try {
+    // Small delay so UI paints first
+    setTimeout(() => {
+      document.getElementById("passkey-submit")?.click();
+    }, 300);
+  } catch (e) {
+    console.log("Passkey auto-start skipped:", e);
+  }
+});

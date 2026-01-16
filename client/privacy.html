@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service | Credential Manager</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #f9f9f6;
+      --card-bg: #ffffff;
+      --accent-beige: #8c8c73;
+      --accent-beige-light: #aeae9d;
+      --text-main: #262626;
+      --text-muted: #6b6b5b;
+      --input-border: #d1d1c7;
+      --heading-font: "General Sans", sans-serif;
+      --body-font: "Cabinet Grotesk", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      font-family: var(--body-font);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 60px 20px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 3rem;
+      border-radius: 16px;
+      border: 1px solid var(--accent-beige-light);
+      box-shadow: 0 10px 30px rgba(140, 140, 115, 0.1);
+    }
+
+    .tos-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--input-border);
+      padding-bottom: 2rem;
+    }
+
+    .version-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      color: var(--accent-beige);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+
+    /* Quick Summary Section */
+    .summary-card {
+      background-color: #fdfdfb;
+      border: 1px dashed var(--accent-beige-light);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+    }
+
+    .summary-card h3 {
+      font-family: var(--heading-font);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      color: var(--accent-beige);
+    }
+
+    h2 {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--text-muted);
+    }
+
+    ul {
+      margin: 1rem 0 1rem 1.5rem;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .legal-notice {
+      font-size: 0.85rem;
+      font-style: italic;
+      border-top: 1px solid var(--input-border);
+      padding-top: 2rem;
+      margin-top: 3rem;
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--accent-beige);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .back-btn:hover {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 30px 15px; }
+      .container { padding: 1.5rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tos-header">
+      <span class="version-tag">Version 1.0 — 2026</span>
+      <h1>Terms of Service</h1>
+    </div>
+
+    <div class="summary-card">
+      <h3>Quick Summary</h3>
+      <p style="margin-bottom: 0; font-size: 0.95rem;">
+        You own your data. We use end-to-end encryption so we can't see your passwords. 
+        <strong>If you lose your encryption keys, we cannot recover your data.</strong> 
+        Don't use the service for illegal activities.
+      </p>
+    </div>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>
+      By creating an account or using Credential Manager, you agree to be bound by these terms. 
+      If you do not agree, please do not use the service.
+    </p>
+
+    <h2>2. User Responsibility & Encryption</h2>
+    <p>
+      Credential Manager is a security-first tool. Because we utilize end-to-end encryption:
+    </p>
+    <ul>
+      <li>You are solely responsible for maintaining the safety of your master keys and backup files.</li>
+      <li>Loss of keys results in permanent loss of data; our administrators cannot "reset" your encryption.</li>
+      <li>You agree to provide accurate identification (Email and Name) during signup.</li>
+    </ul>
+
+    <h2>3. Prohibited Use</h2>
+    <p>
+      You may not use this service to store or distribute malicious software, stolen credentials, 
+      or any data that violates local or international laws.
+    </p>
+
+    <h2>4. Service Availability</h2>
+    <p>
+      While we strive for 100% uptime, the service is provided "as-is." We are not liable for 
+      any loss of data or service interruptions. We recommend periodic exports of your 
+      encrypted vaults.
+    </p>
+
+    <h2>5. Termination</h2>
+    <p>
+      We reserve the right to suspend or terminate accounts that violate these terms or 
+      engage in behavior that threatens the security of the platform.
+    </p>
+
+    <div class="legal-notice">
+      <p>
+        These terms may be updated periodically. Continued use of the platform after changes 
+        constitutes acceptance of the new terms.
+      </p>
+    </div>
+
+    <a href="/" class="back-btn">Back to Application</a>
+  </div>
+</body>
+</html>

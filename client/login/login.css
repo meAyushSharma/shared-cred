@@ -108,3 +108,83 @@
     left: calc(50% - 40%);
   }
 }
+
+
+
+/* Password group */
+.password-group {
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Match existing input styles */
+.password-group input[type="password"],
+.password-group input[type="text"] {
+  padding: 8px;
+  font-size: 0.9rem;
+  font-family: var(--heading-font);
+  border: 2px solid var(--about-credential-heading-color);
+  border-radius: 3px;
+}
+
+/* Toggle */
+.toggle-password {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-password input {
+  cursor: pointer;
+}
+
+.toggle-password:hover span {
+  color: var(--classic-blue);
+}
+
+/* Override generic form padding if needed */
+#login-form > .password-group {
+  padding: 0;
+}
+
+
+
+.passkey-login-heading {
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 10px 0;
+  color: var(--link-color);
+}
+
+#passkey-login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+#passkey-submit {
+  width: calc(100% - 16px);
+  margin: 8px;
+  padding: 8px;
+  font-size: 1rem;
+  font-family: var(--heading-font);
+  border: none;
+  border-radius: 3px;
+  background-color: #5959fc;
+  color: #fff;
+  cursor: pointer;
+}
+
+.passkey-hint {
+  font-size: 0.75rem;
+  color: #777;
+  text-align: center;
+  max-width: 85%;
+}

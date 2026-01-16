@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Conditions | Credential Manager</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-canvas: #f9f9f6;
+      --card-bg: #ffffff;
+      --accent-beige: #8c8c73;
+      --accent-beige-light: #aeae9d;
+      --text-main: #262626;
+      --text-muted: #6b6b5b;
+      --input-border: #d1d1c7;
+      --heading-font: "General Sans", sans-serif;
+      --body-font: "Cabinet Grotesk", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      font-family: var(--body-font);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 60px 20px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 3.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--accent-beige-light);
+      box-shadow: 0 10px 30px rgba(140, 140, 115, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--input-border);
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      font-family: var(--heading-font);
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .subtitle {
+      color: var(--accent-beige);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    h2 {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--accent-beige);
+      border-radius: 2px;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--text-muted);
+    }
+
+    .highlight-box {
+      background-color: #fdfdfb;
+      border: 1px dashed var(--accent-beige-light);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box p {
+      margin-bottom: 0;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .contact {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--input-border);
+    }
+
+    strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .footer-nav {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .footer-nav a {
+      text-decoration: none;
+      color: var(--accent-beige);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-nav a:hover {
+      color: var(--text-main);
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 30px 15px; }
+      .container { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <span class="subtitle">Agreement</span>
+      <h1>Terms & Conditions</h1>
+    </div>
+
+    <p>
+      By accessing or using <strong>Credential Manager</strong>, you acknowledge that you have read, understood, and agree to be bound by the following terms.
+    </p>
+
+    <h2>Usage & Warranty</h2>
+    <div class="highlight-box">
+      <p>
+        This service is provided <strong>"as-is"</strong> and <strong>"as-available"</strong> without warranties of any kind, either express or implied. Use of this service is at your own risk.
+      </p>
+    </div>
+    <p>
+      You are solely responsible for safeguarding your credentials, cryptographic keys, and any data exports.
+    </p>
+
+    <h2>Security Responsibility</h2>
+    <p>
+      Because we prioritize your privacy, we do not store your private decryption keys. 
+      <strong>If you lose your cryptographic keys, your encrypted data cannot be recovered.</strong> 
+      The service does not have the technical ability to reset or regenerate your private keys.
+    </p>
+
+    <h2>Acceptable Use</h2>
+    <p>
+      You agree not to misuse the service or help anyone else do so. This includes attempting unauthorized access, 
+      circumventing encryption, or using the platform for illegal purposes.
+    </p>
+
+    <h2>Service Availability</h2>
+    <p>
+      We reserve the right to change, suspend, or terminate the service at any time without prior notice. 
+      We are not liable for any loss of data resulting from service interruptions or account termination.
+    </p>
+
+    <div class="contact">
+      <h2>Contact</h2>
+      <p>
+        For questions regarding these terms, please contact:
+        <br />
+        <a href="mailto:lethimcookforgodssake@gmail.com" style="color: var(--accent-beige); font-weight: 600; text-decoration: none;">
+          lethimcookforgodssake@gmail.com
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-nav">
+      <a href="/">Back to Home</a>
+    </div>
+  </div>
+</body>
+</html>

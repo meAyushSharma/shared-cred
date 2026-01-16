@@ -49,6 +49,12 @@ body {
   font-size: .9rem;
   font-family: var(--heading-font);
 }
+
+#signup-form > .password-group {
+  padding: 0;
+}
+
+
 #signup-form > input{
   border: none;
   border: 2px solid var(--about-credential-heading-color);
@@ -75,6 +81,12 @@ body {
   border-radius: 3px;
   cursor: pointer;
 }
+
+#signup-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
 .links {
   text-align: center;
@@ -110,3 +122,88 @@ body {
     place-content: center;
   }
 }
+
+
+.tnc {
+  margin: 12px 8px 6px;
+  padding: 10px 12px;
+  border: 1px solid #d0d0c2;
+  border-radius: 4px;
+  background-color: #fafafa;
+  font-size: 0.8rem;
+}
+
+.tnc-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  color: #555;
+}
+
+.tnc-label input[type="checkbox"] {
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.tnc-label span {
+  line-height: 1.4;
+}
+
+.tnc a {
+  color: #5959fc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.tnc a:hover {
+  text-decoration: underline;
+}
+
+/* Optional subtle focus ring for accessibility */
+.tnc-label input[type="checkbox"]:focus-visible {
+  outline: 2px solid #5959fc;
+  outline-offset: 2px;
+}
+
+
+
+/* Password group aligns with other form fields */
+.password-group {
+  margin: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Keep input styling consistent */
+.password-group input[type="password"],
+.password-group input[type="text"] {
+  padding: 8px;
+  font-size: 0.9rem;
+  font-family: var(--heading-font);
+  border: 2px solid var(--about-credential-heading-color);
+  border-radius: 3px;
+}
+
+/* Toggle styling */
+.toggle-password {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Make checkbox feel intentional, not default-janky */
+.toggle-password input {
+  cursor: pointer;
+}
+
+/* Subtle interaction */
+.toggle-password:hover span {
+  color: var(--classic-blue);
+}
+

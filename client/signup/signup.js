@@ -1,36 +1,70 @@
-document.getElementById('signup-form').addEventListener('submit', async e=>{
-    e.preventDefault();
-    const username = document.getElementById('signup-username').value.toLowerCase().trim();
-    const password = document.getElementById('signup-password').value.toString().trim();
-    const name = document.getElementById('signup-name').value.trim();
+const tncCheckbox = document.getElementById("agree-tnc");
+const submitBtn = document.getElementById("signup-submit");
+const form = document.getElementById("signup-form");
 
-    generateKeyPair().then(async keyPair => {
-        const exportedPublicKey = await exportPublicKey(keyPair.publicKey);
+// --- T&C checkbox → button enable ---
+tncCheckbox.addEventListener("change", () => {
+  submitBtn.disabled = !tncCheckbox.checked;
+});
 
-        storeKeys(keyPair.privateKey, keyPair.publicKey).then(async ()=> {
-            const response = await fetch('/signup', {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/json",
-                },
-                "body": JSON.stringify({
-                    username:username,
-                    name:name,
-                    password:password,
-                    publicKey: exportedPublicKey
-                })
-            });
-            if(response.redirected){
-                window.location.href = response.url;
-            }else{
-                window.location.reload();
-            }
-        }).catch(err =>{
-            console.log(`the error in storing private key: ${err}`);
-        })
+// --- Password show/hide (ONLY via checkbox, no hover) ---
+const pwd = document.getElementById("signup-password");
+const togglePwd = document.getElementById("toggle-password");
 
+togglePwd.addEventListener("change", () => {
+  pwd.type = togglePwd.checked ? "text" : "password";
+});
+
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const username = document.getElementById("signup-username").value.toLowerCase().trim();
+  const password = pwd.value; // do NOT .trim() passwords
+  const name = document.getElementById("signup-name").value.trim();
+  const agreeTnc = tncCheckbox.checked;
+
+  // ---- Client-side validation FIRST ----
+  if (!username || !password || !name) {
+    alert("Please fill all required fields.");
+    return;
+  }
+
+  if (!agreeTnc) {
+    alert("You must agree to the Terms & Conditions.");
+    return;
+  }
+
+  try {
+    // ---- Key generation AFTER validation ----
+    const keyPair = await generateKeyPair();
+    const exportedPublicKey = await exportPublicKey(keyPair.publicKey);
+
+    await storeKeys(keyPair.privateKey, keyPair.publicKey);
+
+    const response = await fetch("/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username,
+        password,
+        name,
+        publicKey: exportedPublicKey,
+        agreeTnc: true
+      })
     });
-})
+
+    if (response.redirected) {
+      window.location.href = response.url;
+    } else {
+      const text = await response.text();
+      alert(text);
+    }
+  } catch (err) {
+    console.error("Signup failed:", err);
+    alert("Signup failed. Please try again.");
+  }
+});
 
 
 
@@ -127,27 +161,11 @@ async function storeKeys(privateKey, publicKey) {
 }
 
 
-document.getElementById('signup-password').addEventListener('mouseover', (e) => {
-    if(e.target.type === 'text'){
-        e.target.type = 'text'
-    }else{
-        e.target.type = 'text';
-    }
-});
-
-document.getElementById('signup-password').addEventListener('mouseout', (e) => {
-    if(e.target.type === 'password'){
-        e.target.type = 'password'
-    }else{
-        e.target.type = 'password';
-    }
-});
 
 
-
-document.getElementById('google-text').addEventListener('click', async function (event) {
-    event.preventDefault();
-    const keyPair = await generateKeyPair();
-    await storeKeys(keyPair.privateKey, keyPair.publicKey);
-    window.location.href = `/auth/google`;
+document.getElementById("google-text").addEventListener("click", async (event) => {
+  event.preventDefault();
+  const keyPair = await generateKeyPair();
+  await storeKeys(keyPair.privateKey, keyPair.publicKey);
+  window.location.href = "/auth/google";
 });

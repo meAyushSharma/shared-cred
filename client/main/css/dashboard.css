@@ -109,3 +109,60 @@
         height: auto;
     }
 }
+
+
+.key-warning-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+
+.key-warning-box {
+  background: #fff;
+  padding: 20px;
+  width: 420px;
+  max-width: 90%;
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--body-font);
+}
+
+.key-warning-box.danger h2 {
+  color: #c0392b;
+}
+
+.key-warning-box p {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.key-warning-box ul {
+  text-align: left;
+  font-size: 0.85rem;
+  margin: 10px 0;
+}
+
+.key-warning-box button {
+  padding: 8px 14px;
+  margin: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#download-keys-now {
+  background: #5959fc;
+  color: #fff;
+}
+
+.danger-actions button:first-child {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.danger-actions button:last-child {
+  background: #ccc;
+}

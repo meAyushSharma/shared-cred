@@ -1,4 +1,5 @@
 async function exportKeysAsZip() {
+    await assertLocalKeysExist();
     const db = await openDatabase();
 
     return new Promise((resolve, reject) => {
@@ -92,3 +93,4 @@ function downloadFile(url, filename) {
     a.click();
     document.body.removeChild(a);
 }
+

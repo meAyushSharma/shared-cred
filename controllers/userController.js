@@ -37,14 +37,21 @@ module.exports.registerUser = async (req, res) => {
   if (response != null) {
     return res.redirect("/");
   }
+  const agreeTnc = req.body.agreeTnc;
   const username = req.body.username.toLowerCase().trim();
   const password = req.body.password;
   const name = req.body.name.trim();
   const publicKey = req.body.publicKey;
-  if (!username || !password || !name) {
-    console.log("missing fileds in signup");
-    return res.redirect("/signup");
+  if (!username || !password || !name || !publicKey) {
+    console.log("missing fields in signup");
+    return res.status(400).send("Missing required fields");
   }
+
+  if (agreeTnc !== true) {
+    console.log("T&C not accepted");
+    return res.status(400).send("Consent required");
+  }
+  
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { username: username, password: hashedPassword, name: name, publicKey: publicKey };
   const alreadyExists = await User.findOne({ username: username });

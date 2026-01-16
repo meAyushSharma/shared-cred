@@ -1,33 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="icon" href="lock-2-fill.svg" type="image/icon type" height="32px" aspect-ratio="1/1"/>
-    <link
-    href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap"
-    rel="stylesheet"
-    />
-    <link rel="stylesheet" href="login.css">
-    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Secure Access</title>
+
+  <link rel="icon" href="lock-2-fill.svg" type="image/icon type" />
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js" defer></script>
+
+  <style>
+    :root {
+      --bg-canvas: #f9f9f6;
+      --card-bg: #ffffff;
+      --accent-beige: #8c8c73;
+      --accent-beige-light: #aeae9d;
+      --text-main: #262626;
+      --text-muted: #6b6b5b;
+      --primary-action: #4a4ae2; /* Kept a cleaner blue for primary action */
+      --input-border: #d1d1c7;
+      --heading-font: "General Sans", sans-serif;
+      --body-font: "Cabinet Grotesk", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      font-family: var(--body-font);
+      color: var(--text-main);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--accent-beige-light);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(140, 140, 115, 0.15);
+    }
+
+    .login-heading {
+      font-family: var(--heading-font);
+      font-size: 1.75rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Passkey Section */
+    .passkey-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    #passkey-submit {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-family: var(--heading-font);
+      background-color: var(--primary-action);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      font-weight: 500;
+    }
+
+    #passkey-submit:hover {
+      opacity: 0.9;
+    }
+
+    .passkey-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Divider */
+    .divider-container {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
+      color: var(--accent-beige);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .divider-container::before,
+    .divider-container::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--input-border);
+    }
+
+    .divider-container span {
+      margin: 0 10px;
+    }
+
+    /* Form Section */
+    #login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      padding: 0.75rem;
+      border: 1px solid var(--input-border);
+      border-radius: 6px;
+      font-family: var(--heading-font);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent-beige);
+      background-color: #fdfdfb;
+    }
+
+    .password-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: -0.5rem;
+    }
+
+    .toggle-password {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .forgot-password {
+      font-size: 0.8rem;
+      color: var(--accent-beige);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    #login-submit {
+      padding: 0.8rem;
+      background-color: var(--accent-beige);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    #login-submit:hover {
+      background-color: #7a7a65;
+    }
+    /* Footer Signup Area */
+    .form-footer {
+      background-color: var(--footer-bg);
+      border-top: 1px solid var(--input-border);
+      padding: 1.25rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .form-footer a {
+      color: var(--primary-action);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 420px) {
+      .main-container {
+        width: 90%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="main-container">
-        <div class="login-heading">Login</div>
+  <div class="main-container">
+    <div>
+        <div class="login-heading">Welcome back</div>
+    
+        <div class="passkey-block">
+          <form id="passkey-login-form">
+            <button type="submit" id="passkey-submit">
+              Continue with passkey
+            </button>
+          </form>
+          <div class="passkey-hint">
+            Secure, biometric login without a password.
+          </div>
+        </div>
+    
+        <div class="divider-container">
+          <span>or use password</span>
+        </div>
+    
         <form id="login-form">
-          <input type="email" name="username" id="login-username" placeholder="johndoe@email.com" autocomplete="off" required />
-          <input type="text" name="password" id="login-password" placeholder="Enter your password" autocomplete="off" required />
-          <span class="forgot-password"><b class="forgot-name" id="forgot-pass-btn">Forgot password ?</b></span>
-          <button type="submit" id="login-submit">Submit</button>
-        </form>
-        <div class="line"></div>
-        <div class="passkey-login-heading">Passkey Login</div>
-        <form id="passkey-login-form">
-            <input id="passkey-login-username" type="text" name="username" placeholder="johndoe@gmail.com" autocomplete="off" required />
-            <button type="submit" id="passkey-submit">Submit</button>
+          <div class="input-group">
+            <input type="email" name="username" id="login-username"
+              placeholder="Email address"
+              autocomplete="username"
+              required />
+          </div>
+    
+          <div class="input-group">
+            <input
+              type="password"
+              name="password"
+              id="login-password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+    
+          <div class="password-options">
+            <label class="toggle-password">
+              <input type="checkbox" id="toggle-login-password" />
+              Show
+            </label>
+            <a href="#" class="forgot-password" id="forgot-pass-btn">Forgot password?</a>
+          </div>
+    
+          <button type="submit" id="login-submit">
+            Login
+          </button>
         </form>
     </div>
-        <script src="login.js" defer></script>
+
+    <div class="form-footer">
+      Don't have an account? <a href="/signup">Sign up</a>
+    </div>
+  </div>
+
+  <script src="login.js" defer></script>
 </body>
 </html>

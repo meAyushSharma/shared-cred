@@ -42,6 +42,24 @@ router.get("/login", catchAsync(userController.sendStaticLogin));
 router.post("/login", catchAsync(userController.loginUser));
 router.get("/logout", userAuth, userController.logoutUser);
 
+// crypto keys flags
+router.get("/me", userAuth, (req, res) => {
+    // console.log("this is req.userDetails in /me", req.userDetails);
+  res.json({
+    mustExportKeys: !req.userDetails.hasExportedKeys
+  });
+});
+
+router.post("/keys-exported", userAuth, async (req, res) => {
+    //  console.log("this is req.userDetails in /keys-exported", req.userDetails);
+  if (!req.userDetails.hasExportedKeys) {
+    req.userDetails.hasExportedKeys = true;
+    await req.userDetails.save();
+  }
+  res.json({ ok: true });
+});
+
+
 // image-credential-routes
 router.get("/get-images", userAuth, catchAsync(userController.getImages));
 router.post("/delete-cred-image", userAuth, catchAsync(userController.deleteImage));

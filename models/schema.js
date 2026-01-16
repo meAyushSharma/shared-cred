@@ -9,21 +9,89 @@ const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
+
+  /* =========================
+   * PASSKEY REGISTRATION
+   * ========================= */
   passkeyChallenge: {
     type: String,
-    default: ""
+    default: "",
   },
-  passkey: {
-    type: Object
-  },
+
+  passkeys: [
+    {
+      credentialID: {
+        type: Buffer,
+        required: true,
+      },
+      credentialPublicKey: {
+        type: Buffer,
+        required: true,
+      },
+      counter: {
+        type: Number,
+        default: 0,
+      },
+      credentialType: {
+        type: String,
+      },
+      userVerified: {
+        type: Boolean,
+      },
+      rpID: {
+        type: String,
+      },
+    },
+  ],
+
+  /* =========================
+   * PASSKEY LOGIN
+   * ========================= */
   loginPasskeyChallenge: {
     type: String,
+    default: "",
   },
-  credImageURLs: [ { url: { type: String }, name: { type: String } , publicId: { type: String }} ],
-  encryptedSymmetricKeys: [ { resourceId: { type: mongoose.Schema.Types.ObjectId, ref: "Resource" }, encryptedSymmetricKey: { type: String } } ],
-  publicKey: { type: String, default: "" },
-  code: { forgotCode: String, timeCreatedAt: { type: Date, default: Date.now }}
+
+  /* =========================
+   * EXISTING FIELDS (UNCHANGED)
+   * ========================= */
+  credImageURLs: [
+    {
+      url: { type: String },
+      name: { type: String },
+      publicId: { type: String },
+    },
+  ],
+
+  encryptedSymmetricKeys: [
+    {
+      resourceId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Resource",
+      },
+      encryptedSymmetricKey: { type: String },
+    },
+  ],
+
+  publicKey: {
+    type: String,
+    default: "",
+  },
+
+  code: {
+    forgotCode: String,
+    timeCreatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+
+  hasExportedKeys: {
+    type: Boolean,
+    default: false
+  }
 });
+
 
 const ResourceSchema = new mongoose.Schema({
   resourceName: String,

@@ -13,15 +13,46 @@
     
     <div class="main-container">
         <div class="signup-heading">Signup</div>
-        <form id="signup-form">
-          <input type="email" name="username" id="signup-username" placeholder="Email : johndoe@email.com" autocomplete="off" required />
-          <input type="password" name="password" id="signup-password" placeholder="Enter a strong password" autocomplete="off" required />
-          <input type="text" name="name" id="signup-name" placeholder="Name : John Doe" autocomplete="off" required />
-          <button type="submit" id="signup-submit">Submit</button>
-        </form>
+          <form id="signup-form">
+            <input type="email" name="username" id="signup-username" placeholder="Email : johndoe@email.com" autocomplete="off" required />
+<div class="password-group">
+  <input
+    type="password"
+    name="password"
+    id="signup-password"
+    placeholder="Enter a strong password"
+    autocomplete="new-password"
+    required
+  />
+
+  <label class="toggle-password">
+    <input type="checkbox" id="toggle-password" />
+    <span>Show password</span>
+  </label>
+</div>
+
+
+
+            <input type="text" name="name" id="signup-name" placeholder="Name : John Doe" autocomplete="off" required />
+
+            <div class="tnc">
+              <label class="tnc-label">
+                <input type="checkbox" id="agree-tnc" name="agree_tnc" />
+                <span>
+                  I agree to the
+                  <a href="/terms.html" target="_blank">Terms & Conditions</a>
+                  and
+                  <a href="/privacy.html" target="_blank">Privacy Policy</a>
+                </span>
+              </label>
+            </div>
+
+
+            <button type="submit" id="signup-submit" disabled>Submit</button>
+          </form>
         <div class="links">
         <a href="/login">Login</a>
-        <a href="/auth/google" id="google-text">Signup/Login with SSO</a>
+        <a href="/auth/google" id="google-text">Login with Google</a>
       </div>
     </div>
    

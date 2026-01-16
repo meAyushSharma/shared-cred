@@ -1,117 +1,248 @@
 const { isTokenAndValid } = require("../utils/catchToken");
 const ExpressError = require("../utils/ExpressError");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const { User } = require("../models/schema");
-const {
-    generateRegistrationOptions,
-    verifyRegistrationResponse,
-    generateAuthenticationOptions,
-    verifyAuthenticationResponse} = require("@simplewebauthn/server");
 
+const {
+  generateRegistrationOptions,
+  verifyRegistrationResponse,
+  generateAuthenticationOptions,
+  verifyAuthenticationResponse,
+} = require("@simplewebauthn/server");
+
+/**
+ * ============================
+ * PASSKEY REGISTRATION
+ * ============================
+ */
 
 module.exports.generatePasskey = async (req, res) => {
-    console.log("at generate passkey")
-    const challengePayLoad = await generateRegistrationOptions({
-      // rpID: "localhost",
-      // rpID: "credential-manager-cdl1.onrender.com",
-      rpID: "cred.byayush.com",
-      rpName: "My machine",
-      userName: req.userDetails.username,
+  console.log("at generatePasskey");
+
+  const options = await generateRegistrationOptions({
+    // rpID: "cred.byayush.com",
+    rpID: "localhost",
+    rpName: "Credential Manager",
+
+    userID: Buffer.from(req.userDetails._id.toString()),
+    userName: req.userDetails.username,
+
+    authenticatorSelection: {
+      residentKey: "required",
+      userVerification: "preferred",
+    },
+  });
+
+  await User.findByIdAndUpdate(req.userDetails._id, {
+    passkeyChallenge: options.challenge,
+  });
+
+  res.json({ options });
+};
+
+module.exports.verifyPasskeyResult = async (req, res) => {
+  console.log("at verifyPasskeyResult");
+
+  try {
+    const { cred } = req.body;
+    const user = await User.findById(req.userDetails._id);
+
+    if (!user) {
+      return res.status(400).json({ verified: false, error: "User not found" });
+    }
+
+    const verification = await verifyRegistrationResponse({
+      response: cred,
+      expectedChallenge: user.passkeyChallenge,
+      expectedOrigin: "http://localhost:3005",
+      expectedRPID: "localhost",
     });
-    const user = await User.findOneAndUpdate(
-      { _id: req.userDetails._id },
-      { passkeyChallenge: challengePayLoad.challenge },
-      { new: true }
-    );
-    // console.log("challenge is: ", challengePayLoad.challenge);
-    res.json({
-      options: challengePayLoad,
-      msg: `this is the challenge generated: ${challengePayLoad.challenge}`,
+
+    if (!verification.verified) {
+      return res.status(400).json({ verified: false, error: "Registration verification failed" });
+    }
+
+    const { registrationInfo } = verification;
+
+    // 🔐 CRITICAL: store RAW BYTES, not string representations
+    const credentialID = Buffer.isBuffer(registrationInfo.credentialID)
+      ? registrationInfo.credentialID
+      : Buffer.from(registrationInfo.credentialID, "base64url");
+
+    const credentialPublicKey = Buffer.isBuffer(registrationInfo.credentialPublicKey)
+      ? registrationInfo.credentialPublicKey
+      : Buffer.from(registrationInfo.credentialPublicKey);
+
+    // Initialize array if missing
+    user.passkeys = user.passkeys || [];
+
+    user.passkeys.push({
+      credentialID,
+      credentialPublicKey,
+      counter: registrationInfo.counter,
+      credentialType: registrationInfo.credentialType,
+      userVerified: registrationInfo.userVerified,
+      rpID: registrationInfo.rpID,
     });
-  };
-  
-  module.exports.verifyPasskeyResult = async (req, res) => {
-    console.log("at verifypasskeyresult passkey")
+
+    user.passkeyChallenge = undefined;
+    await user.save();
+
+    console.log("✅ Passkey registered successfully");
+    console.log("   credentialID (hex):", credentialID.toString("hex"));
+    console.log("   credentialID length:", credentialID.length);
+
+    return res.json({ verified: true });
+  } catch (err) {
+    console.error("🔥 Passkey registration error:", err);
+    return res.status(500).json({
+      verified: false,
+      error: "Internal passkey registration error",
+    });
+  }
+};
+
+
+/**
+ * ============================
+ * PASSKEY LOGIN (DISCOVERABLE)
+ * ============================
+ */
+
+module.exports.loginPasskeyResult = async (req, res) => {
+  console.log("at loginPasskeyResult");
+
+  const tokenResult = await isTokenAndValid(req, res);
+  if (tokenResult) {
+    return res.redirect("/");
+  }
+
+  const options = await generateAuthenticationOptions({
+    // rpID: "cred.byayush.com",
+    rpID: "localhost",
+    userVerification: "preferred",
+  });
+
+  // store challenge globally (DB used for simplicity)
+  await User.updateMany(
+    {},
+    { $set: { loginPasskeyChallenge: options.challenge } }
+  );
+
+  res.json({ options });
+};
+
+module.exports.verifyLoginPasskeyResult = async (req, res) => {
+  console.log("\n================ PASSKEY LOGIN DEBUG ================");
+  console.log("at verifyLoginPasskeyResult");
+
+  try {
     const { cred } = req.body;
 
-    const user = await User.findOne({ _id: req.userDetails._id });
-    if(!user) throw new ExpressError(`user not found:`, 400);
-    const challenge = user.passkeyChallenge;
-    // expectedOrigin: "http://localhost:3005",
-    // expectedRPID: "localhost",
-    // expectedOrigin: "https://credential-manager-cdl1.onrender.com",
-    const verificationResult = await verifyRegistrationResponse({
-      expectedChallenge: challenge,
-      expectedOrigin: "https://cred.byayush.com",
-      expectedRPID: "cred.byayush.com",
-      response: cred,
-    });
-    if (!verificationResult.verified)
-      return res.json({ msg: "Error, could not verify the passkey ＞︿＜" });
-
-    user.passkey = verificationResult.registrationInfo;
-    user.save();
-    return res.json({
-      verified: true,
-    });
-  };
-  
-  module.exports.loginPasskeyResult = async (req, res) => {
-    console.log("at loginpasskeyresult passkey")
-    const response = await isTokenAndValid(req, res);
-    if (response != null) {
-      console.log("user logged while passkey login through token successfully! ", response);
-      return res.redirect(200, "/");
+    if (!cred || !cred.rawId) {
+      console.error("❌ Missing cred or rawId");
+      return res.status(400).json({ verified: false, error: "Invalid credential" });
     }
-    const { username } = req.body;
-    // rpID: "credential-manager-cdl1.onrender.com",
-    const loginChallengePayload = await generateAuthenticationOptions({
-      rpID: "cred.byayush.com",
-    });
-    const user = await User.findOneAndUpdate(
-      { username : username },
-      { loginPasskeyChallenge: loginChallengePayload.challenge },
-      { new: true }
+
+    console.log("▶ rawId (base64url):", cred.rawId);
+
+    // Decode credential ID
+    const credentialID = Buffer.from(cred.rawId, "base64url");
+    console.log("▶ decoded credentialID (hex):", credentialID.toString("hex"));
+    console.log("▶ decoded credentialID length:", credentialID.length);
+
+    // Fetch all users with passkeys (DEBUG ONLY)
+    const usersWithPasskeys = await User.find(
+      { "passkeys.0": { $exists: true } },
+      { username: 1, passkeys: 1, loginPasskeyChallenge: 1 }
     );
-    return res.json({
-      options: loginChallengePayload,
-      msg: `this is the login challenge generated: ${loginChallengePayload.challenge}`,
+
+    console.log(`▶ users with passkeys found: ${usersWithPasskeys.length}`);
+
+    for (const u of usersWithPasskeys) {
+      console.log(`  ── user: ${u.username}`);
+      console.log(`     loginPasskeyChallenge: ${u.loginPasskeyChallenge}`);
+
+      u.passkeys.forEach((pk, idx) => {
+        console.log(`     passkey[${idx}] credentialID (hex):`, pk.credentialID.toString("hex"));
+        console.log(`     passkey[${idx}] credentialID length:`, pk.credentialID.length);
+      });
+    }
+
+    // Actual lookup
+    const user = await User.findOne({
+      "passkeys.credentialID": credentialID,
     });
-  };
-  
-  module.exports.verifyLoginPasskeyResult = async (req, res) => {
-    console.log("at verifyloginpasskeyresult passkey")
-    const { cred, username } = req.body;
-    const user = await User.findOne({ username: username });
-    if(!user) throw new ExpressError(`user not found:`, 400);
-    const verificationResult = await verifyAuthenticationResponse({
-        expectedChallenge: user.loginPasskeyChallenge,
-        expectedOrigin: "https://cred.byayush.com",
-        expectedRPID: "cred.byayush.com",
-        response: cred,
-        authenticator:{
-          credentialID: user.passkey.credentialID,
-          credentialPublicKey: new Uint8Array(user.passkey.credentialPublicKey.buffer,),
-          counter:user.passkey.counter,
-          credentialType: user.passkey.credentialType,
-          userVerified: user.passkey.userVerified,
-          origin: user.passkey.origin,
-          rpID: user.passkey.rpID
-        }
-      }); 
-        if(!verificationResult.verified) return res.json({
-          msg: "Not verified for some reason"
-        })
-        const passkeyToken = jwt.sign({username : username, name : user.name}, process.env.JWT_SECRET_KEY);
-        res.cookie("passkeyToken", passkeyToken, {
-            maxAge: 3 * 60 * 60 * 1000,
-            httpOnly: true,
-            secure: true,
-            sameSite: "Strict",
-            path: '/',
-          });
-          console.log("saved cookies")
-        res.status(200).json({
-            verified: true,
-        })
-}
+
+    if (!user) {
+      console.error("❌ No user matched credentialID");
+      return res.status(400).json({ verified: false, error: "Passkey not found" });
+    }
+
+    console.log("✅ Matched user:", user.username);
+
+    const passkey = user.passkeys.find(pk =>
+      pk.credentialID.equals(credentialID)
+    );
+
+    if (!passkey) {
+      console.error("❌ User found but passkey mismatch");
+      return res.status(400).json({ verified: false, error: "Passkey mismatch" });
+    }
+
+    console.log("✅ Matched passkey for user");
+
+    console.log("▶ Expected challenge:", user.loginPasskeyChallenge);
+
+    const verification = await verifyAuthenticationResponse({
+      response: cred,
+      expectedChallenge: user.loginPasskeyChallenge,
+      expectedOrigin: "http://localhost:3005",
+      expectedRPID: "localhost",
+      authenticator: {
+        credentialID: passkey.credentialID,
+        credentialPublicKey: passkey.credentialPublicKey,
+        counter: passkey.counter,
+      },
+    });
+
+    console.log("▶ verification result:", verification);
+
+    if (!verification.verified) {
+      console.error("❌ Cryptographic verification failed");
+      return res.status(401).json({ verified: false, error: "Verification failed" });
+    }
+
+    // Update counter
+    passkey.counter = verification.authenticationInfo.newCounter;
+    user.loginPasskeyChallenge = undefined;
+    await user.save();
+
+    const token = jwt.sign(
+      { username: user.username, name: user.name },
+      process.env.JWT_SECRET_KEY
+    );
+
+    res.cookie("passkeyToken", token, {
+      maxAge: 3 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: false,
+      sameSite: "Strict",
+      path: "/",
+    });
+
+    console.log("✅ Passkey login successful");
+    console.log("====================================================\n");
+
+    return res.json({ verified: true });
+
+  } catch (err) {
+    console.error("🔥 Passkey login exception:", err);
+    return res.status(500).json({
+      verified: false,
+      error: "Internal passkey verification error",
+    });
+  }
+};
+
+
