@@ -20,7 +20,14 @@ module.exports.sendStaticMain = async (req, res) => {
   const response = await isTokenAndValid(req, res);
   if (response != null) {
     return res.sendFile(path.join(__dirname, "../client", "main/main.html"));
-  } else return res.redirect("/signup");
+  } else return res.redirect("/home");
+};
+
+module.exports.sendStaticHome = async (req, res) => {
+  const response = await isTokenAndValid(req, res);
+  if (response != null) {
+    res.redirect("/");
+  } else return res.sendFile(path.join(__dirname, "../client", "home/home.html"));
 };
 
 module.exports.sendStaticSignup = async (req, res) => {
@@ -51,7 +58,7 @@ module.exports.registerUser = async (req, res) => {
     console.log("T&C not accepted");
     return res.status(400).send("Consent required");
   }
-  
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { username: username, password: hashedPassword, name: name, publicKey: publicKey };
   const alreadyExists = await User.findOne({ username: username });
@@ -168,7 +175,7 @@ module.exports.logoutUser = (req, res) => {
   req.logout(function(err) {
     if (err) { console.log('the error dstroying the session is: ', err); }
     console.log("Logging out...");
-    res.redirect("/signup");
+    res.redirect("/home");
   });
 };
 

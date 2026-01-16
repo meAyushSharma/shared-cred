@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credential Manager | Zero-Knowledge Security</title>
+  <link rel="icon" href="lock-2-fill.svg" type="image/icon type" height="32px" aspect-ratio="1/1"/>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1&f[]=general-sans@1&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="glass-nav">
+    <div class="nav-container">
+      <img src="./removed background logo.png" alt="logo" class="logo-img" />
+      <div class="nav-actions">
+        <a href="/login" class="link-login">Login</a>
+        <a href="/signup" class="btn-nav">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="reveal-text">
+          <span class="badge-outline">
+            <i class="ri-shield-check-fill"></i> E2EE + Proxy Re-Encryption
+          </span>
+          <h1>Your digital keys, <br/><span class="text-serif">perfectly organized.</span></h1>
+          <p>Efficiently store, share, and manage your credentials in a single, zero-knowledge vault. Decryption happens on your device, not our server.</p>
+          <div class="hero-btns">
+            <a href="/signup" class="btn-main">Create Your Vault</a>
+            <a href="#features" class="btn-ghost">View Features</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image-wrapper">
+        <div class="floating-blob"></div>
+        <img src="cred.png" alt="Secure Visual" class="main-hero-img" />
+      </div>
+    </div>
+  </header>
+
+  <section class="trust-section" id="features">
+    <div class="section-intro">
+      <span class="subtitle">Our Philosophy</span>
+      <h2 class="section-title">Built for efficiency & trust</h2>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-eye-off-line"></i></div>
+        <h3>Zero-Knowledge</h3>
+        <p>Decryption happens exclusively on the client-side. We never receive your private keys, ensuring absolute privacy.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-share-forward-box-line"></i></div>
+        <h3>Granular Sharing</h3>
+        <p>Assign Viewer, Editor, or Author roles with precision. You remain the sole authority over shared data.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-image-line"></i></div>
+        <h3>Image Vault</h3>
+        <p>Securely manage image-based credentials up to 1MB. Perfect for identity cards and secure QR codes.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-fingerprint-line"></i></div>
+        <h3>Passkey & SSO</h3>
+        <p>Experience seamless auth. Use Google SSO or modern Passkeys for a passwordless future.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-markdown-line"></i></div>
+        <h3>Markdown Exports</h3>
+        <p>Your data belongs to you. Export your vault in beautiful Markdown format in a single click.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrap"><i class="ri-instance-line"></i></div>
+        <h3>Docker Ready</h3>
+        <p>Deploy your own instance. Decouple authorization logic using Permit.io for pro-grade management.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="cta-content">
+      <h2>Real Security, No Compromises.</h2>
+      <p>Using Symmetric key distribution, we ensure your private key never leaves your device. Not on login, not during sharing, not ever.</p>
+      <a href="/signup" class="btn-white">Start Securing Your Data</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">
+        <p>&copy; 2026 Credential Manager. <br/>Designed for Sovereignty.</p>
+      </div>
+      <div class="footer-right">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

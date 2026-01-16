@@ -31,6 +31,7 @@ router.use(express.static(path.join(__dirname, "../client")));
 router.use(express.static(path.join(__dirname, "../client", "login")));
 router.use(express.static(path.join(__dirname, "../client", "main")));
 router.use(express.static(path.join(__dirname, "../client", "signup")));
+router.use(express.static(path.join(__dirname, "../client", "home")));
 
 
 
@@ -41,6 +42,7 @@ router.post("/signup", catchAsync(userController.registerUser));
 router.get("/login", catchAsync(userController.sendStaticLogin));
 router.post("/login", catchAsync(userController.loginUser));
 router.get("/logout", userAuth, userController.logoutUser);
+router.get("/home", catchAsync(userController.sendStaticHome));
 
 // crypto keys flags
 router.get("/me", userAuth, (req, res) => {
