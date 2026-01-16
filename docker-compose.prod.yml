@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-node-app
+    ports:
+      - "3000:3000"
+      - "3005:3005"
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    command: ["node", "index.js"]
