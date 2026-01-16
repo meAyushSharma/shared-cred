@@ -20,8 +20,8 @@ module.exports.generatePasskey = async (req, res) => {
   console.log("at generatePasskey");
 
   const options = await generateRegistrationOptions({
-    // rpID: "cred.byayush.com",
-    rpID: "localhost",
+    rpID: "cred.byayush.com",
+    // rpID: "localhost",
     rpName: "Credential Manager",
 
     userID: Buffer.from(req.userDetails._id.toString()),
@@ -54,8 +54,8 @@ module.exports.verifyPasskeyResult = async (req, res) => {
     const verification = await verifyRegistrationResponse({
       response: cred,
       expectedChallenge: user.passkeyChallenge,
-      expectedOrigin: "http://localhost:3005",
-      expectedRPID: "localhost",
+      expectedOrigin: "http://cred.byayush.com",
+      expectedRPID: "cred.byayush.com",
     });
 
     if (!verification.verified) {
@@ -118,8 +118,8 @@ module.exports.loginPasskeyResult = async (req, res) => {
   }
 
   const options = await generateAuthenticationOptions({
-    // rpID: "cred.byayush.com",
-    rpID: "localhost",
+    rpID: "cred.byayush.com",
+    // rpID: "localhost",
     userVerification: "preferred",
   });
 
@@ -197,8 +197,8 @@ module.exports.verifyLoginPasskeyResult = async (req, res) => {
     const verification = await verifyAuthenticationResponse({
       response: cred,
       expectedChallenge: user.loginPasskeyChallenge,
-      expectedOrigin: "http://localhost:3005",
-      expectedRPID: "localhost",
+      expectedOrigin: "http://cred.byayush.com",
+      expectedRPID: "cred.byayush.com",
       authenticator: {
         credentialID: passkey.credentialID,
         credentialPublicKey: passkey.credentialPublicKey,
