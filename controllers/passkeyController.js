@@ -54,7 +54,7 @@ module.exports.verifyPasskeyResult = async (req, res) => {
     const verification = await verifyRegistrationResponse({
       response: cred,
       expectedChallenge: user.passkeyChallenge,
-      expectedOrigin: "http://cred.byayush.com",
+      expectedOrigin: "https://cred.byayush.com",
       expectedRPID: "cred.byayush.com",
     });
 
@@ -197,7 +197,7 @@ module.exports.verifyLoginPasskeyResult = async (req, res) => {
     const verification = await verifyAuthenticationResponse({
       response: cred,
       expectedChallenge: user.loginPasskeyChallenge,
-      expectedOrigin: "http://cred.byayush.com",
+      expectedOrigin: "https://cred.byayush.com",
       expectedRPID: "cred.byayush.com",
       authenticator: {
         credentialID: passkey.credentialID,
