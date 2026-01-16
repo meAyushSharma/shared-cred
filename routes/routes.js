@@ -112,8 +112,18 @@ router.post('/show-resource-info', userAuth, catchAsync(resourceController.showR
 router.post('/remove-resource-permission', userAuth, catchAsync(resourceController.removeResourcePermission));
 
 // health route
-router.get('/health', (req, res) => {
-    return res.status(200).send("Health is OK, working fine (～￣▽￣)～");
+router.get("/health", (req, res) => {
+  return res.status(200).json({
+    status: "ok",
+    service: "credential-manager",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// wildcard routes
+router.get("*", (req, res) => {
+  if (req.path === "/") return res.end();
+  res.redirect("/");
 });
 
 
